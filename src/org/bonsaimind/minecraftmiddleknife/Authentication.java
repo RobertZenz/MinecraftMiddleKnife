@@ -84,7 +84,7 @@ public class Authentication {
 	 * Authenticate at the given server.
 	 * @param address The server to authenticate at.
 	 * @param credentials The credentials to use.
-	 * @return
+	 * @return Returns the result of the authentication attempt.
 	 * @throws AuthenticationException
 	 */
 	public static AuthenticationResult authenticate(String address, Credentials credentials) throws AuthenticationException {
@@ -94,7 +94,7 @@ public class Authentication {
 	/**
 	 * Authenticate at the Mojang server.
 	 * @param credentials The credentials to use.
-	 * @return
+	 * @return Returns the result of the authentication attempt.
 	 * @throws AuthenticationException
 	 */
 	public static AuthenticationResult authenticate(Credentials credentials) throws AuthenticationException {
