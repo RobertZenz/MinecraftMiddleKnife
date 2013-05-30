@@ -42,7 +42,13 @@ import java.net.URLEncoder;
  */
 public class Authentication {
 
+	/**
+	 * The default version which will be reported.
+	 */
 	public static final String launcherVersion = "884";
+	/**
+	 * The addressof the Mojang server.
+	 */
 	public static final String mojangServer = "https://login.minecraft.net";
 
 	/**

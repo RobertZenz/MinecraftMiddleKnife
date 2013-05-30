@@ -28,7 +28,7 @@
 package org.bonsaimind.minecraftmiddleknife;
 
 /**
- * The result from the Mojang server.
+ * The result from an authentication.
  */
 public class AuthenticationResult {
 
@@ -50,22 +50,42 @@ public class AuthenticationResult {
 		this.userUid = userUid;
 	}
 
+	/**
+	 * The current version of game files.
+	 * @return
+	 */
 	public long getCurrentVersion() {
 		return currentVersion;
 	}
 
+	/**
+	 * Deprecated field.
+	 * @return
+	 */
 	public String getDeprecated() {
 		return deprecated;
 	}
 
+	/**
+	 * The session id.
+	 * @return
+	 */
 	public String getSessionId() {
 		return sessionId;
 	}
 
+	/**
+	 * The unique user id.
+	 * @return
+	 */
 	public String getUserUid() {
 		return userUid;
 	}
 
+	/**
+	 * The username.
+	 * @return
+	 */
 	public String getUsername() {
 		return username;
 	}
