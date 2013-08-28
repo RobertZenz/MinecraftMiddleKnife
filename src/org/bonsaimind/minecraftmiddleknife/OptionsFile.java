@@ -51,7 +51,13 @@ public class OptionsFile {
 	 * @param from Either the file or the containing directory.
 	 */
 	public OptionsFile(String from) {
-		setPath(from);
+		this.file = new File(from);
+		if (!this.file.isAbsolute()) {
+			this.file = this.file.getAbsoluteFile();
+		}
+		if (this.file.isDirectory()) {
+			this.file = new File(from, "options.txt");
+		}
 	}
 
 	/**
@@ -108,7 +114,7 @@ public class OptionsFile {
 	}
 
 	/**
-	 * Set the path to the options.txt file.
+	 * Set the given option with the given value.
 	 * @param key
 	 * @param value
 	 * @return
@@ -122,7 +128,11 @@ public class OptionsFile {
 		return false;
 	}
 
-	private void setPath(String pathOrFile) {
+	/**
+	 * Set the path to the options.txt file.
+	 * @param pathOrFile 
+	 */
+	public void setPath(String pathOrFile) {
 		this.file = new File(pathOrFile);
 		if (!this.file.isAbsolute()) {
 			this.file = this.file.getAbsoluteFile();
