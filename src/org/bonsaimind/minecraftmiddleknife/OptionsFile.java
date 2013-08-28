@@ -34,6 +34,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -126,6 +127,23 @@ public class OptionsFile {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Set options from options-pairs. Every pair looks like this: "key:value".
+	 * @param options An array of options with key separated from value by a colon.
+	 */
+	public void setOptions(Iterable<String> options) {
+		if (options == null) {
+			return;
+		}
+
+		for (String option : options) {
+			int splitIdx = option.indexOf(":");
+			if (splitIdx > 0) { // We don't want not-named options.
+				setOption(option.substring(0, splitIdx), option.substring(splitIdx + 1));
+			}
+		}
 	}
 
 	/**
