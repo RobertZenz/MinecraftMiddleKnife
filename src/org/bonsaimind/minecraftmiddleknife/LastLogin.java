@@ -31,7 +31,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
@@ -48,32 +47,87 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
 /**
- * Allows reading, writing and manipulation of the LastLogin-File.
+ * Allows reading, writing of the LastLogin-File.
  */
-public class LastLogin {
+public class LastLogin extends Credentials {
 
-	public static final String lastloginFilename = "lastlogin";
+	public static final String LASTLOGIN_FILENAME = "lastlogin";
+	public static final String DEFAULT_CIPHER_PASSWORD = "password";
+	public static final byte[] DEFAULT_CIPHER_SALT = {
+		(byte) 0x0c, (byte) 0x9d, (byte) 0x4a, (byte) 0xe4,
+		(byte) 0x1e, (byte) 0x83, (byte) 0x15, (byte) 0xfc
+	};
+	private String cipherPassword;
+	private byte[] cipherSalt;
+
+	public LastLogin() {
+		super();
+	}
+
+	public LastLogin(String username, String password) {
+		super(username, password);
+	}
+
+	public LastLogin(String cipherPassword, byte[] cipherSalt, String username, String password) {
+		this(username, password);
+		this.cipherPassword = cipherPassword;
+		this.cipherSalt = cipherSalt;
+	}
+
+	public String getCipherPassword() {
+		return cipherPassword;
+	}
+
+	public byte[] getCipherSalt() {
+		return cipherSalt;
+	}
+
+	public void readFrom(String fileOrPath) throws IOException, LastLoginCipherException {
+		File file = makeFile(fileOrPath);
+
+		DataInputStream stream = new DataInputStream(new CipherInputStream(new FileInputStream(file), getCipher(LastLoginCipherMode.DECRYPT)));
+		setUsername(stream.readUTF());
+		setPassword(stream.readUTF());
+		stream.close();
+	}
+
+	public void setCipherPassword(String cipherPassword) {
+		this.cipherPassword = cipherPassword;
+	}
+
+	public void setCipherSalt(byte[] cipherSalt) {
+		this.cipherSalt = cipherSalt;
+	}
+
+	public void writeTo(String fileOrPath) throws IOException, LastLoginCipherException {
+		File file = makeFile(fileOrPath);
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+
+		DataOutputStream stream = new DataOutputStream(new CipherOutputStream(new FileOutputStream(file), getCipher(LastLoginCipherMode.ENCRYPT)));
+		stream.writeUTF(getUsername());
+		stream.writeUTF(getPassword());
+		stream.close();
+	}
+
+	private File makeFile(String fileOrPath) {
+		File file = new File(fileOrPath);
+		if (file.isDirectory()) {
+			file = new File(file.getAbsolutePath(), LASTLOGIN_FILENAME);
+		}
+		file = file.getAbsoluteFile();
+		return file;
+	}
 
 	/**
-	 * Reads and decrypts the contents of the lastlogin file.
-	 * @param from The lastlogin-file or the directory to which to read from.
-	 * @return A 2-dimensional String array which consists of username [0] and password [1].
-	 * @throws LastLoginException
+	 * Initializes a cipher with the default values which can be used to decrypt
+	 * the lastlogin file...or encrypt, that is.
+	 * @param cipherMode
+	 * @return
 	 */
-	public static Credentials getLastLogin(File from) throws LastLoginException {
-		if (from.isDirectory()) {
-			from = new File(from.getAbsolutePath(), lastloginFilename);
-		}
-		from = from.getAbsoluteFile();
-
-		try {
-			DataInputStream stream = new DataInputStream(new CipherInputStream(new FileInputStream(from), getLastLoginCipher(CipherMode.DECRYPT)));
-			return new Credentials(stream.readUTF(), stream.readUTF());
-		} catch (FileNotFoundException ex) {
-			throw new LastLoginException("File not found!", ex);
-		} catch (IOException ex) {
-			throw new LastLoginException("Failed to read from the file!", ex);
-		}
+	public static Cipher getCipher(LastLoginCipherMode cipherMode) throws LastLoginCipherException {
+		return getCipher(cipherMode, DEFAULT_CIPHER_PASSWORD, DEFAULT_CIPHER_SALT);
 	}
 
 	/**
@@ -82,12 +136,13 @@ public class LastLogin {
 	 * @return
 	 * @throws LastLoginException
 	 */
-	public static Cipher getLastLoginCipher(CipherMode cipherMode) throws LastLoginException {
-		byte[] salt = {
-			(byte) 0x0c, (byte) 0x9d, (byte) 0x4a, (byte) 0xe4,
-			(byte) 0x1e, (byte) 0x83, (byte) 0x15, (byte) 0xfc
-		};
-		String password = "passwordfile";
+	public static Cipher getCipher(LastLoginCipherMode cipherMode, String password, byte[] salt) throws LastLoginCipherException {
+		if (password == null) {
+			password = DEFAULT_CIPHER_PASSWORD;
+		}
+		if (salt == null) {
+			salt = DEFAULT_CIPHER_SALT;
+		}
 
 		try {
 			PBEParameterSpec parameter = new PBEParameterSpec(salt, 5);
@@ -96,58 +151,15 @@ public class LastLogin {
 			cipher.init(cipherMode.getMode(), key, parameter);
 			return cipher;
 		} catch (NoSuchAlgorithmException ex) {
-			throw new LastLoginException("Failed to find Algorithm!", ex);
+			throw new LastLoginCipherException("Failed to find Algorithm!", ex);
 		} catch (InvalidKeySpecException ex) {
-			throw new LastLoginException("Failed to create cipher!", ex);
+			throw new LastLoginCipherException("Failed to create cipher!", ex);
 		} catch (NoSuchPaddingException ex) {
-			throw new LastLoginException("Failed to create cipher!", ex);
+			throw new LastLoginCipherException("Failed to create cipher!", ex);
 		} catch (InvalidKeyException ex) {
-			throw new LastLoginException("Failed to create cipher!", ex);
+			throw new LastLoginCipherException("Failed to create cipher!", ex);
 		} catch (InvalidAlgorithmParameterException ex) {
-			throw new LastLoginException("Failed to create cipher!", ex);
-		}
-	}
-
-	/**
-	 * Writes the given credentials to the lastlogin file.
-	 * @param to The target file.
-	 * @param credentials The credentials.
-	 * @throws LastLoginException
-	 */
-	public static void setLastlogin(File to, Credentials credentials) throws LastLoginException {
-		setLastlogin(to, credentials.getUsername(), credentials.getPassword());
-	}
-
-	/**
-	 * Writes the given username and password to the lastlogin file.
-	 * @param to The target file.
-	 * @param username The username.
-	 * @param password The password.
-	 * @throws LastLoginException
-	 */
-	public static void setLastlogin(File to, String username, String password) throws LastLoginException {
-		if (to.isDirectory()) {
-			to = new File(to.getAbsolutePath(), lastloginFilename);
-		}
-		to = to.getAbsoluteFile();
-
-		if (!to.exists()) {
-			try {
-				to.createNewFile();
-			} catch (IOException ex) {
-				throw new LastLoginException("File does not exist and I could not create it!", ex);
-			}
-		}
-
-		try {
-			DataOutputStream stream = new DataOutputStream(new CipherOutputStream(new FileOutputStream(to), getLastLoginCipher(CipherMode.ENCRYPT)));
-			stream.writeUTF(username);
-			stream.writeUTF(password);
-			stream.close();
-		} catch (FileNotFoundException ex) {
-			throw new LastLoginException("File not found!", ex);
-		} catch (IOException ex) {
-			throw new LastLoginException("Coulnd not writeto the file!", ex);
+			throw new LastLoginCipherException("Failed to create cipher!", ex);
 		}
 	}
 }

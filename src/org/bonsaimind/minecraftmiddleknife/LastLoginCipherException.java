@@ -27,25 +27,17 @@
  */
 package org.bonsaimind.minecraftmiddleknife;
 
-import javax.crypto.Cipher;
-
 /**
- * This is a thin wrapper around the static variables in javax.crypto.Cipher to
- * ease the use of some methods.
+ * Occurs when there was an error during the creation of the cipher for
+ * the lastlogin file.
  */
-public enum CipherMode {
+public class LastLoginCipherException extends Exception {
 
-	DECRYPT(Cipher.DECRYPT_MODE),
-	ENCRYPT(Cipher.ENCRYPT_MODE),
-	UNWRAP(Cipher.UNWRAP_MODE),
-	WRAP(Cipher.WRAP_MODE);
-	private int mode;
-
-	private CipherMode(int mode) {
-		this.mode = mode;
+	public LastLoginCipherException(String message, Throwable cause) {
+		super(message, cause);
 	}
 
-	public int getMode() {
-		return mode;
+	public LastLoginCipherException(String message) {
+		super(message);
 	}
 }

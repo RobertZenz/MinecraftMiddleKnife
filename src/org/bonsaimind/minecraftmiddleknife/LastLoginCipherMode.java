@@ -27,16 +27,25 @@
  */
 package org.bonsaimind.minecraftmiddleknife;
 
-/**
- * Occurs when there was an error during dealing with the Lastlogin-File.
- */
-public class LastLoginException extends Exception {
+import javax.crypto.Cipher;
 
-	public LastLoginException(String message, Throwable cause) {
-		super(message, cause);
+/**
+ * This is a thin wrapper around the static variables in javax.crypto.Cipher to
+ * ease the use of some methods.
+ */
+public enum LastLoginCipherMode {
+
+	DECRYPT(Cipher.DECRYPT_MODE),
+	ENCRYPT(Cipher.ENCRYPT_MODE),
+	UNWRAP(Cipher.UNWRAP_MODE),
+	WRAP(Cipher.WRAP_MODE);
+	private int mode;
+
+	private LastLoginCipherMode(int mode) {
+		this.mode = mode;
 	}
 
-	public LastLoginException(String message) {
-		super(message);
+	public int getMode() {
+		return mode;
 	}
 }
