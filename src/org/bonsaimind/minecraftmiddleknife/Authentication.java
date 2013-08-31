@@ -62,6 +62,10 @@ public class Authentication extends Credentials {
 	public Authentication() {
 	}
 
+	public Authentication(Credentials credentials) {
+		super(credentials.getUsername(), credentials.getPassword());
+	}
+
 	public Authentication(String username, String password) {
 		super(username, password);
 	}
