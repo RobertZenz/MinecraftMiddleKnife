@@ -41,31 +41,25 @@ import java.util.List;
  */
 public class OptionsFile {
 
-	private static final String SEPARATOR = ":";
-	private File file;
+	public static final String SEPARATOR = ":";
+	public static final String FILENAME = "options.txt";
 	List<String> keys = new ArrayList<String>();
 	List<String> values = new ArrayList<String>();
 
-	/**
-	 *
-	 * @param from Either the file or the containing directory.
-	 */
-	public OptionsFile(String from) {
-		this.file = new File(from);
-		if (!this.file.isAbsolute()) {
-			this.file = this.file.getAbsoluteFile();
-		}
-		if (this.file.isDirectory()) {
-			this.file = new File(from, "options.txt");
-		}
+	public OptionsFile() {
 	}
 
 	/**
-	 * Check if the file exists.
+	 * Returns the value to the given key. Returns null if it failed.
+	 * @param key The key you want.
 	 * @return
 	 */
-	public boolean exists() {
-		return file.exists();
+	public String getOption(String key) {
+		if (keys.contains(key)) {
+			return values.get(keys.indexOf(key));
+		}
+
+		return null;
 	}
 
 	/**
@@ -77,40 +71,30 @@ public class OptionsFile {
 	}
 
 	/**
-	 * Get the path to the options.txt file.
-	 * @return
+	 * Read the contents of the given file.
+	 * @param fileOrPath
+	 * @throws IOException
 	 */
-	public String getPath() {
-		return file.getAbsolutePath();
-	}
+	public void read(String fileOrPath) throws IOException {
+		File file = makeFile(fileOrPath);
 
-	/**
-	 * Read the file.
-	 */
-	public void read() throws IOException {
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new FileReader(file));
+		keys.clear();
+		values.clear();
 
-			String line;
-			while ((line = reader.readLine()) != null) {
-				String[] keyValue = line.split(SEPARATOR);
-				keys.add(keyValue[0]);
-				if (keyValue.length > 1) {
-					values.add(keyValue[1]);
-				} else {
-					values.add("");
-				}
-			}
-		} catch (IOException ex) {
-			throw ex;
-		} finally {
-			try {
-				reader.close();
-			} catch (IOException ex) {
-				throw ex;
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+
+		String line;
+		while ((line = reader.readLine()) != null) {
+			String[] keyValue = line.split(SEPARATOR);
+			keys.add(keyValue[0]);
+			if (keyValue.length > 1) {
+				values.add(keyValue[1]);
+			} else {
+				values.add("");
 			}
 		}
+
+		reader.close();
 	}
 
 	/**
@@ -146,39 +130,27 @@ public class OptionsFile {
 	}
 
 	/**
-	 * Set the path to the options.txt file.
-	 * @param pathOrFile
+	 * Write to the given file.
 	 */
-	public void setPath(String pathOrFile) {
-		this.file = new File(pathOrFile);
-		if (!this.file.isAbsolute()) {
-			this.file = this.file.getAbsoluteFile();
+	public void write(String fileOrPath) throws IOException {
+		File file = makeFile(fileOrPath);
+
+		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+
+		for (int idx = 0; idx < keys.size(); idx++) {
+			writer.write(keys.get(idx) + SEPARATOR + values.get(idx));
+			writer.newLine();
 		}
-		if (this.file.isDirectory()) {
-			this.file = new File(pathOrFile, "options.txt");
-		}
+
+		writer.close();
 	}
 
-	/**
-	 * Write the file.
-	 */
-	public void write() throws IOException {
-		BufferedWriter writer = null;
-		try {
-			writer = new BufferedWriter(new FileWriter(file));
-
-			for (int idx = 0; idx < keys.size(); idx++) {
-				writer.write(keys.get(idx) + SEPARATOR + values.get(idx));
-				writer.newLine();
-			}
-		} catch (IOException ex) {
-			throw ex;
-		} finally {
-			try {
-				writer.close();
-			} catch (IOException ex) {
-				throw ex;
-			}
+	private File makeFile(String pathOrFile) {
+		File file = new File(pathOrFile);
+		if (file.isDirectory()) {
+			file = new File(file.getAbsolutePath(), FILENAME);
 		}
+		file = file.getAbsoluteFile();
+		return file;
 	}
 }
