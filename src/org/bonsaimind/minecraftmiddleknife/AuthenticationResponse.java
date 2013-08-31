@@ -28,65 +28,33 @@
 package org.bonsaimind.minecraftmiddleknife;
 
 /**
- * The result from an authentication.
+ * Responses from the Authentication Server.
  */
-public class AuthenticationResult {
+public enum AuthenticationResponse {
 
-	private long currentVersion;
-	private String deprecated;
-	private String username;
-	private String sessionId;
-	private String userUid;
+	SUCCESS(null),
+	BAD_RESPONSE("Bad response"),
+	BAD_LOGIN("Bad login"),
+	USER_NOT_PREMIUM("User not premium"),
+	USER_EMAIL("Acount migrated, use e-mail"),
+	UNKNOWN(null);
+	private String message;
 
-	public AuthenticationResult(String[] response) {
-		this(Long.parseLong(response[0]), response[1], response[2], response[3], response[4]);
+	private AuthenticationResponse(String message) {
+		this.message = message;
 	}
 
-	public AuthenticationResult(long currentVersion, String deprecated, String username, String sessionId, String userUid) {
-		this.currentVersion = currentVersion;
-		this.deprecated = deprecated;
-		this.username = username;
-		this.sessionId = sessionId;
-		this.userUid = userUid;
+	public String getMessage() {
+		return message;
 	}
 
-	/**
-	 * The current version of game files.
-	 * @return
-	 */
-	public long getCurrentVersion() {
-		return currentVersion;
-	}
+	public static AuthenticationResponse getResponse(String message) {
+		for (AuthenticationResponse response : values()) {
+			if (response.getMessage().equals(message)) {
+				return response;
+			}
+		}
 
-	/**
-	 * Deprecated field.
-	 * @return
-	 */
-	public String getDeprecated() {
-		return deprecated;
-	}
-
-	/**
-	 * The session id.
-	 * @return
-	 */
-	public String getSessionId() {
-		return sessionId;
-	}
-
-	/**
-	 * The unique user id.
-	 * @return
-	 */
-	public String getUserUid() {
-		return userUid;
-	}
-
-	/**
-	 * The username.
-	 * @return
-	 */
-	public String getUsername() {
-		return username;
+		return UNKNOWN;
 	}
 }

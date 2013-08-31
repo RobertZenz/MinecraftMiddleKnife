@@ -40,7 +40,7 @@ import java.net.URLEncoder;
 /**
  * Deals with the authentication at the Mojang, or any other server.
  */
-public class Authentication {
+public class Authentication extends Credentials {
 
 	/**
 	 * The default version which will be reported.
@@ -50,148 +50,198 @@ public class Authentication {
 	 * The addressof the Mojang server.
 	 */
 	public static final String MOJANG_SERVER = "https://login.minecraft.net";
+	private long currentVersion;
+	private String deprecated;
+	private boolean keepAliveUsesRealUsername = true;
+	private String realUsername;
+	private String server;
+	private String sessionId;
+	private String userId;
+	private String version;
+
+	public Authentication() {
+	}
+
+	public Authentication(String username, String password) {
+		super(username, password);
+	}
+
+	public Authentication(String server, String version, String username, String password) {
+		super(username, password);
+		this.server = server;
+		this.version = version;
+	}
 
 	/**
-	 * Authenticate at the given server.
-	 * @param address The address of the server.
-	 * @param username The username to use.
-	 * @param password The password to use.
-	 * @param launcherVersion The version to report during authentication.
-	 * @return Returns the result of the authentication attempt.
-	 * @throws AuthenticationException
+	 * Do the authentication.
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 * @throws MalformedURLException
+	 * @throws IOException
 	 */
-	public static AuthenticationResult authenticate(String address, String username, String password, String launcherVersion) throws AuthenticationException {
-		try {
-			username = URLEncoder.encode(username, "UTF-8");
-			password = URLEncoder.encode(password, "UTF-8");
-			launcherVersion = URLEncoder.encode(launcherVersion, "UTF-8");
-		} catch (UnsupportedEncodingException ex) {
-			throw new AuthenticationException("Failed to encode username, password or launcher version!", ex);
-		}
-
-		String request = String.format("user=%s&password=%s&version=%s", username, password, launcherVersion);
-		String response = httpRequest(address, request);
-		String[] splitted = response.split(":");
+	public AuthenticationResponse authenticate() throws UnsupportedEncodingException, MalformedURLException, IOException {
+		final String request = String.format(
+				"user=%s&password=%s&version=%s",
+				URLEncoder.encode(getUsername(), "UTF-8"),
+				URLEncoder.encode(getPassword(), "UTF-8"),
+				URLEncoder.encode(getVersion(), "UTF-8"));
+		final String response = httpRequest(getServer(), request);
+		final String[] splitted = response.split(":");
 
 		if (splitted.length < 5) {
-			throw new AuthenticationException(response);
+			return AuthenticationResponse.getResponse(response);
 		}
 
-		return new AuthenticationResult(splitted);
+		currentVersion = Long.parseLong(splitted[0]);
+		deprecated = splitted[1];
+		realUsername = splitted[2];
+		sessionId = splitted[3];
+		userId = splitted[4];
+
+		return AuthenticationResponse.SUCCESS;
 	}
 
 	/**
-	 * Authenticate at the given server.
-	 * @param address The server to authenticate at.
-	 * @param credentials The credentials to use.
-	 * @return Returns the result of the authentication attempt.
-	 * @throws AuthenticationException
+	 * Returns the current version of Minecraft.
+	 * @return The current version.
 	 */
-	public static AuthenticationResult authenticate(String address, Credentials credentials) throws AuthenticationException {
-		return authenticate(address, credentials.getUsername(), credentials.getPassword(), LAUNCHER_VERSION);
+	public long getCurrentVersion() {
+		return currentVersion;
 	}
 
 	/**
-	 * Authenticate at the Mojang server.
-	 * @param credentials The credentials to use.
-	 * @return Returns the result of the authentication attempt.
-	 * @throws AuthenticationException
+	 * The DEPRECATED field of the login response, should always be "DEPRECATED".
+	 * @return Nothing useful.
 	 */
-	public static AuthenticationResult authenticate(Credentials credentials) throws AuthenticationException {
-		return authenticate(MOJANG_SERVER, credentials.getUsername(), credentials.getPassword(), LAUNCHER_VERSION);
+	public String getDeprecated() {
+		return deprecated;
 	}
 
 	/**
-	 * Authenticate at the Mojang server.
-	 * @param username The username to use.
-	 * @param password THe password to use.
-	 * @return Returns the result of the authentication attempt.
-	 * @throws AuthenticationException
+	 * Returns true of the keep-alive will be using the real username returned
+	 * by the authentication server.
+	 * @return If keep-alive uses the real username.
 	 */
-	public static AuthenticationResult authenticate(String username, String password) throws AuthenticationException {
-		return authenticate(MOJANG_SERVER, username, password, LAUNCHER_VERSION);
+	public boolean isKeepAliveUsesRealUsername() {
+		return keepAliveUsesRealUsername;
 	}
 
-	private static String httpRequest(String url, String content) throws AuthenticationException {
+	/**
+	 * Returns the real username (case corrected f.e.).
+	 * @return The real username.
+	 */
+	public String getRealUsername() {
+		return realUsername;
+	}
+
+	/**
+	 * Returns the server which will be used for authentication. If not set
+	 * will return the Mojang server.
+	 * @return The server.
+	 */
+	public String getServer() {
+		if (server == null) {
+			return MOJANG_SERVER;
+		}
+
+		return server;
+	}
+
+	/**
+	 * Returns the session ID as acquired by the login process.
+	 * @return The Session ID.
+	 */
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	/**
+	 * Returns the user ID as acquired by the login process.
+	 * @return The user ID.
+	 */
+	public String getUserId() {
+		return userId;
+	}
+
+	/**
+	 * Returns the version (of the launcher) which will be reported to
+	 * the server. If not set will fall back to the default one.
+	 * @return The launcher version.
+	 */
+	public String getVersion() {
+		if (version == null) {
+			return LAUNCHER_VERSION;
+		}
+
+		return version;
+	}
+
+	/**
+	 * Sends a keep-alive to the authentication server so that the session
+	 * does not expire.
+	 * @throws UnsupportedEncodingException
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
+	public void keepAlive() throws UnsupportedEncodingException, MalformedURLException, IOException {
+		final String request = String.format(
+				"?name={0}&session={1}",
+				URLEncoder.encode(isKeepAliveUsesRealUsername() ? getRealUsername() : getUsername(), "UTF-8"),
+				URLEncoder.encode(getSessionId(), "UTF-8"));
+
+		httpRequest(getServer(), request);
+	}
+
+	/**
+	 * Determines if the keepa-live uses the real username returned by
+	 * the authentication server or the username set by the user.
+	 * @param keepAliveUsesRealUsername If keep-alive uses the real username.
+	 */
+	public void setKeepAliveUsesRealUsername(boolean keepAliveUsesRealUsername) {
+		this.keepAliveUsesRealUsername = keepAliveUsesRealUsername;
+	}
+
+	/**
+	 * Set the server which will be used for authentication.
+	 * @param server The (full) address of the server.
+	 */
+	public void setServer(String server) {
+		this.server = server;
+	}
+
+	/**
+	 * Set the version (of the launcher) which will be reported to
+	 * the authentication server. This should be a valid int, even
+	 * though it is a string.
+	 * @param version The version of the launcher, a valid int would be nice.
+	 */
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	private static String httpRequest(String url, String content) throws UnsupportedEncodingException, MalformedURLException, IOException {
 		byte[] contentBytes = null;
-		try {
-			contentBytes = content.getBytes("UTF-8");
-		} catch (UnsupportedEncodingException ex) {
-			throw new AuthenticationException("Failed to convert content!", ex);
-		}
+		contentBytes = content.getBytes("UTF-8");
 
 		URLConnection connection = null;
-		try {
-			connection = new URL(url).openConnection();
-		} catch (MalformedURLException ex) {
-			throw new AuthenticationException("It wasn't me!", ex);
-		} catch (IOException ex) {
-			throw new AuthenticationException("Failed to connect to authentication server!", ex);
-		}
+		connection = new URL(url).openConnection();
+
 		connection.setDoInput(true);
 		connection.setDoOutput(true);
 		connection.setRequestProperty("Accept-Charset", "UTF-8");
 		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 		connection.setRequestProperty("Content-Length", Integer.toString(contentBytes.length));
 
-		try {
-			OutputStream requestStream = connection.getOutputStream();
-			requestStream.write(contentBytes, 0, contentBytes.length);
-			requestStream.close();
-		} catch (IOException ex) {
-			throw new AuthenticationException("Failed to write request!", ex);
-		}
+		OutputStream requestStream = connection.getOutputStream();
+		requestStream.write(contentBytes, 0, contentBytes.length);
+		requestStream.close();
 
 		String response = "";
 
-		try {
-			BufferedReader responseStream = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-			response = responseStream.readLine();
-			responseStream.close();
-		} catch (IOException ex) {
-			throw new AuthenticationException("Failed to read response!", ex);
-		}
+		BufferedReader responseStream = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
+		response = responseStream.readLine();
+		responseStream.close();
 
 		return response;
-	}
-
-	/**
-	 * Sends a keep-alive request to the given server. If it does not throw, it worked.
-	 * @param address The address of the server to renew the session at.
-	 * @param username The username to use.
-	 * @param sessionId The session Id of the session to renew.
-	 * @throws AuthenticationException
-	 */
-	public static void keepAlive(String address, String username, String sessionId) throws AuthenticationException {
-		httpRequest(address, String.format("?name={0}&session={1}", username, sessionId));
-	}
-
-	/**
-	 * Sends a keep-alive request to the given server. If it does not throw, it worked.
-	 * @param address The address of the server to renew the session at.
-	 * @param authenticationResult The original AuthenticationResult.
-	 * @throws AuthenticationException
-	 */
-	public static void keepAlive(String address, AuthenticationResult authenticationResult) throws AuthenticationException {
-		keepAlive(address, authenticationResult.getUsername(), authenticationResult.getSessionId());
-	}
-
-	/**
-	 * Send a keep-alive request to the Mojang server. If it does not throw, it worked.
-	 * @param authenticationResult The original AuthenticationResult.
-	 * @throws AuthenticationException
-	 */
-	public static void keepAlive(AuthenticationResult authenticationResult) throws AuthenticationException {
-		keepAlive(MOJANG_SERVER, authenticationResult.getUsername(), authenticationResult.getSessionId());
-	}
-
-	/**
-	 * Send a keep-alive request to the Mojang server. If it does not throw, it worked.
-	 * @param username The username to use.
-	 * @param sessionId The session Id of the session to renew.
-	 * @throws AuthenticationException
-	 */
-	public static void keepAlive(String username, String sessionId) throws AuthenticationException {
-		keepAlive(MOJANG_SERVER, username, sessionId);
 	}
 }
