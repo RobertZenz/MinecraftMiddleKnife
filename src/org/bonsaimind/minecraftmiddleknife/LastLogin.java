@@ -64,6 +64,10 @@ public class LastLogin extends Credentials {
 		super();
 	}
 
+	public LastLogin(Credentials credentials) {
+		super(credentials.getUsername(), credentials.getPassword());
+	}
+
 	public LastLogin(String username, String password) {
 		super(username, password);
 	}
