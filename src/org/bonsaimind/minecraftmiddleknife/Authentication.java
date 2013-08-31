@@ -45,11 +45,11 @@ public class Authentication {
 	/**
 	 * The default version which will be reported.
 	 */
-	public static final String launcherVersion = "884";
+	public static final String LAUNCHER_VERSION = "884";
 	/**
 	 * The addressof the Mojang server.
 	 */
-	public static final String mojangServer = "https://login.minecraft.net";
+	public static final String MOJANG_SERVER = "https://login.minecraft.net";
 
 	/**
 	 * Authenticate at the given server.
@@ -88,7 +88,7 @@ public class Authentication {
 	 * @throws AuthenticationException
 	 */
 	public static AuthenticationResult authenticate(String address, Credentials credentials) throws AuthenticationException {
-		return authenticate(address, credentials.getUsername(), credentials.getPassword(), launcherVersion);
+		return authenticate(address, credentials.getUsername(), credentials.getPassword(), LAUNCHER_VERSION);
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class Authentication {
 	 * @throws AuthenticationException
 	 */
 	public static AuthenticationResult authenticate(Credentials credentials) throws AuthenticationException {
-		return authenticate(mojangServer, credentials.getUsername(), credentials.getPassword(), launcherVersion);
+		return authenticate(MOJANG_SERVER, credentials.getUsername(), credentials.getPassword(), LAUNCHER_VERSION);
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class Authentication {
 	 * @throws AuthenticationException
 	 */
 	public static AuthenticationResult authenticate(String username, String password) throws AuthenticationException {
-		return authenticate(mojangServer, username, password, launcherVersion);
+		return authenticate(MOJANG_SERVER, username, password, LAUNCHER_VERSION);
 	}
 
 	private static String httpRequest(String url, String content) throws AuthenticationException {
@@ -182,7 +182,7 @@ public class Authentication {
 	 * @throws AuthenticationException
 	 */
 	public static void keepAlive(AuthenticationResult authenticationResult) throws AuthenticationException {
-		keepAlive(mojangServer, authenticationResult.getUsername(), authenticationResult.getSessionId());
+		keepAlive(MOJANG_SERVER, authenticationResult.getUsername(), authenticationResult.getSessionId());
 	}
 
 	/**
@@ -192,6 +192,6 @@ public class Authentication {
 	 * @throws AuthenticationException
 	 */
 	public static void keepAlive(String username, String sessionId) throws AuthenticationException {
-		keepAlive(mojangServer, username, sessionId);
+		keepAlive(MOJANG_SERVER, username, sessionId);
 	}
 }
