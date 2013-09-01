@@ -38,7 +38,7 @@ public class Yggdrasil extends Credentials {
 	public static final String ENDPOINT_REFRESH = "refresh";
 	public static final String ENDPOINT_VALIDATE = "validate";
 	public static final String MOJANG_SERVER = "https://authserver.mojang.com/";
-	private String agentName;
+	private String agentName = AGENT_NAME;
 	private int agentVersion = AGENT_VERSION;
 
 	public Yggdrasil() {
@@ -53,10 +53,6 @@ public class Yggdrasil extends Credentials {
 	}
 
 	public String getAgentName() {
-		if(agentName == null) {
-			return AGENT_NAME;
-		}
-		
 		return agentName;
 	}
 
