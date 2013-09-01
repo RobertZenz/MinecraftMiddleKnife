@@ -54,10 +54,10 @@ public class Authentication extends Credentials {
 	private String deprecated;
 	private boolean keepAliveUsesRealUsername = true;
 	private String realUsername;
-	private String server;
+	private String server = MOJANG_SERVER;
 	private String sessionId;
 	private String userId;
-	private String version;
+	private String version = LAUNCHER_VERSION;
 
 	public Authentication() {
 	}
@@ -139,15 +139,11 @@ public class Authentication extends Credentials {
 	}
 
 	/**
-	 * Returns the server which will be used for authentication. If not set
-	 * will return the Mojang server.
+	 * Returns the server which will be used for authentication. Default value
+	 * is the Mojang server.
 	 * @return The server.
 	 */
 	public String getServer() {
-		if (server == null) {
-			return MOJANG_SERVER;
-		}
-
 		return server;
 	}
 
@@ -169,14 +165,10 @@ public class Authentication extends Credentials {
 
 	/**
 	 * Returns the version (of the launcher) which will be reported to
-	 * the server. If not set will fall back to the default one.
+	 * the server. Default value is the default one.
 	 * @return The launcher version.
 	 */
 	public String getVersion() {
-		if (version == null) {
-			return LAUNCHER_VERSION;
-		}
-
 		return version;
 	}
 
