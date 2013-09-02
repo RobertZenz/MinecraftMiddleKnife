@@ -1,0 +1,35 @@
+/*
+ * Name: json-simple
+ * Author: Yidong Fang 
+ * URL: http://code.google.com/p/json-simple/
+ * License: Apache
+ * Revision: 219
+ * 
+ * THIS FILE IS NOT PART OF 'MinecraftMiddleKnife' AND IS ONLY COPIED HERE FOR
+ * EASE OF USE! THIS SOURCE CODE IS UNDER A APACHE LICENSE, FOR DETAILS
+ * PLEASE VISIT THE ABOVE LINK.
+ */
+
+package org.json.simple.parser;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Container factory for creating containers for JSON object and JSON array.
+ * 
+ * @see org.json.simple.parser.JSONParser#parse(java.io.Reader, ContainerFactory)
+ * 
+ * @author FangYidong<fangyidong@yahoo.com.cn>
+ */
+public interface ContainerFactory {
+	/**
+	 * @return A Map instance to store JSON object, or null if you want to use org.json.simple.JSONObject.
+	 */
+	Map createObjectContainer();
+	
+	/**
+	 * @return A List instance to store JSON array, or null if you want to use org.json.simple.JSONArray. 
+	 */
+	List creatArrayContainer();
+}
