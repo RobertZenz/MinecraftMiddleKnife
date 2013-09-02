@@ -27,6 +27,9 @@
  */
 package org.bonsaimind.minecraftmiddleknife;
 
+import java.util.UUID;
+import org.json.simple.JSONObject;
+
 /**
  * Deals with the new authentication function called...Yggdrasil.
  */
@@ -40,6 +43,7 @@ public class Yggdrasil extends Credentials {
 	public static final String MOJANG_SERVER = "https://authserver.mojang.com/";
 	private String agentName = AGENT_NAME;
 	private int agentVersion = AGENT_VERSION;
+	private String clientToken = UUID.randomUUID().toString();
 
 	public Yggdrasil() {
 	}
@@ -60,11 +64,56 @@ public class Yggdrasil extends Credentials {
 		return agentVersion;
 	}
 
+	public String getClientToken() {
+		return clientToken;
+	}
+
 	public void setAgentName(String agentName) {
 		this.agentName = agentName;
 	}
 
 	public void setAgentVersion(int agentVersion) {
 		this.agentVersion = agentVersion;
+	}
+
+	public void setClientToken(String clientToken) {
+		this.clientToken = clientToken;
+	}
+
+	private String createAuthenticationJSON() {
+		JSONObject parent = new JSONObject();
+
+		JSONObject agent = new JSONObject();
+		agent.put("name", getAgentName());
+		agent.put("version", getAgentVersion());
+		parent.put("agent", agent);
+
+		parent.put("username", getUsername());
+		parent.put("password", getPassword());
+		parent.put("clientToken", getClientToken());
+
+		return parent.toJSONString();
+	}
+
+	private String createRefreshJSON() {
+		JSONObject parent = new JSONObject();
+
+		parent.put("accessToken", "ACCESSTOKEN");
+		parent.put("clientToken", getClientToken());
+
+		JSONObject selectedProfile = new JSONObject();
+		selectedProfile.put("id", "ID");
+		selectedProfile.put("name", getUsername());
+		parent.put("selectedProfile", selectedProfile);
+
+		return parent.toJSONString();
+	}
+	
+	private String createValidationJSON() {
+		JSONObject parent = new JSONObject();
+		
+		parent.put("accessToken", "ACCESSTOKEN");
+		
+		return parent.toJSONString();
 	}
 }
