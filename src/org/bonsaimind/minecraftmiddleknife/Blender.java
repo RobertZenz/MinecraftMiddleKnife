@@ -45,7 +45,7 @@ import java.util.zip.ZipOutputStream;
  * Allows blending of multiple jars.
  * The last given jar is the "canonical" jar, meaning that files from
  * all the other jars are only appended and never overwritten.
- * 
+ *
  * What that means? You first pass in the minecraft.jar and then the mod.jar.
  */
 public class Blender {
@@ -68,7 +68,7 @@ public class Blender {
 	 * Blends the stack into one and saves it into the given outputJar.
 	 * @param outputJar
 	 * @throws FileNotFoundException
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public void blend(String outputJar) throws FileNotFoundException, IOException {
 		final File outputFile = new File(outputJar).getAbsoluteFile();
@@ -91,7 +91,7 @@ public class Blender {
 
 	/**
 	 * If true keeps the manifest of the jar.
-	 * @return 
+	 * @return
 	 */
 	public boolean isKeepManifest() {
 		return keepManifest;
@@ -99,7 +99,7 @@ public class Blender {
 
 	/**
 	 * Set to true to keep the manifest.
-	 * @param keepManifest 
+	 * @param keepManifest
 	 */
 	public void setKeepManifest(boolean keepManifest) {
 		this.keepManifest = keepManifest;
@@ -135,7 +135,7 @@ public class Blender {
 				inputStream.close();
 				output.closeEntry();
 			} catch (ZipException ex) {
-				// Assume that the erro is the warning about a dulicate and ignore it.
+				// Assume that the error is the warning about a duplicate and ignore it.
 				// I know that this is evil...
 			}
 		}
