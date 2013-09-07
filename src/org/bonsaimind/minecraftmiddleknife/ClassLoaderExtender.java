@@ -34,6 +34,7 @@ import java.net.URLClassLoader;
 
 /**
  * A static helper that let's you extend the System- and Thread-Classloader.
+ * This is mostly from here: http://stackoverflow.com/questions/252893/how-do-you-change-the-classpath-within-java
  */
 public final class ClassLoaderExtender {
 
