@@ -71,7 +71,7 @@ public class Blender {
 	 * @throws IOException
 	 */
 	public void blend(String outputJar) throws FileNotFoundException, IOException {
-		final File outputFile = new File(outputJar).getAbsoluteFile();
+		File outputFile = new File(outputJar).getAbsoluteFile();
 
 		if (outputFile.exists()) {
 			outputFile.delete();
