@@ -84,13 +84,13 @@ public class Authentication extends Credentials {
 	 * @throws IOException
 	 */
 	public AuthenticationResponse authenticate() throws UnsupportedEncodingException, MalformedURLException, IOException {
-		final String request = String.format(
+		String request = String.format(
 				"user=%s&password=%s&version=%s",
 				URLEncoder.encode(getUsername(), "UTF-8"),
 				URLEncoder.encode(getPassword(), "UTF-8"),
 				URLEncoder.encode(getVersion(), "UTF-8"));
-		final String response = httpRequest(getServer(), request);
-		final String[] splitted = response.split(":");
+		String response = httpRequest(getServer(), request);
+		String[] splitted = response.split(":");
 
 		if (splitted.length < 5) {
 			return AuthenticationResponse.getResponse(response);
@@ -180,7 +180,7 @@ public class Authentication extends Credentials {
 	 * @throws IOException
 	 */
 	public void keepAlive() throws UnsupportedEncodingException, MalformedURLException, IOException {
-		final String request = String.format(
+		String request = String.format(
 				"?name={0}&session={1}",
 				URLEncoder.encode(isKeepAliveUsesRealUsername() ? getRealUsername() : getUsername(), "UTF-8"),
 				URLEncoder.encode(getSessionId(), "UTF-8"));
@@ -216,12 +216,9 @@ public class Authentication extends Credentials {
 	}
 
 	private static String httpRequest(String url, String content) throws UnsupportedEncodingException, MalformedURLException, IOException {
-		byte[] contentBytes = null;
-		contentBytes = content.getBytes("UTF-8");
+		byte[] contentBytes = content.getBytes("UTF-8");
 
-		URLConnection connection = null;
-		connection = new URL(url).openConnection();
-
+		URLConnection connection = new URL(url).openConnection();
 		connection.setDoInput(true);
 		connection.setDoOutput(true);
 		connection.setRequestProperty("Accept-Charset", "UTF-8");
