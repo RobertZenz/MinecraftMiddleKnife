@@ -331,8 +331,6 @@ public class Yggdrasil extends Credentials {
 	}
 
 	private void parseAuthenticationJSON(String response) throws ParseException {
-		System.out.println(response);
-
 		JSONParser parser = new JSONParser();
 		JSONObject parent = (JSONObject) parser.parse(response);
 		setAccessToken((String) parent.get("accessToken"));
