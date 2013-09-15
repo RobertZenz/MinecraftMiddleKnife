@@ -49,6 +49,10 @@ public enum AuthenticationResponse {
 	}
 
 	public static AuthenticationResponse getResponse(String message) {
+		if (message == null) {
+			return UNKNOWN;
+		}
+
 		for (AuthenticationResponse response : values()) {
 			if (response.getMessage().equals(message)) {
 				return response;
