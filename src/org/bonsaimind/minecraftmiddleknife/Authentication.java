@@ -198,6 +198,22 @@ public class Authentication extends Credentials {
 	}
 
 	/**
+	 * Set the real username, this is most likely returned by the auth server.
+	 * @param realUsername The real username.
+	 */
+	public void setRealUsername(String realUsername) {
+		this.realUsername = realUsername;
+	}
+
+	/**
+	 * Set the session id, used for keep-alive.
+	 * @param sessionId The session id.
+	 */
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+
+	/**
 	 * Set the server which will be used for authentication.
 	 * @param server The (full) address of the server.
 	 */
