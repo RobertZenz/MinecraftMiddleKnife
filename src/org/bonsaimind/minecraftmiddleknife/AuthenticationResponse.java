@@ -54,7 +54,7 @@ public enum AuthenticationResponse {
 		}
 
 		for (AuthenticationResponse response : values()) {
-			if (response.getMessage().equals(message)) {
+			if (response.getMessage() != null && response.getMessage().equals(message)) {
 				return response;
 			}
 		}
