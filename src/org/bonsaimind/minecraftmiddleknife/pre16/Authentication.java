@@ -25,7 +25,7 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied, of Robert 'Bobby' Zenz.
  */
-package org.bonsaimind.minecraftmiddleknife;
+package org.bonsaimind.minecraftmiddleknife.pre16;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,6 +36,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import org.bonsaimind.minecraftmiddleknife.Credentials;
 
 /**
  * Deals with the authentication at the Mojang, or any other server.
