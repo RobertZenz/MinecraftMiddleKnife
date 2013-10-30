@@ -207,6 +207,15 @@ public class ContainerApplet extends Applet
 	}
 
 	/**
+	 * Sets the given parameter.
+	 * @param name The name of the parameter.
+	 * @param value The value of the paramter.
+	 */
+	public void setParameter(String name, String value) {
+		parameters.put(name, value);
+	}
+
+	/**
 	 * Start the MinecraftApplet.
 	 */
 	@Override
