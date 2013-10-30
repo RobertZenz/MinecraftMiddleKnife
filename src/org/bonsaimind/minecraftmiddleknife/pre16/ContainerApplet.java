@@ -46,6 +46,18 @@ import java.util.Map;
 public class ContainerApplet extends Applet
 		implements AppletStub {
 
+	public static final String PARAMETER_DEMO = "demo";
+	public static final String PARAMETER_FULLSCREEN = "fullscreen";
+	public static final String PARAMETER_LOADMAP_ID = "loadmap_id";
+	public static final String PARAMETER_LOADMAP_USER = "loadmap_user";
+	public static final String PARAMETER_MPPASS = "mppass";
+	public static final String PARAMETER_PORT = "port";
+	public static final String PARAMETER_SERVER = "server";
+	public static final String PARAMETER_SESSION_ID = "sessionid";
+	public static final String PARAMETER_STAND_ALONE = "stand-alone";
+	public static final String PARAMETER_USERNAME = "username";
+	
+	
 	private String appletToLoad;
 	private Map<String, String> parameters = new HashMap<String, String>();
 	private Applet minecraftApplet;
@@ -61,16 +73,16 @@ public class ContainerApplet extends Applet
 
 		setLayout(new BorderLayout());
 
-		parameters.put("fullscreen", "false");
-		parameters.put("stand-alone", "true");
-		parameters.put("username", "Username");
-		parameters.put("mppass", "");
-		parameters.put("server", null);
-		parameters.put("port", null);
-		parameters.put("sessionid", "0");
-		parameters.put("loadmap_user", "Username");
-		parameters.put("loadmap_id", "0");
-		parameters.put("demo", "false");
+		parameters.put(PARAMETER_DEMO, "false");
+		parameters.put(PARAMETER_FULLSCREEN, "false");
+		parameters.put(PARAMETER_LOADMAP_ID, "0");
+		parameters.put(PARAMETER_LOADMAP_USER, "Username");
+		parameters.put(PARAMETER_MPPASS, "");
+		parameters.put(PARAMETER_PORT, null);
+		parameters.put(PARAMETER_SERVER, null);
+		parameters.put(PARAMETER_USERNAME, "Username");
+		parameters.put(PARAMETER_SESSION_ID, "0");
+		parameters.put(PARAMETER_STAND_ALONE, "true");
 	}
 
 	@Override
