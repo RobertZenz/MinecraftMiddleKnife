@@ -138,7 +138,6 @@ public class ContainerApplet extends Applet
 		// If we don't, you most likely try to launch an update
 		// which is now requesting further parameters as I knew about.
 		if (parameters.containsKey(name)) {
-			System.out.println(parameters.get(name));
 			return parameters.get(name);
 		} else {
 			return "";
