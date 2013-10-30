@@ -41,6 +41,7 @@ import java.awt.event.WindowListener;
 public class ContainerFrame extends Frame {
 
 	private Applet containerApplet;
+	private boolean exitOnClose = true;
 
 	public ContainerFrame(String title) throws HeadlessException {
 		super(title);
@@ -58,6 +59,10 @@ public class ContainerFrame extends Frame {
 					container.stop();
 					container.destroy();
 					ContainerFrame.this.containerApplet = null;
+				}
+
+				if (exitOnClose) {
+					System.exit(0);
 				}
 			}
 
@@ -94,11 +99,27 @@ public class ContainerFrame extends Frame {
 	}
 
 	/**
+	 * Returns if System.exit(0) is executed when closing the frame.
+	 * @return 
+	 */
+	public boolean isExitOnClose() {
+		return exitOnClose;
+	}
+
+	/**
 	 * Set the ContainerApplet.
 	 * @param container The ContainerApplet.
 	 */
 	public void setContainerApplet(ContainerApplet container) {
 		this.containerApplet = container;
 		add("Center", container);
+	}
+
+	/**
+	 * Set this to true if you want a System.exit(0) executed on window close.
+	 * @param exitOnClose 
+	 */
+	public void setExitOnClose(boolean exitOnClose) {
+		this.exitOnClose = exitOnClose;
 	}
 }
