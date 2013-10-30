@@ -33,10 +33,13 @@ import java.awt.BorderLayout;
 import java.awt.HeadlessException;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This is the main container for the MinecraftApplet.
@@ -56,8 +59,6 @@ public class ContainerApplet extends Applet
 	public static final String PARAMETER_SESSION_ID = "sessionid";
 	public static final String PARAMETER_STAND_ALONE = "stand-alone";
 	public static final String PARAMETER_USERNAME = "username";
-	
-	
 	private String appletToLoad;
 	private Map<String, String> parameters = new HashMap<String, String>();
 	private Applet minecraftApplet;
@@ -117,7 +118,13 @@ public class ContainerApplet extends Applet
 	 */
 	@Override
 	public URL getDocumentBase() {
-		return super.getDocumentBase();
+		try {
+			return new URL("http://localhost:0/");
+		} catch (MalformedURLException ex) {
+			// If this fails, count me out!
+		}
+
+		return null;
 	}
 
 	/**
