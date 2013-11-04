@@ -27,10 +27,14 @@
  */
 package org.bonsaimind.minecraftmiddleknife;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A static helper that let's you extend the System- and Thread-Classloader.
@@ -41,12 +45,9 @@ public final class ClassLoaderExtender {
 	/**
 	 * Adds the given URLs to the classloeaders.
 	 * @param urls
-	 * @throws NoSuchMethodException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
+	 * @throws ClassLoaderExtensionException
 	 */
-	public static void extend(URL... urls) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public static void extend(URL... urls) throws ClassLoaderExtensionException {
 		// Extend the ClassLoader of the current thread.
 		URLClassLoader loader = new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
 
@@ -56,12 +57,62 @@ public final class ClassLoaderExtender {
 		URLClassLoader systemLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
 
 		// Get the method via reflection.
-		Method addURLMethod = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
-		addURLMethod.setAccessible(true);
+		Method addURLMethod;
+		try {
+			addURLMethod = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
+			addURLMethod.setAccessible(true);
 
-		for (URL url : urls) {
-			addURLMethod.invoke(systemLoader, url);
-			addURLMethod.invoke(loader, url);
+			for (URL url : urls) {
+				addURLMethod.invoke(systemLoader, url);
+				addURLMethod.invoke(loader, url);
+			}
+		} catch (IllegalAccessException ex) {
+			throw new ClassLoaderExtensionException("Failed to extend the ClassLoader.", ex);
+		} catch (IllegalArgumentException ex) {
+			throw new ClassLoaderExtensionException("Failed to extend the ClassLoader.", ex);
+		} catch (InvocationTargetException ex) {
+			throw new ClassLoaderExtensionException("Failed to extend the ClassLoader.", ex);
+		} catch (NoSuchMethodException ex) {
+			throw new ClassLoaderExtensionException("Failed to extend the ClassLoader.", ex);
+		} catch (SecurityException ex) {
+			throw new ClassLoaderExtensionException("Failed to extend the ClassLoader.", ex);
 		}
+	}
+
+	/**
+	 * Walks recursively through the given paths and loads all jars.
+	 * @param paths 
+	 * @exception ClassLoaderExtensionException
+	 */
+	public static void extendFrom(String... paths) throws ClassLoaderExtensionException {
+		try {
+			extend(findJars(paths).toArray(new URL[0]));
+		} catch (MalformedURLException ex) {
+			throw new ClassLoaderExtensionException("Seems like the gods are against you today.", ex);
+		}
+	}
+
+	/**
+	 * Walks recursively through all given paths and returns the jars.
+	 * @param paths
+	 * @return
+	 * @throws MalformedURLException 
+	 */
+	public static List<URL> findJars(String... paths) throws MalformedURLException {
+		List<URL> urls = new ArrayList<URL>();
+
+		for (String path : paths) {
+			for (String child : new File(path).list()) {
+				File file = new File(path, child);
+
+				if (file.isDirectory()) {
+					urls.addAll(findJars(path));
+				} else if (file.isFile()) {
+					urls.add(file.toURI().toURL());
+				}
+			}
+		}
+
+		return urls;
 	}
 }
