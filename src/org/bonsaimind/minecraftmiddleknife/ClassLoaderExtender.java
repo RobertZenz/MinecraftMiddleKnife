@@ -46,7 +46,7 @@ public final class ClassLoaderExtender {
 	 * @throws IllegalArgumentException
 	 * @throws InvocationTargetException
 	 */
-	public static void extend(URL[] urls) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public static void extend(URL... urls) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		// Extend the ClassLoader of the current thread.
 		URLClassLoader loader = new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
 
