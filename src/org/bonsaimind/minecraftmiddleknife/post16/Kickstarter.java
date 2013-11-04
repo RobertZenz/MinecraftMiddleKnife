@@ -44,7 +44,7 @@ public class Kickstarter {
 	 * @param arguments
 	 * @throws RunException 
 	 */
-	public void run(String... arguments) throws RunException {
+	public static void run(String... arguments) throws RunException {
 		run(MAIN_CLASS, MAIN_METHOD, arguments);
 	}
 
@@ -56,7 +56,7 @@ public class Kickstarter {
 	 * @param arguments
 	 * @throws RunException 
 	 */
-	public void run(String mainClass, String mainMethod, String... arguments) throws RunException {
+	public static void run(String mainClass, String mainMethod, String... arguments) throws RunException {
 		URLClassLoader loader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
 
 		try {
