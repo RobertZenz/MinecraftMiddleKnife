@@ -86,7 +86,8 @@ public final class ClassLoaderExtender {
 	 */
 	public static void extendFrom(String... paths) throws ClassLoaderExtensionException {
 		try {
-			extend(findJars(paths).toArray(new URL[0]));
+			List<URL> jars = findJars(paths);
+			extend(jars.toArray(new URL[jars.size()]));
 		} catch (MalformedURLException ex) {
 			throw new ClassLoaderExtensionException("Seems like the gods are against you today.", ex);
 		}
