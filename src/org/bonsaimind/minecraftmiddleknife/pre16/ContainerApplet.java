@@ -35,7 +35,9 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,8 +59,9 @@ public class ContainerApplet extends Applet
 	public static final String PARAMETER_STAND_ALONE = "stand-alone";
 	public static final String PARAMETER_USERNAME = "username";
 	private String appletToLoad;
-	private Map<String, String> parameters = new HashMap<String, String>();
 	private Applet minecraftApplet;
+	private Map<String, String> parameters = new HashMap<String, String>();
+	private List<String> requestedParameters = new ArrayList<String>();
 
 	/**
 	 * Create an instance.
@@ -131,6 +134,10 @@ public class ContainerApplet extends Applet
 	 */
 	@Override
 	public String getParameter(String name) {
+		if (!requestedParameters.contains(name)) {
+			requestedParameters.add(name);
+		}
+
 		// Check if we now about the parameters.
 		// If we don't, you most likely try to launch an update
 		// which is now requesting further parameters as I knew about.
@@ -141,6 +148,16 @@ public class ContainerApplet extends Applet
 		}
 	}
 
+	/**
+	 * Returns a list of all parameters that have been requested from this Applet.
+	 * This is quite useful if you'd like to know what parameters this version
+	 * of Minecraft actually needs and reads.
+	 * @return 
+	 */
+	public List<String> getRequestedParameters() {
+		return requestedParameters;
+	}	
+	
 	/**
 	 * This returns always true. The MinecraftApplet will check
 	 * this state and exit if it does not return true.
