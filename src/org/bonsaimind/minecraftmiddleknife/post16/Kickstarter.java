@@ -36,11 +36,43 @@ import java.net.URLClassLoader;
  */
 public class Kickstarter {
 
+	public static final String ARGUMENT_ACCESS_TOKEN = "accessToken";
+	public static final String ARGUMENT_ASSETS_DIR = "assetsDir";
+	/**
+	 * Does not need a value.
+	 */
+	public static final String ARGUMENT_DEMO = "demo";
+	/**
+	 * Does not need a value.
+	 */
+	public static final String ARGUMENT_FULLSCREEN = "fullscreen";
+	public static final String ARGUMENT_GAME_DIR = "gameDir";
+	public static final String ARGUMENT_HEIGHT = "height";
+	public static final String ARGUMENT_PORT = "port";
+	public static final String ARGUMENT_PROXY_HOST = "proxyHost";
+	public static final String ARGUMENT_PROXY_PORT = "proxyPort";
+	public static final String ARGUMENT_PROXY_USER = "proxyUser";
+	public static final String ARGUMENT_PROXY_PASS = "proxyPass";
+	public static final String ARGUMENT_RESOURCE_PACK_DIR = "resourcePackDir";
+	public static final String ARGUMENT_SERVER = "server";
+	public static final String ARGUMENT_USERNAME = "username";
+	public static final String ARGUMENT_UUID = "uuid";
+	public static final String ARGUMENT_VERSION = "version";
+	public static final String ARGUMENT_WIDTH = "width";
 	public static final String MAIN_CLASS = "net.minecraft.client.main.Main";
 	public static final String MAIN_METHOD = "main";
 
 	/**
-	 * Class the Minecraft main method.
+	 * Calls the Minecraft main method.
+	 * @param arguments
+	 * @throws RunException 
+	 */
+	public static void run(Argument... arguments) throws RunException {
+		run(Argument.toStrings(arguments));
+	}
+
+	/**
+	 * Calls the Minecraft main method.
 	 * @param arguments
 	 * @throws RunException 
 	 */
@@ -49,7 +81,18 @@ public class Kickstarter {
 	}
 
 	/**
-	 * Calls the given method in the given class with the given methods.
+	 * Calls the given method in the given class, but converts the arguments first to Strings.
+	 * @param mainClass
+	 * @param mainMethod
+	 * @param arguments
+	 * @throws RunException 
+	 */
+	public static void run(String mainClass, String mainMethod, Argument... arguments) throws RunException {
+		run(mainClass, mainMethod, Argument.toStrings(arguments));
+	}
+
+	/**
+	 * Calls the given method in the given class with the given arguments.
 	 * Yeah, I suck at JavaDoc.
 	 * @param mainClass
 	 * @param mainMethod
