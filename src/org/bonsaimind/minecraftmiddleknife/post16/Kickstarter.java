@@ -50,9 +50,9 @@ public class Kickstarter {
 	public static final String ARGUMENT_HEIGHT = "height";
 	public static final String ARGUMENT_PORT = "port";
 	public static final String ARGUMENT_PROXY_HOST = "proxyHost";
+	public static final String ARGUMENT_PROXY_PASS = "proxyPass";
 	public static final String ARGUMENT_PROXY_PORT = "proxyPort";
 	public static final String ARGUMENT_PROXY_USER = "proxyUser";
-	public static final String ARGUMENT_PROXY_PASS = "proxyPass";
 	public static final String ARGUMENT_RESOURCE_PACK_DIR = "resourcePackDir";
 	public static final String ARGUMENT_SERVER = "server";
 	public static final String ARGUMENT_USERNAME = "username";
