@@ -72,6 +72,11 @@ public class LastLogin extends Credentials {
 		super(username, password);
 	}
 
+	public LastLogin(String cipherPassword, byte[] cipherSalt) {
+		this.cipherPassword = cipherPassword;
+		this.cipherSalt = cipherSalt;
+	}
+
 	public LastLogin(String cipherPassword, byte[] cipherSalt, String username, String password) {
 		this(username, password);
 		this.cipherPassword = cipherPassword;
