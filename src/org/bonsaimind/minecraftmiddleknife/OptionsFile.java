@@ -41,10 +41,16 @@ import java.util.List;
  */
 public class OptionsFile {
 
+	/**
+	 * The default separator which separates names from values.
+	 */
 	public static final String SEPARATOR = ":";
+	/**
+	 * The default name of the options file.
+	 */
 	public static final String FILENAME = "options.txt";
-	List<String> keys = new ArrayList<String>();
-	List<String> values = new ArrayList<String>();
+	private List<String> keys = new ArrayList<String>();
+	private List<String> values = new ArrayList<String>();
 
 	public OptionsFile() {
 	}
@@ -145,7 +151,7 @@ public class OptionsFile {
 		writer.close();
 	}
 
-	private File makeFile(String pathOrFile) {
+	private static File makeFile(String pathOrFile) {
 		File file = new File(pathOrFile);
 		if (file.isDirectory()) {
 			file = new File(file.getAbsolutePath(), FILENAME);
