@@ -34,7 +34,7 @@ import java.net.URLClassLoader;
 /**
  * Allows you to start Minecraft.
  */
-public class Kickstarter {
+public final class Kickstarter {
 
 	public static final String ARGUMENT_ACCESS_TOKEN = "accessToken";
 	public static final String ARGUMENT_ASSETS_DIR = "assetsDir";
@@ -62,10 +62,14 @@ public class Kickstarter {
 	public static final String MAIN_CLASS = "net.minecraft.client.main.Main";
 	public static final String MAIN_METHOD = "main";
 
+	private Kickstarter() {
+		throw new AssertionError(); // Shouldn't happen.
+	}
+
 	/**
 	 * Calls the Minecraft main method.
 	 * @param arguments
-	 * @throws RunException 
+	 * @throws RunException
 	 */
 	public static void run(Argument... arguments) throws RunException {
 		run(Argument.toStrings(arguments));
@@ -74,7 +78,7 @@ public class Kickstarter {
 	/**
 	 * Calls the Minecraft main method.
 	 * @param arguments
-	 * @throws RunException 
+	 * @throws RunException
 	 */
 	public static void run(String... arguments) throws RunException {
 		run(MAIN_CLASS, MAIN_METHOD, arguments);
@@ -85,7 +89,7 @@ public class Kickstarter {
 	 * @param mainClass
 	 * @param mainMethod
 	 * @param arguments
-	 * @throws RunException 
+	 * @throws RunException
 	 */
 	public static void run(String mainClass, String mainMethod, Argument... arguments) throws RunException {
 		run(mainClass, mainMethod, Argument.toStrings(arguments));
@@ -97,7 +101,7 @@ public class Kickstarter {
 	 * @param mainClass
 	 * @param mainMethod
 	 * @param arguments
-	 * @throws RunException 
+	 * @throws RunException
 	 */
 	public static void run(String mainClass, String mainMethod, String... arguments) throws RunException {
 		URLClassLoader loader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
