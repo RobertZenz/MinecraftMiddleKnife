@@ -46,15 +46,23 @@ import java.util.zip.ZipOutputStream;
  * Allows blending of multiple jars.
  * The last given jar is the "canonical" jar, meaning that files from
  * all the other jars are only appended and never overwritten.
- *
+ * <br/>
  * What that means? You first pass in the minecraft.jar and then the mod.jar.
- *
- * {@code
+ * <br/><br/>
+ * Simple usage:
+ * <pre>{@code
  * Blender blender = new Blender();
  * blender.add("/path/to/minecraft.jar");
  * blender.add("/path/to/modded/main.jar");
  * blender.blend("/path/to/output.jar");
- * }
+ * }</pre>
+ *
+ * Using the cosntructor:
+ * <pre>{@code
+ * Blender blender = new Blender("/path/to/minecraft.jar");
+ * blender.add("/path/to/modded/main.jar");
+ * blender.blend("/path/to/output.jar");
+ * }</pre>
  */
 public final class Blender {
 
@@ -63,8 +71,12 @@ public final class Blender {
 
 	/**
 	 * Creates a new instance of the Blender.
+	 * @param jars The jars to add directly.
 	 */
-	public Blender() {
+	public Blender(String... jars) {
+		if (jars != null) {
+			stack.addAll(Arrays.asList(jars));
+		}
 	}
 
 	/**
