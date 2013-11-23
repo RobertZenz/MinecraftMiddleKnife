@@ -1,0 +1,52 @@
+<project name="MinecraftMiddleKnife" default="dist" basedir=".">
+	<description>
+		A bunch of helper classes, methods and functions for Minecraft.
+	</description>
+
+	<property name="src" location="src" />
+	<property name="doc" location="doc" />
+	<property name="build" location="build" />
+	<property name="dist" location="dist" />
+
+	<target name="clean"
+		description="Cleans the working directory from everything build related">
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+	</target>
+	
+	<target name="doc"
+		description="Generates the JavaDoc files.">
+		<javadoc destdir="${doc}">
+			<packageset dir="${src}" defaultexcludes="yes">
+				<include name="org/bonsaimind/minecraftmiddleknife/**" />
+			</packageset>
+		</javadoc>
+	</target>
+	
+	<target name="init"
+		description="Sets up the current working directory.">
+		<mkdir dir="${build}" />
+		<mkdir dir="${dist}" />
+	</target>
+	
+	<target name="compile" depends="init"
+		description="Compiles all source files.">
+		<javac srcdir="${src}" destdir="${build}" includeantruntime="false" source="1.6" />
+	</target>
+	
+	<target name="dist" depends="compile"
+		description="Creates the jar and a tar archive.">
+		<jar jarfile="${dist}/MinecraftMiddleKnife.jar" basedir="${build}" />
+		<tar destfile="${dist}/MinecraftMiddleKnife.tar" basedir=".">
+			<include name="${src}/**" />
+			<include name="${dist}/MinecraftMiddleKnife.jar" />
+			<include name="build.xml" />
+			<include name="CHANGES" />
+			<include name="CONTRIBUTE" />
+			<include name="LICENSE" />
+			<include name="README" />
+			<include name="THANKS" />
+		</tar>
+		<bzip2 src="${dist}/MinecraftMiddleKnife.tar" destfile="${dist}/MinecraftMiddleKnife.tar.bz2" />
+	</target>
+</project>
