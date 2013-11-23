@@ -42,6 +42,10 @@ import java.util.List;
  */
 public final class ClassLoaderExtender {
 
+	private ClassLoaderExtender() {
+		throw new AssertionError(); // You're not supposed to instanciate this class.
+	}
+
 	/**
 	 * Adds the given URLs to the classloeaders.
 	 * @param urls
@@ -81,7 +85,7 @@ public final class ClassLoaderExtender {
 
 	/**
 	 * Walks recursively through the given paths and loads all jars.
-	 * @param paths 
+	 * @param paths
 	 * @exception ClassLoaderExtensionException
 	 */
 	public static void extendFrom(String... paths) throws ClassLoaderExtensionException {
@@ -97,7 +101,7 @@ public final class ClassLoaderExtender {
 	 * Walks recursively through all given paths and returns the jars.
 	 * @param paths
 	 * @return
-	 * @throws MalformedURLException 
+	 * @throws MalformedURLException
 	 */
 	public static List<URL> findJars(String... paths) throws MalformedURLException {
 		List<URL> urls = new ArrayList<URL>();
