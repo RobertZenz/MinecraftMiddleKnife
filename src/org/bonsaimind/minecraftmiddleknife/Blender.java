@@ -33,6 +33,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.ListIterator;
@@ -47,12 +48,22 @@ import java.util.zip.ZipOutputStream;
  * all the other jars are only appended and never overwritten.
  *
  * What that means? You first pass in the minecraft.jar and then the mod.jar.
+ *
+ * {@code
+ * Blender blender = new Blender();
+ * blender.add("/path/to/minecraft.jar");
+ * blender.add("/path/to/modded/main.jar");
+ * blender.blend("/path/to/output.jar");
+ * }
  */
-public class Blender {
+public final class Blender {
 
 	private boolean keepManifest = false;
 	private List<String> stack = new ArrayList<String>();
 
+	/**
+	 * Creates a new instance of the Blender.
+	 */
 	public Blender() {
 	}
 
@@ -66,7 +77,7 @@ public class Blender {
 
 	/**
 	 * Blends the stack into one and saves it into the given outputJar.
-	 * @param outputJar
+	 * @param outputJar The path to where to store the blended jar.
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
@@ -91,7 +102,7 @@ public class Blender {
 
 	/**
 	 * If true keeps the manifest of the jar.
-	 * @return
+	 * @return If the manifest should be kept.
 	 */
 	public boolean isKeepManifest() {
 		return keepManifest;
@@ -113,7 +124,7 @@ public class Blender {
 	 * @param from
 	 * @throws IOException
 	 */
-	public static void copyToZip(ZipOutputStream output, File from, boolean keepManifest) throws IOException {
+	private static void copyToZip(ZipOutputStream output, File from, boolean keepManifest) throws IOException {
 		ZipFile input = new ZipFile(from);
 		Enumeration<? extends ZipEntry> entries = input.entries();
 		while (entries.hasMoreElements()) {
