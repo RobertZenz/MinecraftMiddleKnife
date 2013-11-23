@@ -47,12 +47,39 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
 /**
- * Allows reading, writing of the LastLogin-File.
+ * Allows reading, writing of the LastLogin-File.<br/>
+ * <br/>
+ * <pre>
+ * {@code
+ * LastLogin lastLogin = new LastLogin();
+ * lastLogin.readFrom("/path/to/.minecraft/");
+ * System.out.println(lastLogin.getUsername());
+ * System.out.println(lastLogin.getPassword());
+ * }
+ * </pre>
+ * And writing the credentials is similar easy.<br/>
+ * <pre>
+ * {@code
+ * LastLogin lastLogin = new LastLogin();
+ * lastLogin.readFrom("/path/to/.minecraft/");
+ * // Perform actions with username and password.
+ * lastLogin.writeTo("/path/to/.minecraft/");
+ * }
+ * </pre>
  */
-public class LastLogin extends Credentials {
+public final class LastLogin extends Credentials {
 
+	/**
+	 * The default filename of the lastlogin file.
+	 */
 	public static final String LASTLOGIN_FILENAME = "lastlogin";
+	/**
+	 * The default password that is used for the cipher.
+	 */
 	public static final String DEFAULT_CIPHER_PASSWORD = "password";
+	/**
+	 * The default salt that is used for the cipher.
+	 */
 	public static final byte[] DEFAULT_CIPHER_SALT = {
 		(byte) 0x0c, (byte) 0x9d, (byte) 0x4a, (byte) 0xe4,
 		(byte) 0x1e, (byte) 0x83, (byte) 0x15, (byte) 0xfc
@@ -91,6 +118,13 @@ public class LastLogin extends Credentials {
 		return cipherSalt;
 	}
 
+	/**
+	 * Reads the username and password from the given path.
+	 * @param fileOrPath Either specify a file or a path. A path will be extended
+	 * with the default filename.
+	 * @throws IOException
+	 * @throws LastLoginCipherException
+	 */
 	public void readFrom(String fileOrPath) throws IOException, LastLoginCipherException {
 		File file = makeFile(fileOrPath);
 
@@ -108,6 +142,13 @@ public class LastLogin extends Credentials {
 		this.cipherSalt = cipherSalt;
 	}
 
+	/**
+	 * Writes the current credentials into the given path.
+	 * @param fileOrPath Either specify a file or a path. A path will be extemded
+	 * with the default filename.
+	 * @throws IOException
+	 * @throws LastLoginCipherException
+	 */
 	public void writeTo(String fileOrPath) throws IOException, LastLoginCipherException {
 		File file = makeFile(fileOrPath);
 		if (!file.exists()) {
