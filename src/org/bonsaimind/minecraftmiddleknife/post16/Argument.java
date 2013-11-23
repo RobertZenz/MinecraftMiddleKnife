@@ -31,16 +31,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A simple argument.
+ * A simple argument which is used to launch Minecraft.
  */
-public class Argument {
+public final class Argument {
 
-	private String name;
-	private String value;
-
-	public Argument(String name) {
-		this.name = name;
-	}
+	private final String name;
+	private final String value;
 
 	public Argument(String name, String value) {
 		this.name = name;
@@ -55,14 +51,10 @@ public class Argument {
 		return value;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
+	/**
+	 * Returns the string representation of this argument.
+	 * @return The string representation.
+	 */
 	@Override
 	public String toString() {
 		if (value == null || value.length() == 0) {
@@ -75,7 +67,7 @@ public class Argument {
 	/**
 	 * Converts the given arguments to strings.
 	 * @param arguments
-	 * @return 
+	 * @return
 	 */
 	public static String[] toStrings(Argument... arguments) {
 		List<String> argumentsAsStrings = new ArrayList<String>();
