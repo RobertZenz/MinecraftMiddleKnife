@@ -85,9 +85,6 @@ public class Yggdrasil extends Credentials {
 	private String server = MOJANG_SERVER;
 	private String userId;
 
-	public Yggdrasil() {
-	}
-
 	public Yggdrasil(Credentials credentials) {
 		super(credentials.getUsername(), credentials.getPassword());
 	}

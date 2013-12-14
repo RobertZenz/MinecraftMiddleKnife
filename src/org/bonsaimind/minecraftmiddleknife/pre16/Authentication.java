@@ -60,9 +60,6 @@ public class Authentication extends Credentials {
 	private String userId;
 	private String version = LAUNCHER_VERSION;
 
-	public Authentication() {
-	}
-
 	public Authentication(Credentials credentials) {
 		super(credentials.getUsername(), credentials.getPassword());
 	}

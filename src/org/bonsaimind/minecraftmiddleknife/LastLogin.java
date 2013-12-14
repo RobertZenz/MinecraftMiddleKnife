@@ -67,7 +67,7 @@ import javax.crypto.spec.PBEParameterSpec;
  * }
  * </pre>
  */
-public final class LastLogin extends Credentials {
+public final class LastLogin {
 
 	/**
 	 * The default filename of the lastlogin file.
@@ -88,24 +88,9 @@ public final class LastLogin extends Credentials {
 	private byte[] cipherSalt;
 
 	public LastLogin() {
-		super();
-	}
-
-	public LastLogin(Credentials credentials) {
-		super(credentials.getUsername(), credentials.getPassword());
-	}
-
-	public LastLogin(String username, String password) {
-		super(username, password);
 	}
 
 	public LastLogin(String cipherPassword, byte[] cipherSalt) {
-		this.cipherPassword = cipherPassword;
-		this.cipherSalt = cipherSalt;
-	}
-
-	public LastLogin(String cipherPassword, byte[] cipherSalt, String username, String password) {
-		this(username, password);
 		this.cipherPassword = cipherPassword;
 		this.cipherSalt = cipherSalt;
 	}
@@ -122,16 +107,17 @@ public final class LastLogin extends Credentials {
 	 * Reads the username and password from the given path.
 	 * @param fileOrPath Either specify a file or a path. A path will be extended
 	 * with the default filename.
+	 * @return The credentials read from the given file.
 	 * @throws IOException
 	 * @throws LastLoginCipherException
 	 */
-	public void readFrom(String fileOrPath) throws IOException, LastLoginCipherException {
+	public Credentials readCredentials(String fileOrPath) throws IOException, LastLoginCipherException {
 		File file = makeFile(fileOrPath);
 
 		DataInputStream stream = new DataInputStream(new CipherInputStream(new FileInputStream(file), getCipher(LastLoginCipherMode.DECRYPT)));
-		setUsername(stream.readUTF());
-		setPassword(stream.readUTF());
+		Credentials credentials = new Credentials(stream.readUTF(), stream.readUTF());
 		stream.close();
+		return credentials;
 	}
 
 	public void setCipherPassword(String cipherPassword) {
@@ -149,15 +135,15 @@ public final class LastLogin extends Credentials {
 	 * @throws IOException
 	 * @throws LastLoginCipherException
 	 */
-	public void writeTo(String fileOrPath) throws IOException, LastLoginCipherException {
+	public void writeCredentials(String fileOrPath, Credentials credentials) throws IOException, LastLoginCipherException {
 		File file = makeFile(fileOrPath);
 		if (!file.exists()) {
 			file.createNewFile();
 		}
 
 		DataOutputStream stream = new DataOutputStream(new CipherOutputStream(new FileOutputStream(file), getCipher(LastLoginCipherMode.ENCRYPT)));
-		stream.writeUTF(getUsername());
-		stream.writeUTF(getPassword());
+		stream.writeUTF(credentials.getUsername());
+		stream.writeUTF(credentials.getPassword());
 		stream.close();
 	}
 
