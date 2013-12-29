@@ -95,4 +95,15 @@ public final class AuthenticatedSession {
 	public String getUserId() {
 		return userId;
 	}
+
+	/**
+	 * Returns the string representation of this session.
+	 *
+	 * It's in the format as returned by the server: currentVersion:downloadTicket:username:sessionId:userId
+	 * @return The string representation.
+	 */
+	@Override
+	public String toString() {
+		return String.format("%s:%s:%s:%s:%s", currentVersion, downloadTicket, username, sessionId, userId);
+	}
 }
