@@ -32,11 +32,11 @@ package org.bonsaimind.minecraftmiddleknife.pre16;
  */
 public final class AuthenticatedSession {
 
-	private long currentVersion;
-	private String downloadTicket;
-	private String username;
-	private String sessionId;
-	private String userId;
+	private final long currentVersion;
+	private final String downloadTicket;
+	private final String username;
+	private final String sessionId;
+	private final String userId;
 
 	/**
 	 *
