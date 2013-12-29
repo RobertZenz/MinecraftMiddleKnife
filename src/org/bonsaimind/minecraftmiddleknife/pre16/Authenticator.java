@@ -43,9 +43,6 @@ import org.bonsaimind.minecraftmiddleknife.Credentials;
  */
 public final class Authenticator {
 
-	private Authenticator() {
-		throw new AssertionError(); // Not supposed to instance this.
-	}
 	/**
 	 * The default version which will be reported.
 	 */
@@ -174,6 +171,6 @@ public final class Authenticator {
 	}
 
 	private Authenticator() {
-		throw new AssertionError();
+		throw new AssertionError(); // Shouldn't happen.
 	}
 }
