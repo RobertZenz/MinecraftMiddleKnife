@@ -78,18 +78,12 @@ public final class Authenticator {
 		} catch (IOException ex) {
 			throw new AuthenticationException("Authentication failed.", ex);
 		}
-		String[] splittedResponse = response.split(":");
 
-		if (splittedResponse.length < 5) {
-			throw new AuthenticationException(response);
+		try {
+			return AuthenticatedSession.fromString(response);
+		} catch (IllegalArgumentException ex) {
+			throw new AuthenticationException(response, ex);
 		}
-
-		return new AuthenticatedSession(
-				Long.parseLong(splittedResponse[0]),
-				splittedResponse[1],
-				splittedResponse[2],
-				splittedResponse[3],
-				splittedResponse[4]);
 	}
 
 	/**
