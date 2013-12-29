@@ -116,7 +116,7 @@ public final class Authenticator {
 		try {
 			request = String.format(
 					"?name={0}&session={1}",
-					URLEncoder.encode(authenticatedSession.getRealUsername(), "UTF-8"),
+					URLEncoder.encode(authenticatedSession.getUsername(), "UTF-8"),
 					URLEncoder.encode(authenticatedSession.getSessionId(), "UTF-8"));
 		} catch (UnsupportedEncodingException ex) {
 			throw new AuthenticationException("Building of the request string failed.", ex);

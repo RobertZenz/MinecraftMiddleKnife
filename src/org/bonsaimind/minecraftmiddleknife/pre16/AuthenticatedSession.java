@@ -28,40 +28,70 @@
 package org.bonsaimind.minecraftmiddleknife.pre16;
 
 /**
- * Provides an authenticated session.
+ * Represents an authenticated session.
  */
 public final class AuthenticatedSession {
 
 	private long currentVersion;
-	private String deprecated;
-	private String realUsername;
+	private String downloadTicket;
+	private String username;
 	private String sessionId;
 	private String userId;
 
-	public AuthenticatedSession(long currentVersion, String deprecated, String realUsername, String sessionId, String userId) {
+	/**
+	 *
+	 * @param currentVersion The timestamp of the current version of Minecraft.
+	 * @param downloadTicket The download ticket for downloading Minecraft. This is deprecated.
+	 * @param username
+	 * @param sessionId
+	 * @param userId
+	 */
+	public AuthenticatedSession(long currentVersion, String downloadTicket, String username, String sessionId, String userId) {
 		this.currentVersion = currentVersion;
-		this.deprecated = deprecated;
-		this.realUsername = realUsername;
+		this.downloadTicket = downloadTicket;
+		this.username = username;
 		this.sessionId = sessionId;
 		this.userId = userId;
 	}
 
+	/**
+	 * Returns the UNIX-timestamp of the current version of Minecraft.
+	 * @return The current version as UNIX-timestamp.
+	 */
 	public long getCurrentVersion() {
 		return currentVersion;
 	}
 
-	public String getDeprecated() {
-		return deprecated;
+	/**
+	 * The download ticket to download Minecraft from the servers.
+	 *
+	 * This is deprecated and should only contain the string "deprecated".
+	 * @return The string "deprecated".
+	 */
+	public String getDownloadTicket() {
+		return downloadTicket;
 	}
 
-	public String getRealUsername() {
-		return realUsername;
+	/**
+	 * The (if returned from the server) case corrected username.
+	 * @return The username.
+	 */
+	public String getUsername() {
+		return username;
 	}
 
+	/**
+	 * The ID of the current session.
+	 * @return The session id.
+	 */
 	public String getSessionId() {
 		return sessionId;
 	}
 
+	/**
+	 * The (inique) user ID.
+	 * @return The user ID.
+	 */
 	public String getUserId() {
 		return userId;
 	}
