@@ -37,7 +37,7 @@ import org.json.simple.parser.ParseException;
 /**
  * Represents an authenticated session.
  */
-public class AuthenticatedSession {
+public final class AuthenticatedSession {
 
 	private final String accessToken;
 	private final String clientToken;
