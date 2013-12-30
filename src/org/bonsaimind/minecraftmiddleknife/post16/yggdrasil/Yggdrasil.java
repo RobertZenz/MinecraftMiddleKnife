@@ -27,14 +27,52 @@
  */
 package org.bonsaimind.minecraftmiddleknife.post16.yggdrasil;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import org.json.simple.parser.ParseException;
+
 /**
  * Stuff
  */
 public final class Yggdrasil {
 
-	public static void authenticate() {
-		// Accepts agent username password clientToken
-		// Returns AuthenticatedSession
+	private static final URL MOJANG_AUTHENTICATION;
+	private static final URL MOJANG_INVALIDATE;
+	private static final URL MOJANG_REFRESH;
+	private static final URL MOJANG_SIGNOUT;
+	private static final URL MOJANG_VALIDATE;
+
+	static {
+		final String mojangServer = "https://authserver.mojang.com/";
+		try {
+			MOJANG_AUTHENTICATION = new URL(mojangServer + "authenticate");
+			MOJANG_INVALIDATE = new URL(mojangServer + "invalidate");
+			MOJANG_REFRESH = new URL(mojangServer + "refresh");
+			MOJANG_SIGNOUT = new URL(mojangServer + "signout");
+			MOJANG_VALIDATE = new URL(mojangServer + "validate");
+		} catch (MalformedURLException ex) {
+			throw new AssertionError("Shouldn't happen...really.", ex);
+		}
+	}
+
+	public static AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) throws YggdrasilError {
+		return authenticate(MOJANG_AUTHENTICATION, authenticationRequest);
+	}
+
+	public static AuthenticationResponse authenticate(URL server, AuthenticationRequest authenticationRequest) throws YggdrasilError {
+		String response = httpRequestExceptionWrapped(server, authenticationRequest.toJSON().toJSONString());
+		try {
+			return AuthenticationResponse.fromJSON(response);
+		} catch (ParseException ex) {
+			throw new YggdrasilError("Parsing the response failed.", ex);
+		}
 	}
 
 	public static void invalidate() {
@@ -55,6 +93,50 @@ public final class Yggdrasil {
 	public static void validate() {
 		// Accepts accesstoken
 		// Returns void
+	}
+
+	private static String httpRequest(URL url, String content) throws YggdrasilError, UnsupportedEncodingException, IOException, ParseException {
+		byte[] contentBytes = content.getBytes("UTF-8");
+
+		URLConnection connection = url.openConnection();
+		connection.setDoInput(true);
+		connection.setDoOutput(true);
+		connection.setRequestProperty("Accept-Charset", "UTF-8");
+		connection.setRequestProperty("Content-Type", "application/json");
+		connection.setRequestProperty("Content-Length", Integer.toString(contentBytes.length));
+
+		OutputStream requestStream = connection.getOutputStream();
+		requestStream.write(contentBytes, 0, contentBytes.length);
+		requestStream.close();
+
+		String response = "";
+		BufferedReader responseStream;
+		if (((HttpURLConnection) connection).getResponseCode() == 200) {
+			responseStream = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
+		} else {
+			responseStream = new BufferedReader(new InputStreamReader(((HttpURLConnection) connection).getErrorStream(), "UTF-8"));
+		}
+
+		response = responseStream.readLine();
+		responseStream.close();
+
+		if (((HttpURLConnection) connection).getResponseCode() != 200) {
+			throw YggdrasilError.fromJSON(response);
+		}
+
+		return response;
+	}
+
+	private static String httpRequestExceptionWrapped(URL url, String content) throws YggdrasilError {
+		try {
+			return httpRequest(url, content);
+		} catch (UnsupportedEncodingException ex) {
+			throw new YggdrasilError("Action failed.", ex);
+		} catch (IOException ex) {
+			throw new YggdrasilError("Action failed.", ex);
+		} catch (ParseException ex) {
+			throw new YggdrasilError("Action failed.", ex);
+		}
 	}
 
 	private Yggdrasil() {

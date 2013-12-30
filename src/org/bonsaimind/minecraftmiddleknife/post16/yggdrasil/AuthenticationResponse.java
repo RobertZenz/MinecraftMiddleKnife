@@ -37,14 +37,14 @@ import org.json.simple.parser.ParseException;
 /**
  * Represents an authenticated session.
  */
-public final class AuthenticatedSession {
+public final class AuthenticationResponse {
 
 	private final String accessToken;
 	private final String clientToken;
 	private final List<Profile> availableProfiles = new ArrayList<Profile>();
 	private final Profile selectedProfile;
 
-	public AuthenticatedSession(String accessToken, String clientToken, List<Profile> availableProfiles, Profile selectedProfile) {
+	public AuthenticationResponse(String accessToken, String clientToken, List<Profile> availableProfiles, Profile selectedProfile) {
 		this.accessToken = accessToken;
 		this.clientToken = clientToken;
 		if (availableProfiles != null) {
@@ -59,7 +59,7 @@ public final class AuthenticatedSession {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static AuthenticatedSession fromJSON(String json) throws ParseException {
+	public static AuthenticationResponse fromJSON(String json) throws ParseException {
 		if (json == null || json.isEmpty()) {
 			throw new IllegalArgumentException("json cannot be null or empty.");
 		}
@@ -80,7 +80,7 @@ public final class AuthenticatedSession {
 		JSONObject selectedProfile = (JSONObject) parent.get("selectedProfile");
 		Profile profile = new Profile((String) selectedProfile.get("id"), (String) selectedProfile.get("name"));
 
-		return new AuthenticatedSession(accessToken, clientToken, profiles, profile);
+		return new AuthenticationResponse(accessToken, clientToken, profiles, profile);
 	}
 
 	public String getAccessToken() {
