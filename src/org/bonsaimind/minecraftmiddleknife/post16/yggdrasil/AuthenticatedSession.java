@@ -53,7 +53,17 @@ public class AuthenticatedSession {
 		this.selectedProfile = selectedProfile;
 	}
 
+	/**
+	 * Creates the AuthenticatedSession from the given JSON representation.
+	 * @param json Needs to be valud JSON, not null and not empty.
+	 * @return
+	 * @throws ParseException
+	 */
 	public static AuthenticatedSession fromJSON(String json) throws ParseException {
+		if (json == null || json.isEmpty()) {
+			throw new IllegalArgumentException("json cannot be null or empty.");
+		}
+
 		JSONParser parser = new JSONParser();
 		JSONObject parent = (JSONObject) parser.parse(json);
 
