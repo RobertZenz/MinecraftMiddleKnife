@@ -59,13 +59,6 @@ import java.util.zip.ZipOutputStream;
  * blender.blend("/path/to/output.jar");
  * }</pre>
  *
- * Using the constructor:
- * <pre>{@code
- * Blender blender = new Blender("/path/to/minecraft.jar");
- * blender.add("/path/to/modded/main.jar");
- * blender.blend("/path/to/output.jar");
- * }</pre></pre>
- *
  * <pre>And here's how overriding of files works:
  * <pre>{@code
  * Blender blender = new Blender();
@@ -94,23 +87,20 @@ public final class Blender {
 
 	/**
 	 * Creates a new instance of the Blender.
-	 *
-	 * It accepts a vararg of paths, it can be left blank or empty
-	 * to not initialize anything.
-	 * @param jars The jars to add directly.
 	 */
-	public Blender(String... jars) {
-		if (jars != null) {
-			stack.addAll(Arrays.asList(jars));
-		}
+	public Blender() {
 	}
 
 	/**
-	 * Add one jar to the stack.
+	 * Add one or more jars to the stack.
 	 * @param jar The jar to add.
+	 * @param jars More jars to add.
 	 */
-	public void add(String jar) {
+	public void add(String jar, String... jars) {
 		stack.add(jar);
+		if (jars != null) {
+			stack.addAll(Arrays.asList(jars));
+		}
 	}
 
 	/**
