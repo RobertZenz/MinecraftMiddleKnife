@@ -47,9 +47,10 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
 /**
- * Allows reading, writing of the LastLogin-File.
+ * <pre>Allows reading, writing of the LastLogin-File.</pre>
  *
- * <pre>{@code
+ * <pre>Reading the credentials is easy:
+ * {@code
  * LastLogin lastLogin = new LastLogin();
  * Credentials credentials = lastLogin.readCredentials("/path/to/.minecraft/");
  * System.out.println(credentials.getUsername());
@@ -57,8 +58,8 @@ import javax.crypto.spec.PBEParameterSpec;
  * }
  * </pre>
  *
- * And writing the credentials is similar easy.
- * <pre>{@code
+ * <pre>And writing the credentials is similar easy:
+ * {@code
  * Credentials credentials = new Credentials("username", "password");
  * LastLogin lastLogin = new LastLogin();
  * lastLogin.writeCredentials("/path/to/.minecraft/", credentials);
