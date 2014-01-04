@@ -43,8 +43,7 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 /**
- * Allows blending of multiple jars.
- *
+ * <pre>Allows blending of multiple jars.</pre>
  *
  * <pre>The last given jar is the "canonical" jar, meaning that files from
  * all the other jars are only appended and never overwritten.</pre>
@@ -52,7 +51,7 @@ import java.util.zip.ZipOutputStream;
  * <pre>What that means? You first pass in the minecraft.jar and then the mod.jar.</pre>
  *
  * <pre>Simple usage:
- * <pre>{@code
+ * {@code
  * Blender blender = new Blender();
  * blender.add("/path/to/minecraft.jar");
  * blender.add("/path/to/modded/main.jar");
@@ -60,25 +59,25 @@ import java.util.zip.ZipOutputStream;
  * }</pre>
  *
  * <pre>And here's how overriding of files works:
- * <pre>{@code
+ * {@code
  * Blender blender = new Blender();
  * blender.add("1.jar");
  * blender.add("2.jar");
  * blender.add("3.jar");
  * blender.blend("4.jar");
  * }</pre>
+ *
  * <pre>The contents of all three jars:
- * <pre>{@code
+ * {@code
  * 1.jar: A1 B1 D1
  * 2.jar: C2
  * 3.jar: A3 B3
  * }</pre>
+ *
  * <pre>So the final jar will contain:
- * <pre>{@code
+ * {@code
  * 4.jar: A3 B3 C2 D1
- * }</pre></pre>
- * </pre>
- * </pre>
+ * }</pre>
  */
 public final class Blender {
 
