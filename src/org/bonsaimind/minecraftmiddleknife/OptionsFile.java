@@ -69,14 +69,6 @@ public class OptionsFile {
 	}
 
 	/**
-	 * Check if the options.txt was (successfully) read.
-	 * @return
-	 */
-	public boolean isRead() {
-		return !keys.isEmpty() && !values.isEmpty();
-	}
-
-	/**
 	 * Read the contents of the given file.
 	 * @param fileOrPath
 	 * @throws IOException
