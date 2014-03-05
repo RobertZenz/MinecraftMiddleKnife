@@ -58,7 +58,8 @@ public final class Yggdrasil {
 			MOJANG_SIGNOUT = new URL(mojangServer + "signout");
 			MOJANG_VALIDATE = new URL(mojangServer + "validate");
 		} catch (MalformedURLException ex) {
-			throw new AssertionError("Shouldn't happen...really.", ex);
+			ex.printStackTrace();
+			throw new AssertionError("Shouldn't happen...really.");
 		}
 	}
 
