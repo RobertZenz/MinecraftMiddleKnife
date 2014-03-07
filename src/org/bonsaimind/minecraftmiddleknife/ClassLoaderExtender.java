@@ -111,7 +111,7 @@ public final class ClassLoaderExtender {
 				File file = new File(path, child);
 
 				if (file.isDirectory()) {
-					urls.addAll(findJars(path));
+					urls.addAll(findJars(file.getAbsolutePath()));
 				} else if (file.isFile()) {
 					urls.add(file.toURI().toURL());
 				}
