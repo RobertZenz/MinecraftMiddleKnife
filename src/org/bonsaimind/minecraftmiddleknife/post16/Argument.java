@@ -52,7 +52,9 @@ public final class Argument {
 	}
 
 	/**
-	 * Returns the string representation of this argument.
+	 * Returns the string representation of this argument. That representation
+	 * is {@code --name} if the {@code value} is null or empty, and {@code --name=value}
+	 * for all other cases.
 	 * @return The string representation.
 	 */
 	@Override
