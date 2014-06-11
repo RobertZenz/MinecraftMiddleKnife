@@ -39,35 +39,37 @@ import java.net.URLConnection;
 import org.json.simple.parser.ParseException;
 
 /**
- * Stuff
+ * Static utility class that deals with everything around Yggdrasil.
  */
 public final class Yggdrasil {
 
-	private static final URL MOJANG_AUTHENTICATION;
-	private static final URL MOJANG_INVALIDATE;
-	private static final URL MOJANG_REFRESH;
-	private static final URL MOJANG_SIGNOUT;
-	private static final URL MOJANG_VALIDATE;
+	private static final URL MOJANG_AUTHENTICATION_URL;
+	private static final URL MOJANG_INVALIDATE_URL;
+	private static final URL MOJANG_REFRESH_URL;
+	private static final URL MOJANG_SIGNOUT_URL;
+	private static final URL MOJANG_VALIDATE_URL;
 
 	static {
 		final String mojangServer = "https://authserver.mojang.com/";
+
 		try {
-			MOJANG_AUTHENTICATION = new URL(mojangServer + "authenticate");
-			MOJANG_INVALIDATE = new URL(mojangServer + "invalidate");
-			MOJANG_REFRESH = new URL(mojangServer + "refresh");
-			MOJANG_SIGNOUT = new URL(mojangServer + "signout");
-			MOJANG_VALIDATE = new URL(mojangServer + "validate");
+			MOJANG_AUTHENTICATION_URL = new URL(mojangServer + "authenticate");
+			MOJANG_INVALIDATE_URL = new URL(mojangServer + "invalidate");
+			MOJANG_REFRESH_URL = new URL(mojangServer + "refresh");
+			MOJANG_SIGNOUT_URL = new URL(mojangServer + "signout");
+			MOJANG_VALIDATE_URL = new URL(mojangServer + "validate");
 		} catch (MalformedURLException ex) {
 			throw new AssertionError("Shouldn't happen...really.", ex);
 		}
 	}
 
 	public static AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) throws YggdrasilError {
-		return authenticate(MOJANG_AUTHENTICATION, authenticationRequest);
+		return authenticate(MOJANG_AUTHENTICATION_URL, authenticationRequest);
 	}
 
 	public static AuthenticationResponse authenticate(URL server, AuthenticationRequest authenticationRequest) throws YggdrasilError {
-		String response = httpRequestExceptionWrapped(server, authenticationRequest.toJSON().toJSONString());
+		String response = httpRequestExceptionWrapped(server, authenticationRequest.toString());
+		
 		try {
 			return AuthenticationResponse.fromJSON(response);
 		} catch (ParseException ex) {
@@ -75,24 +77,42 @@ public final class Yggdrasil {
 		}
 	}
 
-	public static void invalidate() {
-		// Accepts accessToken clientToken
-		// Returns void
+	public static void invalidate(InvalidationRequest invalidationRequest) throws YggdrasilError {
+		invalidate(MOJANG_INVALIDATE_URL, invalidationRequest);
 	}
 
-	public static void refresh() {
-		// Accepts accesToken clientToken profile
-		// Returns AuthenticatedSession
+	public static void invalidate(URL server, InvalidationRequest invalidationRequest) throws YggdrasilError {
+		httpRequestExceptionWrapped(server, invalidationRequest.toString());
 	}
 
-	public static void signout() {
-		// Accepts username password
-		// Returns void
+	public static RefreshResponse refresh(RefreshRequest refreshRequest) throws YggdrasilError {
+		return refresh(MOJANG_REFRESH_URL, refreshRequest);
 	}
 
-	public static void validate() {
-		// Accepts accesstoken
-		// Returns void
+	public static RefreshResponse refresh(URL server, RefreshRequest refreshRequest) throws YggdrasilError {
+		String response = httpRequestExceptionWrapped(server, refreshRequest.toString());
+		
+		try {
+			return RefreshResponse.fromJSON(response);
+		} catch (ParseException ex) {
+			throw new YggdrasilError("Parsing the response failed.", ex);
+		}
+	}
+
+	public static void signout(SignoutRequest signoutRequest) throws YggdrasilError {
+		signout(MOJANG_SIGNOUT_URL, signoutRequest);
+	}
+
+	public static void signout(URL server, SignoutRequest signoutRequest) throws YggdrasilError {
+		httpRequestExceptionWrapped(server, signoutRequest.toString());
+	}
+
+	public static void validate(ValidationRequest validationRequest) throws YggdrasilError {
+		validate(MOJANG_VALIDATE_URL, validationRequest);
+	}
+
+	public static void validate(URL server, ValidationRequest validationRequest) throws YggdrasilError {
+		httpRequestExceptionWrapped(server, validationRequest.toString());
 	}
 
 	private static String httpRequest(URL url, String content) throws YggdrasilError, UnsupportedEncodingException, IOException, ParseException {

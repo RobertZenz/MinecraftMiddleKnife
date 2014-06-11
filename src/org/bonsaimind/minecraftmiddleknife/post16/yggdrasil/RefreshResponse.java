@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Robert 'Bobby' Zenz. All rights reserved.
+ * Copyright 2014 Robert 'Bobby' Zenz. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification, are
  * permitted provided that the following conditions are met:
@@ -27,33 +27,26 @@
  */
 package org.bonsaimind.minecraftmiddleknife.post16.yggdrasil;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
- * Represents the response from an authentication request.
+ * Represents the response from a refresh request..
  */
-public final class AuthenticationResponse {
+public final class RefreshResponse {
 
 	private final String accessToken;
 	private final String clientToken;
-	private final List<Profile> availableProfiles = new ArrayList<Profile>();
 	private final Profile selectedProfile;
 
-	public AuthenticationResponse(String accessToken, String clientToken, List<Profile> availableProfiles, Profile selectedProfile) {
+	public RefreshResponse(String accessToken, String clientToken, Profile selectedProfile) {
 		this.accessToken = accessToken;
 		this.clientToken = clientToken;
-		if (availableProfiles != null) {
-			this.availableProfiles.addAll(availableProfiles);
-		}
 		this.selectedProfile = selectedProfile;
 	}
 
-	public static AuthenticationResponse fromJSON(String json) throws ParseException {
+	public static RefreshResponse fromJSON(String json) throws ParseException {
 		if (json == null || json.isEmpty()) {
 			throw new IllegalArgumentException("json cannot be null or empty.");
 		}
@@ -64,25 +57,14 @@ public final class AuthenticationResponse {
 		String accessToken = (String) parent.get("accessToken");
 		String clientToken = (String) parent.get("clientToken");
 
-		List<Profile> profiles = new ArrayList<Profile>();
-		if (parent.containsKey("availableProfiles")) {
-			for (Object item : (JSONArray) parent.get("availableProfiles")) {
-				JSONObject jsonItem = (JSONObject) item;
-				profiles.add(new Profile((String) jsonItem.get("id"), (String) jsonItem.get("name")));
-			}
-		}
 		JSONObject selectedProfile = (JSONObject) parent.get("selectedProfile");
 		Profile profile = new Profile((String) selectedProfile.get("id"), (String) selectedProfile.get("name"));
 
-		return new AuthenticationResponse(accessToken, clientToken, profiles, profile);
+		return new RefreshResponse(accessToken, clientToken, profile);
 	}
 
 	public String getAccessToken() {
 		return accessToken;
-	}
-
-	public List<Profile> getAvailableProfiles() {
-		return new ArrayList<Profile>(availableProfiles);
 	}
 
 	public String getClientToken() {
