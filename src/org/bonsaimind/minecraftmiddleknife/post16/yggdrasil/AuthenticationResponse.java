@@ -35,15 +35,15 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
- * Represents an authenticated session.
+ * Represents the response from an authentication request.
  */
 public final class AuthenticationResponse {
-
+	
 	private final String accessToken;
 	private final String clientToken;
 	private final List<Profile> availableProfiles = new ArrayList<Profile>();
 	private final Profile selectedProfile;
-
+	
 	public AuthenticationResponse(String accessToken, String clientToken, List<Profile> availableProfiles, Profile selectedProfile) {
 		this.accessToken = accessToken;
 		this.clientToken = clientToken;
@@ -52,24 +52,18 @@ public final class AuthenticationResponse {
 		}
 		this.selectedProfile = selectedProfile;
 	}
-
-	/**
-	 * Creates the AuthenticatedSession from the given JSON representation.
-	 * @param json Needs to be valud JSON, not null and not empty.
-	 * @return
-	 * @throws ParseException
-	 */
+	
 	public static AuthenticationResponse fromJSON(String json) throws ParseException {
 		if (json == null || json.isEmpty()) {
 			throw new IllegalArgumentException("json cannot be null or empty.");
 		}
-
+		
 		JSONParser parser = new JSONParser();
 		JSONObject parent = (JSONObject) parser.parse(json);
-
+		
 		String accessToken = (String) parent.get("accessToken");
 		String clientToken = (String) parent.get("clientToken");
-
+		
 		List<Profile> profiles = new ArrayList<Profile>();
 		if (parent.containsKey("availableProfiles")) {
 			for (Object item : (JSONArray) parent.get("availableProfiles")) {
@@ -79,22 +73,22 @@ public final class AuthenticationResponse {
 		}
 		JSONObject selectedProfile = (JSONObject) parent.get("selectedProfile");
 		Profile profile = new Profile((String) selectedProfile.get("id"), (String) selectedProfile.get("name"));
-
+		
 		return new AuthenticationResponse(accessToken, clientToken, profiles, profile);
 	}
-
+	
 	public String getAccessToken() {
 		return accessToken;
 	}
-
+	
 	public List<Profile> getAvailableProfiles() {
 		return new ArrayList<Profile>(availableProfiles);
 	}
-
+	
 	public String getClientToken() {
 		return clientToken;
 	}
-
+	
 	public Profile getSelectedProfile() {
 		return selectedProfile;
 	}

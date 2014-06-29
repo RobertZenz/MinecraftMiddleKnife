@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Robert 'Bobby' Zenz. All rights reserved.
+ * Copyright 2014 Robert 'Bobby' Zenz. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification, are
  * permitted provided that the following conditions are met:
@@ -30,31 +30,31 @@ package org.bonsaimind.minecraftmiddleknife.post16.yggdrasil;
 import org.json.simple.JSONObject;
 
 /**
- * Represents the Agent-part.
+ * Represents a request for refreshing the access token.
  */
-public final class Agent {
+public class RefreshRequest extends Payload {
 	
-	public static final Agent MINECRAFT = new Agent("Minecraft", 1);
-	private final String name;
-	private final int version;
+	private final String accessToken;
+	private final String clientToken;
 	
-	public Agent(String name, int version) {
-		this.name = name;
-		this.version = version;
+	public RefreshRequest(String accessToken, String clientToken) {
+		this.accessToken = accessToken;
+		this.clientToken = clientToken;
 	}
 	
-	public String getName() {
-		return name;
+	public String getAccessToken() {
+		return accessToken;
 	}
 	
-	public int getVersion() {
-		return version;
+	public String getClientToken() {
+		return clientToken;
 	}
 	
-	public JSONObject toJSON() {
+	@Override
+	JSONObject toJSON() {
 		JSONObject json = new JSONObject();
-		json.put("name", getName());
-		json.put("version", getVersion());
+		json.put("accessToken", accessToken);
+		json.put("clientToken", clientToken);
 		return json;
 	}
 }

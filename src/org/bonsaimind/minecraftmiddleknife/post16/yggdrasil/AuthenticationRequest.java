@@ -32,43 +32,44 @@ import org.json.simple.JSONObject;
 /**
  * Represents the request for authentication.
  */
-public final class AuthenticationRequest {
-
+public final class AuthenticationRequest extends Payload {
+	
 	private final Agent agent;
 	private final String username;
 	private final String password;
 	private final String clientToken;
-
+	
 	public AuthenticationRequest(String username, String password) {
 		this.agent = Agent.MINECRAFT;
 		this.username = username;
 		this.password = password;
 		this.clientToken = null;
 	}
-
+	
 	public AuthenticationRequest(Agent agent, String username, String password, String clientToken) {
 		this.agent = agent;
 		this.username = username;
 		this.password = password;
 		this.clientToken = clientToken;
 	}
-
+	
 	public Agent getAgent() {
 		return agent;
 	}
-
+	
 	public String getClientToken() {
 		return clientToken;
 	}
-
+	
 	public String getPassword() {
 		return password;
 	}
-
+	
 	public String getUsername() {
 		return username;
 	}
-
+	
+	@Override
 	public JSONObject toJSON() {
 		JSONObject json = new JSONObject();
 		if (agent != null) {

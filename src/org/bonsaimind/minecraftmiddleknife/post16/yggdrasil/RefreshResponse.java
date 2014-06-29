@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Robert 'Bobby' Zenz. All rights reserved.
+ * Copyright 2014 Robert 'Bobby' Zenz. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification, are
  * permitted provided that the following conditions are met:
@@ -28,33 +28,50 @@
 package org.bonsaimind.minecraftmiddleknife.post16.yggdrasil;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
- * Represents the Agent-part.
+ * Represents the response from a refresh request..
  */
-public final class Agent {
+public final class RefreshResponse {
 	
-	public static final Agent MINECRAFT = new Agent("Minecraft", 1);
-	private final String name;
-	private final int version;
+	private final String accessToken;
+	private final String clientToken;
+	private final Profile selectedProfile;
 	
-	public Agent(String name, int version) {
-		this.name = name;
-		this.version = version;
+	public RefreshResponse(String accessToken, String clientToken, Profile selectedProfile) {
+		this.accessToken = accessToken;
+		this.clientToken = clientToken;
+		this.selectedProfile = selectedProfile;
 	}
 	
-	public String getName() {
-		return name;
+	public static RefreshResponse fromJSON(String json) throws ParseException {
+		if (json == null || json.isEmpty()) {
+			throw new IllegalArgumentException("json cannot be null or empty.");
+		}
+		
+		JSONParser parser = new JSONParser();
+		JSONObject parent = (JSONObject) parser.parse(json);
+		
+		String accessToken = (String) parent.get("accessToken");
+		String clientToken = (String) parent.get("clientToken");
+		
+		JSONObject selectedProfile = (JSONObject) parent.get("selectedProfile");
+		Profile profile = new Profile((String) selectedProfile.get("id"), (String) selectedProfile.get("name"));
+		
+		return new RefreshResponse(accessToken, clientToken, profile);
 	}
 	
-	public int getVersion() {
-		return version;
+	public String getAccessToken() {
+		return accessToken;
 	}
 	
-	public JSONObject toJSON() {
-		JSONObject json = new JSONObject();
-		json.put("name", getName());
-		json.put("version", getVersion());
-		return json;
+	public String getClientToken() {
+		return clientToken;
+	}
+	
+	public Profile getSelectedProfile() {
+		return selectedProfile;
 	}
 }

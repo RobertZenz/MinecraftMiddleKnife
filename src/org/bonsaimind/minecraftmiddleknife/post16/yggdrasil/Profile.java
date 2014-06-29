@@ -31,19 +31,19 @@ package org.bonsaimind.minecraftmiddleknife.post16.yggdrasil;
  * A profile.
  */
 public final class Profile {
-
+	
 	private final String id;
 	private final String username;
-
+	
 	public Profile(String id, String username) {
 		this.id = id;
 		this.username = username;
 	}
-
+	
 	public String getId() {
 		return id;
 	}
-
+	
 	public String getUsername() {
 		return username;
 	}

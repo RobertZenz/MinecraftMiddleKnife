@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Robert 'Bobby' Zenz. All rights reserved.
+ * Copyright 2014 Robert 'Bobby' Zenz. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification, are
  * permitted provided that the following conditions are met:
@@ -30,31 +30,31 @@ package org.bonsaimind.minecraftmiddleknife.post16.yggdrasil;
 import org.json.simple.JSONObject;
 
 /**
- * Represents the Agent-part.
+ * Represent a request that all existing access tokens are invalidated.
  */
-public final class Agent {
+public class SignoutRequest extends Payload {
 	
-	public static final Agent MINECRAFT = new Agent("Minecraft", 1);
-	private final String name;
-	private final int version;
+	private final String username;
+	private final String password;
 	
-	public Agent(String name, int version) {
-		this.name = name;
-		this.version = version;
+	public SignoutRequest(String username, String password) {
+		this.username = username;
+		this.password = password;
 	}
 	
-	public String getName() {
-		return name;
+	public String getPassword() {
+		return password;
 	}
 	
-	public int getVersion() {
-		return version;
+	public String getUsername() {
+		return username;
 	}
 	
+	@Override
 	public JSONObject toJSON() {
 		JSONObject json = new JSONObject();
-		json.put("name", getName());
-		json.put("version", getVersion());
+		json.put("username", username);
+		json.put("password", password);
 		return json;
 	}
 }

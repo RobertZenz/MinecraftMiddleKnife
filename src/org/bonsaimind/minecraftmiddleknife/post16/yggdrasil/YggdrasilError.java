@@ -35,40 +35,40 @@ import org.json.simple.parser.ParseException;
  * Occurs when there is a problem when talking with the server.
  */
 public class YggdrasilError extends Exception {
-
+	
 	private String error;
 	private String message;
 	private String cause;
-
+	
 	public YggdrasilError(String error, String message, String cause) {
 		super(error);
 		this.error = error;
 		this.message = message;
 		this.cause = cause;
 	}
-
+	
 	public YggdrasilError(String message, Throwable cause) {
 		super(message, cause);
 	}
-
+	
 	public YggdrasilError(String msg) {
 		super(msg);
 	}
-
+	
 	public static YggdrasilError fromJSON(String json) throws ParseException {
 		JSONParser parser = new JSONParser();
 		JSONObject parent = (JSONObject) parser.parse(json);
-
+		
 		String error = (String) parent.get("error");
 		String message = (String) parent.get("errorMessage");
 		String cause = null;
 		if (parent.containsKey("cause")) {
 			cause = (String) parent.get("cause");
 		}
-
+		
 		return new YggdrasilError(error, message, cause);
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Error: " + error + "\nMessage: " + message + "\nCause:" + (cause == null ? "NULL" : cause) + "}";
