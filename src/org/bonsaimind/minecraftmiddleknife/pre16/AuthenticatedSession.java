@@ -40,7 +40,7 @@ public final class AuthenticatedSession {
 	/**
 	 * @param currentVersion the timestamp of the current version of Minecraft.
 	 * @param downloadTicket the download ticket for downloading Minecraft. This
-	 *            is deprecated.
+	 *            is deprecated and should only contain the string "deprecated".
 	 * @param username
 	 * @param sessionId
 	 * @param userId
@@ -56,7 +56,7 @@ public final class AuthenticatedSession {
 	/**
 	 * Returns the UNIX-timestamp of the current version of Minecraft.
 	 * 
-	 * @return The current version as UNIX-timestamp.
+	 * @return the current version as UNIX-timestamp.
 	 */
 	public long getCurrentVersion() {
 		return currentVersion;
@@ -66,7 +66,7 @@ public final class AuthenticatedSession {
 	 * The download ticket to download Minecraft from the servers. This is
 	 * deprecated and should only contain the string "deprecated".
 	 * 
-	 * @return The string "deprecated".
+	 * @return the string "deprecated".
 	 */
 	public String getDownloadTicket() {
 		return downloadTicket;
@@ -75,7 +75,7 @@ public final class AuthenticatedSession {
 	/**
 	 * The (if returned from the server) case corrected username.
 	 * 
-	 * @return The username.
+	 * @return the username.
 	 */
 	public String getUsername() {
 		return username;
@@ -84,16 +84,16 @@ public final class AuthenticatedSession {
 	/**
 	 * The ID of the current session.
 	 * 
-	 * @return The session id.
+	 * @return the session id.
 	 */
 	public String getSessionId() {
 		return sessionId;
 	}
 	
 	/**
-	 * The (inique) user ID.
+	 * The (unique) user ID.
 	 * 
-	 * @return The user ID.
+	 * @return the user ID.
 	 */
 	public String getUserId() {
 		return userId;
@@ -102,9 +102,9 @@ public final class AuthenticatedSession {
 	/**
 	 * Returns the string representation of this session. It's in the format as
 	 * returned by the server:
-	 * currentVersion:downloadTicket:username:sessionId:userId
+	 * {@code currentVersion:downloadTicket:username:sessionId:userId}
 	 * 
-	 * @return The string representation.
+	 * @return the string representation.
 	 */
 	@Override
 	public String toString() {
@@ -114,9 +114,10 @@ public final class AuthenticatedSession {
 	/**
 	 * Creates an AuthenticatedSession from the string representation.
 	 * 
-	 * @param value Needs to be in the format
-	 *            "currentVersion:downloadTicket:username:sessionId:userId".
-	 * @return The AuthenticatedSession for this string representation.
+	 * @param value needs to be in the format
+	 *            {@code currentVersion:downloadTicket:username:sessionId:userId"}
+	 *            .
+	 * @return the AuthenticatedSession for this string representation.
 	 */
 	public static AuthenticatedSession fromString(String value) {
 		if (value == null) {
