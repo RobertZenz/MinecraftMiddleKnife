@@ -45,6 +45,7 @@ import java.util.Map;
  * create it, set the username, load the natives, load the jars, init, start.
  */
 public class ContainerApplet extends Applet implements AppletStub {
+	
 	private static final long serialVersionUID = 4723572827088239425L;
 	
 	public static final String PARAMETER_DEMO = "demo";

@@ -33,6 +33,7 @@ import org.json.simple.JSONObject;
  * Represent a request that all existing access tokens are invalidated.
  */
 public class SignoutRequest extends Payload {
+	
 	private final String username;
 	private final String password;
 	

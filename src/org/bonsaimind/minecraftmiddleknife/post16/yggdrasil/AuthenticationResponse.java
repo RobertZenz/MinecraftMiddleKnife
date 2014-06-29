@@ -39,6 +39,7 @@ import org.json.simple.parser.ParseException;
  * Represents the response from an authentication request.
  */
 public final class AuthenticationResponse {
+	
 	private final String accessToken;
 	private final String clientToken;
 	private final List<Profile> availableProfiles = new ArrayList<Profile>();

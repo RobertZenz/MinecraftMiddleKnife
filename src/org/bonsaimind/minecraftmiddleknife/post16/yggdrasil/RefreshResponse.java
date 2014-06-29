@@ -35,6 +35,7 @@ import org.json.simple.parser.ParseException;
  * Represents the response from a refresh request..
  */
 public final class RefreshResponse {
+	
 	private final String accessToken;
 	private final String clientToken;
 	private final Profile selectedProfile;

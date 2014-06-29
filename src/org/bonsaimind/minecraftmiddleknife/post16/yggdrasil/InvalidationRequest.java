@@ -33,6 +33,7 @@ import org.json.simple.JSONObject;
  * Represents a request for invalidation of the tokens.
  */
 public final class InvalidationRequest extends Payload {
+	
 	private final String accessToken;
 	private final String clientToken;
 	

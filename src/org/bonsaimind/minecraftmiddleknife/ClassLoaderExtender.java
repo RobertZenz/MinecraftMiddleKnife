@@ -45,12 +45,12 @@ import java.util.List;
 public final class ClassLoaderExtender {
 	
 	private ClassLoaderExtender() {
-		throw new AssertionError(); // You're not supposed to instanciate this
+		throw new AssertionError(); // You're not supposed to instantiate this
 									// class.
 	}
 	
 	/**
-	 * Adds the given URLs to the classloeaders.
+	 * Adds the given URLs to the classloaders.
 	 * 
 	 * @param urls
 	 * @throws ClassLoaderExtensionException

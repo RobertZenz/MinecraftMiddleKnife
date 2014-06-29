@@ -33,6 +33,7 @@ import org.json.simple.JSONObject;
  * Represents the Agent-part.
  */
 public final class Agent {
+	
 	public static final Agent MINECRAFT = new Agent("Minecraft", 1);
 	
 	private final String name;

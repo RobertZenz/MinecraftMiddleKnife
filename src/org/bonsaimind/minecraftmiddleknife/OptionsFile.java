@@ -44,6 +44,7 @@ import java.util.List;
  * file that is read. New options are appended to the end.
  */
 public final class OptionsFile {
+	
 	/**
 	 * The default name of the options file.
 	 */

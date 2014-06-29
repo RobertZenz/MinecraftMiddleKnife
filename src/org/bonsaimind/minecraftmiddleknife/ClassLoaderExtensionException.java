@@ -31,6 +31,7 @@ package org.bonsaimind.minecraftmiddleknife;
  * Occurs when there was an error while extending the ClassLoader.
  */
 public class ClassLoaderExtensionException extends Exception {
+	
 	private static final long serialVersionUID = -16016124821028875L;
 	
 	public ClassLoaderExtensionException(String message, Throwable cause) {

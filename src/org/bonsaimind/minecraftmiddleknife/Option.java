@@ -31,6 +31,7 @@ package org.bonsaimind.minecraftmiddleknife;
  * Represents an option, consisting of a key and a value, in the option file.
  */
 public final class Option {
+	
 	public static final String KEY_VALUE_SEPARATOR = ":";
 	
 	private final String key;

@@ -31,6 +31,7 @@ package org.bonsaimind.minecraftmiddleknife.pre16;
  * Represents an authenticated session.
  */
 public final class AuthenticatedSession {
+	
 	private final long currentVersion;
 	private final String downloadTicket;
 	private final String username;

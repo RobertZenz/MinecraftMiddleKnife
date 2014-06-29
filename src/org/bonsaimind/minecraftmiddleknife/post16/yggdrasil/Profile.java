@@ -31,6 +31,7 @@ package org.bonsaimind.minecraftmiddleknife.post16.yggdrasil;
  * A profile.
  */
 public final class Profile {
+	
 	private final String id;
 	private final String username;
 	

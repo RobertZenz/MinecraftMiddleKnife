@@ -31,6 +31,7 @@ package org.bonsaimind.minecraftmiddleknife.pre16;
  * Occurs when the Applet could not be loaded.
  */
 public class AppletLoadException extends Exception {
+	
 	private static final long serialVersionUID = -464367371754835293L;
 	
 	public AppletLoadException(String message, Throwable cause) {

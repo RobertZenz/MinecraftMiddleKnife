@@ -30,6 +30,7 @@ package org.bonsaimind.minecraftmiddleknife.post16.yggdrasil;
 import org.json.simple.JSONObject;
 
 abstract class Payload {
+	
 	abstract JSONObject toJSON();
 	
 	@Override

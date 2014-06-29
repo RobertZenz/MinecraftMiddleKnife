@@ -43,6 +43,7 @@ import org.json.simple.parser.ParseException;
  * Static utility class that deals with everything around Yggdrasil.
  */
 public final class Yggdrasil {
+	
 	private static final URL MOJANG_AUTHENTICATION_URL;
 	private static final URL MOJANG_INVALIDATE_URL;
 	private static final URL MOJANG_REFRESH_URL;
