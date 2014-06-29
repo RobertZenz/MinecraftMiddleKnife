@@ -34,7 +34,6 @@ import javax.crypto.Cipher;
  * {@link javax.crypto.Cipher} to ease the use of some methods.
  */
 public enum LastLoginCipherMode {
-	
 	DECRYPT(Cipher.DECRYPT_MODE),
 	ENCRYPT(Cipher.ENCRYPT_MODE),
 	UNWRAP(Cipher.UNWRAP_MODE),

@@ -37,29 +37,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Reads, parses, manipulates and saves the .minecraft/options.txt-file.
+ * Reads, parses, manipulates and saves the {@code .minecraft/options.txt}-file.
+ * <p/>
+ * The important thing to note about the {@code options.txt} is that the options
+ * need to be in the correct order. This class will preserve the order of the
+ * file that is read. New options are appended to the end.
  */
-public class OptionsFile {
-	
-	/**
-	 * The default separator which separates names from values.
-	 */
-	public static final String SEPARATOR = ":";
+public final class OptionsFile {
 	/**
 	 * The default name of the options file.
 	 */
 	public static final String FILENAME = "options.txt";
+	
 	private List<String> keys = new ArrayList<String>();
 	private List<String> values = new ArrayList<String>();
 	
+	/**
+	 * Creates a new instance of {@link OptionsFile}.
+	 */
 	public OptionsFile() {
 	}
 	
 	/**
-	 * Returns the value to the given key. Returns null if it failed.
+	 * Returns the value to the given key. Returns {@code null} if there is no
+	 * such key.
 	 * 
-	 * @param key The key you want.
-	 * @return
+	 * @param key the key you want.
+	 * @return the value to the given key. {@code null} if there is no such key.
 	 */
 	public String getOption(String key) {
 		if (keys.contains(key)) {
@@ -70,10 +74,12 @@ public class OptionsFile {
 	}
 	
 	/**
-	 * Read the contents of the given file.
+	 * Reads the contents of the given file.
 	 * 
-	 * @param fileOrPath
-	 * @throws IOException
+	 * @param fileOrPath the path to the file or the containing directory. If
+	 *            only a directory is provided, the default filename is used.
+	 * @throws IOException if reading from the given file failed.
+	 * @see {@link OptionsFile#FILENAME}
 	 */
 	public void read(String fileOrPath) throws IOException {
 		File file = makeFile(fileOrPath);
@@ -85,7 +91,7 @@ public class OptionsFile {
 		
 		String line;
 		while ((line = reader.readLine()) != null) {
-			String[] keyValue = line.split(SEPARATOR);
+			String[] keyValue = line.split(Option.KEY_VALUE_SEPARATOR);
 			keys.add(keyValue[0]);
 			if (keyValue.length > 1) {
 				values.add(keyValue[1]);
@@ -98,7 +104,7 @@ public class OptionsFile {
 	}
 	
 	/**
-	 * Set the given option with the given value.
+	 * Sets the given key with the given value.
 	 * 
 	 * @param key
 	 * @param value
@@ -114,9 +120,9 @@ public class OptionsFile {
 	}
 	
 	/**
-	 * Set options from options-pairs. Every pair looks like this: "key:value".
+	 * Sets options from options-pairs. Every pair looks like this: "key:value".
 	 * 
-	 * @param options An array of options with key separated from value by a
+	 * @param options an array of options with key separated from value by a
 	 *            colon.
 	 */
 	public void setOptions(Iterable<String> options) {
@@ -133,7 +139,7 @@ public class OptionsFile {
 	}
 	
 	/**
-	 * Write to the given file.
+	 * Writes all current options to the given file.
 	 */
 	public void write(String fileOrPath) throws IOException {
 		File file = makeFile(fileOrPath);
@@ -141,13 +147,20 @@ public class OptionsFile {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 		
 		for (int idx = 0; idx < keys.size(); idx++) {
-			writer.write(keys.get(idx) + SEPARATOR + values.get(idx));
+			writer.write(keys.get(idx) + Option.KEY_VALUE_SEPARATOR + values.get(idx));
 			writer.newLine();
 		}
 		
 		writer.close();
 	}
 	
+	/**
+	 * Creates a {@link File} from the given path. If the given path is a
+	 * directory, the default filename will be appended.
+	 * 
+	 * @param fileOrPath
+	 * @return
+	 */
 	private static File makeFile(String pathOrFile) {
 		File file = new File(pathOrFile);
 		if (file.isDirectory()) {
