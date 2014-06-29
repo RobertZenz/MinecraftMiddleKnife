@@ -35,6 +35,8 @@ import org.json.simple.parser.ParseException;
  * Occurs when there is a problem when talking with the server.
  */
 public class YggdrasilError extends Exception {
+	private static final long serialVersionUID = 8796740508892633454L;
+	
 	private String error;
 	private String message;
 	private String cause;
