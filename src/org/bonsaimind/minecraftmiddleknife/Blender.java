@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.ListIterator;
@@ -47,6 +48,9 @@ import java.util.zip.ZipOutputStream;
  * "canonical" jar, meaning that files from all the other jars are only appended
  * and never overwritten. What that means? You first pass in the
  * {@code minecraft.jar} and then the {@code mod.jar}.
+ * <p/>
+ * Internally this class uses a so called stack of jars. This is a simple list
+ * of jars which will be merged.
  * <p/>
  * Simple usage:
  * 
@@ -104,6 +108,15 @@ public final class Blender {
 		if (jars != null) {
 			stack.addAll(Arrays.asList(jars));
 		}
+	}
+	
+	/**
+	 * Adds all the given jars to the stack.
+	 * 
+	 * @param jars the {@link Collection} of jars to add.
+	 */
+	public void add(Collection<String> jars) {
+		stack.addAll(jars);
 	}
 	
 	/**
