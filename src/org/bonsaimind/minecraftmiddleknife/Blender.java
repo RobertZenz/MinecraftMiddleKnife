@@ -92,13 +92,13 @@ public final class Blender {
 	private List<String> stack = new ArrayList<String>();
 	
 	/**
-	 * Creates a new instance of {@code Blender}.
+	 * Creates a new instance of {@link Blender}.
 	 */
 	public Blender() {
 	}
 	
 	/**
-	 * Add one or more jars to the stack.
+	 * Adds one or more jars to the stack.
 	 * 
 	 * @param jar the jar to add.
 	 * @param jars more jars to add.
@@ -120,11 +120,12 @@ public final class Blender {
 	}
 	
 	/**
-	 * Blends the stack into one and saves it into the given outputJar.
+	 * Blends the stack into one and saves it into the given {@link outputJar}.
 	 * 
-	 * @param outputJar The path to where to store the blended jar.
-	 * @throws FileNotFoundException
-	 * @throws IOException
+	 * @param outputJar the path to where to store the blended jar.
+	 * @throws FileNotFoundException if the output jar could not be found.
+	 * @throws IOException if the output jar could not be opened or writing to
+	 *             it failed.
 	 */
 	public void blend(String outputJar) throws FileNotFoundException, IOException {
 		File outputFile = new File(outputJar).getAbsoluteFile();
@@ -146,18 +147,18 @@ public final class Blender {
 	}
 	
 	/**
-	 * If {@code true} the manifest of the jar will also be copied.
+	 * If the manifest should be copied to the output jar..
 	 * 
-	 * @return {@code true} if the manifest should be opied.
+	 * @return {@code true} if the manifest should be copied.
 	 */
 	public boolean isKeepManifest() {
 		return keepManifest;
 	}
 	
 	/**
-	 * Set to {@code true} to keep the manifest.
+	 * Sets if the manifest should be copied to the output jar.
 	 * 
-	 * @param keepManifest
+	 * @param keepManifest @ true} if the manifest should be copied.
 	 */
 	public void setKeepManifest(boolean keepManifest) {
 		this.keepManifest = keepManifest;
