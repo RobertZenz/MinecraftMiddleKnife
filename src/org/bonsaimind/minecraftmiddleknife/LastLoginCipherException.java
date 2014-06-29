@@ -32,6 +32,7 @@ package org.bonsaimind.minecraftmiddleknife;
  * lastlogin file.
  */
 public class LastLoginCipherException extends Exception {
+	private static final long serialVersionUID = 4615635687225608947L;
 	
 	public LastLoginCipherException(String message, Throwable cause) {
 		super(message, cause);
