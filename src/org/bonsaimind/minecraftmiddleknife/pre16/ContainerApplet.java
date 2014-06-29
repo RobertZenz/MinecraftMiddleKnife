@@ -184,10 +184,8 @@ public class ContainerApplet extends Applet implements AppletStub {
 	 * Load the 4 jars and create an instance of the MinecraftApplet. Better
 	 * call loadNatives(String) first.
 	 * 
-	 * @param minecraftJar
-	 *            The directory of minecraft.jar, or the jar directly.
-	 * @param lwjglDir
-	 *            The directory of the lwjgl-jars.
+	 * @param minecraftJar The directory of minecraft.jar, or the jar directly.
+	 * @param lwjglDir The directory of the lwjgl-jars.
 	 * @return
 	 */
 	public void loadJarsAndApplet(String minecraftJar, String lwjglDir) throws AppletLoadException {
@@ -219,8 +217,7 @@ public class ContainerApplet extends Applet implements AppletStub {
 	/**
 	 * Load the native libraries.
 	 * 
-	 * @param nativeDir
-	 *            The directory which contains the native LWJGL libraries.
+	 * @param nativeDir The directory which contains the native LWJGL libraries.
 	 */
 	public void loadNatives(String nativeDir) {
 		// This fixes issues on a certain OS...
@@ -246,10 +243,8 @@ public class ContainerApplet extends Applet implements AppletStub {
 	/**
 	 * Sets the given parameter.
 	 * 
-	 * @param name
-	 *            The name of the parameter.
-	 * @param value
-	 *            The value of the paramter.
+	 * @param name The name of the parameter.
+	 * @param value The value of the paramter.
 	 */
 	public void setParameter(String name, String value) {
 		parameters.put(name, value);

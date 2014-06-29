@@ -54,10 +54,8 @@ public final class Authenticator {
 	
 	/**
 	 * Authenticates at the Mojang server and authenticates with the given
-	 * credentials.
-	 * 
-	 * This will throw an AuthenticationException if something goes wrong, this
-	 * includes wrong password or username.
+	 * credentials. This will throw an AuthenticationException if something goes
+	 * wrong, this includes wrong password or username.
 	 * 
 	 * @param credentials
 	 * @return
@@ -73,17 +71,12 @@ public final class Authenticator {
 	
 	/**
 	 * Authenticates at the given server and authenticates with the given
-	 * credentials.
+	 * credentials. This will throw an AuthenticationException if something goes
+	 * wrong, this includes wrong password or username.
 	 * 
-	 * This will throw an AuthenticationException if something goes wrong, this
-	 * includes wrong password or username.
-	 * 
-	 * @param server
-	 *            The server to connect to.
-	 * @param launcherVersion
-	 *            The launcher version to report.
-	 * @param credentials
-	 *            The credentials which will be used.
+	 * @param server The server to connect to.
+	 * @param launcherVersion The launcher version to report.
+	 * @param credentials The credentials which will be used.
 	 * @return The authenticated session.
 	 * @throws AuthenticationException
 	 */

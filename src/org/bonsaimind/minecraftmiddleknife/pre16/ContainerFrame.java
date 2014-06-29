@@ -111,8 +111,7 @@ public class ContainerFrame extends Frame {
 	/**
 	 * Set the ContainerApplet.
 	 * 
-	 * @param container
-	 *            The ContainerApplet.
+	 * @param container The ContainerApplet.
 	 */
 	public void setContainerApplet(ContainerApplet container) {
 		this.containerApplet = container;

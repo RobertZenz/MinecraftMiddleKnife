@@ -39,11 +39,9 @@ public final class Option {
 	/**
 	 * Returns the Option instance which represents the given key-value-pair.
 	 * 
-	 * @param keyValuePair
-	 *            The key-value-pair in the format "key:value".
+	 * @param keyValuePair The key-value-pair in the format "key:value".
 	 * @return
-	 * @throws If
-	 *             keyValuePair is null, empty, does not contain the
+	 * @throws If keyValuePair is null, empty, does not contain the
 	 *             KEY_VALUE_SEPARATOR or if the key-part is empty.
 	 */
 	public static Option fromString(String keyValuePair) {
@@ -70,12 +68,10 @@ public final class Option {
 	/**
 	 * Creates a new instance of the Option class.
 	 * 
-	 * @param key
-	 *            The key to use. It is not allowed to be null or empty.
-	 * @param value
-	 *            The value to use. It is not allowed to be null.
-	 * @throws IllegalArgumentException
-	 *             If the key is null or empty or the value is null.
+	 * @param key The key to use. It is not allowed to be null or empty.
+	 * @param value The value to use. It is not allowed to be null.
+	 * @throws IllegalArgumentException If the key is null or empty or the value
+	 *             is null.
 	 */
 	public Option(String key, String value) {
 		if (key == null) {
@@ -101,9 +97,8 @@ public final class Option {
 	}
 	
 	/**
-	 * Returns the string representation of this Option.
-	 * 
-	 * This is in the format {@code key + KEY_VALUE_SEPARATOR + value}.
+	 * Returns the string representation of this Option. This is in the format
+	 * {@code key + KEY_VALUE_SEPARATOR + value}.
 	 * 
 	 * @return
 	 */

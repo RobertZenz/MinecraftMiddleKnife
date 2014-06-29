@@ -106,9 +106,8 @@ public final class LastLogin {
 	/**
 	 * Reads the username and password from the given path.
 	 * 
-	 * @param fileOrPath
-	 *            Either specify a file or a path. A path will be extended with
-	 *            the default filename.
+	 * @param fileOrPath Either specify a file or a path. A path will be
+	 *            extended with the default filename.
 	 * @return The credentials read from the given file.
 	 * @throws IOException
 	 * @throws LastLoginCipherException
@@ -133,9 +132,8 @@ public final class LastLogin {
 	/**
 	 * Writes the current credentials into the given path.
 	 * 
-	 * @param fileOrPath
-	 *            Either specify a file or a path. A path will be extemded with
-	 *            the default filename.
+	 * @param fileOrPath Either specify a file or a path. A path will be
+	 *            extemded with the default filename.
 	 * @throws IOException
 	 * @throws LastLoginCipherException
 	 */

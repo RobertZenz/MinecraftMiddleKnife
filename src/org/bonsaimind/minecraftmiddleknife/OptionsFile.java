@@ -58,8 +58,7 @@ public class OptionsFile {
 	/**
 	 * Returns the value to the given key. Returns null if it failed.
 	 * 
-	 * @param key
-	 *            The key you want.
+	 * @param key The key you want.
 	 * @return
 	 */
 	public String getOption(String key) {
@@ -117,8 +116,8 @@ public class OptionsFile {
 	/**
 	 * Set options from options-pairs. Every pair looks like this: "key:value".
 	 * 
-	 * @param options
-	 *            An array of options with key separated from value by a colon.
+	 * @param options An array of options with key separated from value by a
+	 *            colon.
 	 */
 	public void setOptions(Iterable<String> options) {
 		if (options == null) {

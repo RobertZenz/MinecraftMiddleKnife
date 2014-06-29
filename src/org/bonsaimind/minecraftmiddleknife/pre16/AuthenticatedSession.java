@@ -39,12 +39,9 @@ public final class AuthenticatedSession {
 	private final String userId;
 	
 	/**
-	 * 
-	 * @param currentVersion
-	 *            The timestamp of the current version of Minecraft.
-	 * @param downloadTicket
-	 *            The download ticket for downloading Minecraft. This is
-	 *            deprecated.
+	 * @param currentVersion The timestamp of the current version of Minecraft.
+	 * @param downloadTicket The download ticket for downloading Minecraft. This
+	 *            is deprecated.
 	 * @param username
 	 * @param sessionId
 	 * @param userId
@@ -60,8 +57,7 @@ public final class AuthenticatedSession {
 	/**
 	 * Creates an AuthenticatedSession from the string representation.
 	 * 
-	 * @param value
-	 *            Needs to be in the format
+	 * @param value Needs to be in the format
 	 *            "currentVersion:downloadTicket:username:sessionId:userId".
 	 * @return The AuthenticatedSession for this string representation.
 	 */
@@ -90,9 +86,8 @@ public final class AuthenticatedSession {
 	}
 	
 	/**
-	 * The download ticket to download Minecraft from the servers.
-	 * 
-	 * This is deprecated and should only contain the string "deprecated".
+	 * The download ticket to download Minecraft from the servers. This is
+	 * deprecated and should only contain the string "deprecated".
 	 * 
 	 * @return The string "deprecated".
 	 */
@@ -128,9 +123,8 @@ public final class AuthenticatedSession {
 	}
 	
 	/**
-	 * Returns the string representation of this session.
-	 * 
-	 * It's in the format as returned by the server:
+	 * Returns the string representation of this session. It's in the format as
+	 * returned by the server:
 	 * currentVersion:downloadTicket:username:sessionId:userId
 	 * 
 	 * @return The string representation.
