@@ -39,19 +39,19 @@ import java.awt.event.WindowListener;
  * only contain our ContainerApplet which itself contains the Minecraft applet).
  */
 public class ContainerFrame extends Frame {
-
+	
 	private Applet containerApplet;
 	private boolean exitOnClose = true;
-
+	
 	public ContainerFrame(String title) throws HeadlessException {
 		super(title);
-
+		
 		addWindowListener(new WindowListener() {
-
+			
 			@Override
 			public void windowOpened(WindowEvent e) {
 			}
-
+			
 			@Override
 			public void windowClosing(WindowEvent e) {
 				Applet container = ContainerFrame.this.containerApplet;
@@ -60,64 +60,69 @@ public class ContainerFrame extends Frame {
 					container.destroy();
 					ContainerFrame.this.containerApplet = null;
 				}
-
+				
 				if (exitOnClose) {
 					System.exit(0);
 				}
 			}
-
+			
 			@Override
 			public void windowClosed(WindowEvent e) {
 			}
-
+			
 			@Override
 			public void windowIconified(WindowEvent e) {
 			}
-
+			
 			@Override
 			public void windowDeiconified(WindowEvent e) {
 			}
-
+			
 			@Override
 			public void windowActivated(WindowEvent e) {
 			}
-
+			
 			@Override
 			public void windowDeactivated(WindowEvent e) {
 			}
 		});
-
+		
 		setLayout(new BorderLayout());
 	}
-
+	
 	/**
 	 * Get the ContainerApplet.
+	 * 
 	 * @return The ContainerApplet.
 	 */
 	public Applet getContainerApplet() {
 		return containerApplet;
 	}
-
+	
 	/**
 	 * Returns if System.exit(0) is executed when closing the frame.
-	 * @return 
+	 * 
+	 * @return
 	 */
 	public boolean isExitOnClose() {
 		return exitOnClose;
 	}
-
+	
 	/**
 	 * Set the ContainerApplet.
-	 * @param container The ContainerApplet.
+	 * 
+	 * @param container
+	 *            The ContainerApplet.
 	 */
 	public void setContainerApplet(ContainerApplet container) {
 		this.containerApplet = container;
 		add("Center", container);
 	}
-
+	
 	/**
 	 * Set this to true if you want a System.exit(0) executed on window close.
-	 * @param exitOnClose 
+	 * 
+	 * @param exitOnClose
 	 */
 	public void setExitOnClose(boolean exitOnClose) {
 		this.exitOnClose = exitOnClose;

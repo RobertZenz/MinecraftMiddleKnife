@@ -28,15 +28,15 @@
 package org.bonsaimind.minecraftmiddleknife;
 
 /**
- * Occurs when there was an error during the creation of the cipher for
- * the lastlogin file.
+ * Occurs when there was an error during the creation of the cipher for the
+ * lastlogin file.
  */
 public class LastLoginCipherException extends Exception {
-
+	
 	public LastLoginCipherException(String message, Throwable cause) {
 		super(message, cause);
 	}
-
+	
 	public LastLoginCipherException(String message) {
 		super(message);
 	}

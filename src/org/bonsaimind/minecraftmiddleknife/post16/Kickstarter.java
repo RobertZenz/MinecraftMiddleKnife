@@ -35,7 +35,7 @@ import java.net.URLClassLoader;
  * Allows you to start Minecraft.
  */
 public final class Kickstarter {
-
+	
 	public static final String ARGUMENT_ACCESS_TOKEN = "accessToken";
 	public static final String ARGUMENT_ASSETS_DIR = "assetsDir";
 	/**
@@ -61,31 +61,35 @@ public final class Kickstarter {
 	public static final String ARGUMENT_WIDTH = "width";
 	public static final String MAIN_CLASS = "net.minecraft.client.main.Main";
 	public static final String MAIN_METHOD = "main";
-
+	
 	private Kickstarter() {
 		throw new AssertionError(); // Shouldn't happen.
 	}
-
+	
 	/**
 	 * Calls the Minecraft main method.
+	 * 
 	 * @param arguments
 	 * @throws RunException
 	 */
 	public static void run(Argument... arguments) throws RunException {
 		run(Argument.toStrings(arguments));
 	}
-
+	
 	/**
 	 * Calls the Minecraft main method.
+	 * 
 	 * @param arguments
 	 * @throws RunException
 	 */
 	public static void run(String... arguments) throws RunException {
 		run(MAIN_CLASS, MAIN_METHOD, arguments);
 	}
-
+	
 	/**
-	 * Calls the given method in the given class, but converts the arguments first to Strings.
+	 * Calls the given method in the given class, but converts the arguments
+	 * first to Strings.
+	 * 
 	 * @param mainClass
 	 * @param mainMethod
 	 * @param arguments
@@ -94,10 +98,11 @@ public final class Kickstarter {
 	public static void run(String mainClass, String mainMethod, Argument... arguments) throws RunException {
 		run(mainClass, mainMethod, Argument.toStrings(arguments));
 	}
-
+	
 	/**
-	 * Calls the given method in the given class with the given arguments.
-	 * Yeah, I suck at JavaDoc.
+	 * Calls the given method in the given class with the given arguments. Yeah,
+	 * I suck at JavaDoc.
+	 * 
 	 * @param mainClass
 	 * @param mainMethod
 	 * @param arguments
@@ -105,7 +110,7 @@ public final class Kickstarter {
 	 */
 	public static void run(String mainClass, String mainMethod, String... arguments) throws RunException {
 		URLClassLoader loader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
-
+		
 		try {
 			Class minecraftMainClass = loader.loadClass(mainClass);
 			Method minecraftMainMethod = minecraftMainClass.getMethod(mainMethod, String[].class);

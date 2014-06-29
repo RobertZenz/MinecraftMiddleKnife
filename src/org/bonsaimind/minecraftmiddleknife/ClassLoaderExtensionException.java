@@ -31,11 +31,11 @@ package org.bonsaimind.minecraftmiddleknife;
  * Occurs when there was an error while extending the ClassLoader.
  */
 public class ClassLoaderExtensionException extends Exception {
-
+	
 	public ClassLoaderExtensionException(String message, Throwable cause) {
 		super(message, cause);
 	}
-
+	
 	public ClassLoaderExtensionException(String message) {
 		super(message);
 	}

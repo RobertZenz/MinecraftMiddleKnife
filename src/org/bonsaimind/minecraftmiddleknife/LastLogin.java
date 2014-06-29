@@ -47,9 +47,12 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
 /**
- * <pre>Allows reading, writing of the LastLogin-File.</pre>
- *
- * <pre>Reading the credentials is easy:
+ * <pre>
+ * Allows reading, writing of the LastLogin-File.
+ * </pre>
+ * 
+ * <pre>
+ * Reading the credentials is easy:
  * {@code
  * LastLogin lastLogin = new LastLogin();
  * Credentials credentials = lastLogin.readCredentials("/path/to/.minecraft/");
@@ -57,16 +60,18 @@ import javax.crypto.spec.PBEParameterSpec;
  * System.out.println(credentials.getPassword());
  * }
  * </pre>
- *
- * <pre>And writing the credentials is similar easy:
+ * 
+ * <pre>
+ * And writing the credentials is similar easy:
  * {@code
  * Credentials credentials = new Credentials("username", "password");
  * LastLogin lastLogin = new LastLogin();
  * lastLogin.writeCredentials("/path/to/.minecraft/", credentials);
- * }</pre>
+ * }
+ * </pre>
  */
 public final class LastLogin {
-
+	
 	/**
 	 * The default filename of the lastlogin file.
 	 */
@@ -78,58 +83,59 @@ public final class LastLogin {
 	/**
 	 * The default salt that is used for the cipher.
 	 */
-	public static final byte[] DEFAULT_CIPHER_SALT = {
-		(byte) 0x0c, (byte) 0x9d, (byte) 0x4a, (byte) 0xe4,
-		(byte) 0x1e, (byte) 0x83, (byte) 0x15, (byte) 0xfc
-	};
+	public static final byte[] DEFAULT_CIPHER_SALT = { (byte) 0x0c, (byte) 0x9d, (byte) 0x4a, (byte) 0xe4, (byte) 0x1e, (byte) 0x83, (byte) 0x15, (byte) 0xfc };
 	private String cipherPassword;
 	private byte[] cipherSalt;
-
+	
 	public LastLogin() {
 	}
-
+	
 	public LastLogin(String cipherPassword, byte[] cipherSalt) {
 		this.cipherPassword = cipherPassword;
 		this.cipherSalt = cipherSalt;
 	}
-
+	
 	public String getCipherPassword() {
 		return cipherPassword;
 	}
-
+	
 	public byte[] getCipherSalt() {
 		return cipherSalt;
 	}
-
+	
 	/**
 	 * Reads the username and password from the given path.
-	 * @param fileOrPath Either specify a file or a path. A path will be extended
-	 * with the default filename.
+	 * 
+	 * @param fileOrPath
+	 *            Either specify a file or a path. A path will be extended with
+	 *            the default filename.
 	 * @return The credentials read from the given file.
 	 * @throws IOException
 	 * @throws LastLoginCipherException
 	 */
 	public Credentials readCredentials(String fileOrPath) throws IOException, LastLoginCipherException {
 		File file = makeFile(fileOrPath);
-
+		
 		DataInputStream stream = new DataInputStream(new CipherInputStream(new FileInputStream(file), getCipher(LastLoginCipherMode.DECRYPT)));
 		Credentials credentials = new Credentials(stream.readUTF(), stream.readUTF());
 		stream.close();
 		return credentials;
 	}
-
+	
 	public void setCipherPassword(String cipherPassword) {
 		this.cipherPassword = cipherPassword;
 	}
-
+	
 	public void setCipherSalt(byte[] cipherSalt) {
 		this.cipherSalt = cipherSalt;
 	}
-
+	
 	/**
 	 * Writes the current credentials into the given path.
-	 * @param fileOrPath Either specify a file or a path. A path will be extemded
-	 * with the default filename.
+	 * 
+	 * @param fileOrPath
+	 *            Either specify a file or a path. A path will be extemded with
+	 *            the default filename.
 	 * @throws IOException
 	 * @throws LastLoginCipherException
 	 */
@@ -138,13 +144,13 @@ public final class LastLogin {
 		if (!file.exists()) {
 			file.createNewFile();
 		}
-
+		
 		DataOutputStream stream = new DataOutputStream(new CipherOutputStream(new FileOutputStream(file), getCipher(LastLoginCipherMode.ENCRYPT)));
 		stream.writeUTF(credentials.getUsername());
 		stream.writeUTF(credentials.getPassword());
 		stream.close();
 	}
-
+	
 	private File makeFile(String fileOrPath) {
 		File file = new File(fileOrPath);
 		if (file.isDirectory()) {
@@ -153,19 +159,22 @@ public final class LastLogin {
 		file = file.getAbsoluteFile();
 		return file;
 	}
-
+	
 	/**
 	 * Initializes a cipher with the default values which can be used to decrypt
 	 * the lastlogin file...or encrypt, that is.
+	 * 
 	 * @param cipherMode
 	 * @return
 	 */
 	public static Cipher getCipher(LastLoginCipherMode cipherMode) throws LastLoginCipherException {
 		return getCipher(cipherMode, DEFAULT_CIPHER_PASSWORD, DEFAULT_CIPHER_SALT);
 	}
-
+	
 	/**
-	 * Initializes a cipher which can be used to decrypt the lastlogin file...or encrypt, that is.
+	 * Initializes a cipher which can be used to decrypt the lastlogin file...or
+	 * encrypt, that is.
+	 * 
 	 * @param cipherMode
 	 * @return
 	 * @throws LastLoginException
@@ -177,7 +186,7 @@ public final class LastLogin {
 		if (salt == null) {
 			salt = DEFAULT_CIPHER_SALT;
 		}
-
+		
 		try {
 			PBEParameterSpec parameter = new PBEParameterSpec(salt, 5);
 			SecretKey key = SecretKeyFactory.getInstance("PBEWithMD5AndDES").generateSecret(new PBEKeySpec(password.toCharArray()));

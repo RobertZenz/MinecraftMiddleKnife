@@ -41,13 +41,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This is the main container for the MinecraftApplet.
- * It's usage is simple, create it, set the username,
- * load the natives, load the jars, init, start.
+ * This is the main container for the MinecraftApplet. It's usage is simple,
+ * create it, set the username, load the natives, load the jars, init, start.
  */
-public class ContainerApplet extends Applet
-		implements AppletStub {
-
+public class ContainerApplet extends Applet implements AppletStub {
+	
 	public static final String PARAMETER_DEMO = "demo";
 	public static final String PARAMETER_FULLSCREEN = "fullscreen";
 	public static final String PARAMETER_LOADMAP_ID = "loadmap_id";
@@ -62,18 +60,19 @@ public class ContainerApplet extends Applet
 	private Applet minecraftApplet;
 	private Map<String, String> parameters = new HashMap<String, String>();
 	private List<String> requestedParameters = new ArrayList<String>();
-
+	
 	/**
 	 * Create an instance.
+	 * 
 	 * @throws HeadlessException
 	 */
 	public ContainerApplet(String appletToLoad) throws HeadlessException {
 		super();
-
+		
 		this.appletToLoad = appletToLoad;
-
+		
 		setLayout(new BorderLayout());
-
+		
 		parameters.put(PARAMETER_DEMO, "false");
 		parameters.put(PARAMETER_FULLSCREEN, "false");
 		parameters.put(PARAMETER_LOADMAP_ID, "0");
@@ -85,12 +84,12 @@ public class ContainerApplet extends Applet
 		parameters.put(PARAMETER_SESSION_ID, "0");
 		parameters.put(PARAMETER_STAND_ALONE, "true");
 	}
-
+	
 	@Override
 	public void appletResize(int width, int height) {
 		// And yet nobody cares...
 	}
-
+	
 	/**
 	 * Destroy the applet and the contained MinecraftApplet (if any).
 	 */
@@ -99,7 +98,7 @@ public class ContainerApplet extends Applet
 		destroyMinecraftApplet();
 		super.destroy();
 	}
-
+	
 	/**
 	 * Stops and destroys the MinecraftApplet.
 	 */
@@ -111,9 +110,10 @@ public class ContainerApplet extends Applet
 			minecraftApplet = null;
 		}
 	}
-
+	
 	/**
 	 * Returns a stub-URL which points to localhost.
+	 * 
 	 * @return
 	 */
 	@Override
@@ -123,12 +123,13 @@ public class ContainerApplet extends Applet
 		} catch (MalformedURLException ex) {
 			// If this fails, count me out!
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * Returns parameters requested by the MinecraftApplet.
+	 * 
 	 * @param name
 	 * @return
 	 */
@@ -137,7 +138,7 @@ public class ContainerApplet extends Applet
 		if (!requestedParameters.contains(name)) {
 			requestedParameters.add(name);
 		}
-
+		
 		// Check if we now about the parameters.
 		// If we don't, you most likely try to launch an update
 		// which is now requesting further parameters as I knew about.
@@ -147,20 +148,22 @@ public class ContainerApplet extends Applet
 			return "";
 		}
 	}
-
+	
 	/**
-	 * Returns a list of all parameters that have been requested from this Applet.
-	 * This is quite useful if you'd like to know what parameters this version
-	 * of Minecraft actually needs and reads.
-	 * @return 
+	 * Returns a list of all parameters that have been requested from this
+	 * Applet. This is quite useful if you'd like to know what parameters this
+	 * version of Minecraft actually needs and reads.
+	 * 
+	 * @return
 	 */
 	public List<String> getRequestedParameters() {
 		return requestedParameters;
-	}	
+	}
 	
 	/**
-	 * This returns always true. The MinecraftApplet will check
-	 * this state and exit if it does not return true.
+	 * This returns always true. The MinecraftApplet will check this state and
+	 * exit if it does not return true.
+	 * 
 	 * @return Always true.
 	 */
 	@Override
@@ -168,7 +171,7 @@ public class ContainerApplet extends Applet
 		// I'm not sure what this is, but it makes it work.
 		return true;
 	}
-
+	
 	/**
 	 * Init the MinecraftApplet.
 	 */
@@ -176,31 +179,30 @@ public class ContainerApplet extends Applet
 	public void init() {
 		minecraftApplet.init();
 	}
-
+	
 	/**
-	 * Load the 4 jars and create an instance of the MinecraftApplet.
-	 * Better call loadNatives(String) first.
-	 * @param minecraftJar The directory of minecraft.jar, or the jar directly.
-	 * @param lwjglDir The directory of the lwjgl-jars.
+	 * Load the 4 jars and create an instance of the MinecraftApplet. Better
+	 * call loadNatives(String) first.
+	 * 
+	 * @param minecraftJar
+	 *            The directory of minecraft.jar, or the jar directly.
+	 * @param lwjglDir
+	 *            The directory of the lwjgl-jars.
 	 * @return
 	 */
 	public void loadJarsAndApplet(String minecraftJar, String lwjglDir) throws AppletLoadException {
 		if (new File(minecraftJar).isDirectory()) {
 			minecraftJar = new File(minecraftJar, "minecraft.jar").getAbsolutePath();
 		}
-
+		
 		try {
 			// Our 4 jars which we need.
-			URL[] urls = new URL[]{
-				new File(minecraftJar).toURI().toURL(),
-				new File(lwjglDir, "lwjgl.jar").toURI().toURL(),
-				new File(lwjglDir, "lwjgl_util.jar").toURI().toURL(),
-				new File(lwjglDir, "jinput.jar").toURI().toURL()
-			};
-
+			URL[] urls = new URL[] { new File(minecraftJar).toURI().toURL(), new File(lwjglDir, "lwjgl.jar").toURI().toURL(),
+					new File(lwjglDir, "lwjgl_util.jar").toURI().toURL(), new File(lwjglDir, "jinput.jar").toURI().toURL() };
+			
 			// Load the jars.
 			URLClassLoader loader = new URLClassLoader(urls);
-
+			
 			// Create the MinecraftApplet
 			setMinecraftApplet((Applet) loader.loadClass(appletToLoad).newInstance());
 		} catch (ClassNotFoundException ex) {
@@ -213,40 +215,46 @@ public class ContainerApplet extends Applet
 			throw new AppletLoadException("Failed to load applet, sorry.", ex);
 		}
 	}
-
+	
 	/**
 	 * Load the native libraries.
-	 * @param nativeDir The directory which contains the native LWJGL libraries.
+	 * 
+	 * @param nativeDir
+	 *            The directory which contains the native LWJGL libraries.
 	 */
 	public void loadNatives(String nativeDir) {
 		// This fixes issues on a certain OS...
 		nativeDir = new File(nativeDir).getAbsolutePath();
-
+		
 		System.setProperty("org.lwjgl.librarypath", nativeDir);
 		System.setProperty("net.java.games.input.librarypath", nativeDir);
 	}
-
+	
 	/**
-	 * Replace the current MinecraftApplet with the given applet.
-	 * This will also call Applet.init().
-	 * @param applet 
+	 * Replace the current MinecraftApplet with the given applet. This will also
+	 * call Applet.init().
+	 * 
+	 * @param applet
 	 */
 	public void replace(Applet applet) {
 		setMinecraftApplet(applet);
-
+		
 		// Init the applet we just got.
 		minecraftApplet.init();
 	}
-
+	
 	/**
 	 * Sets the given parameter.
-	 * @param name The name of the parameter.
-	 * @param value The value of the paramter.
+	 * 
+	 * @param name
+	 *            The name of the parameter.
+	 * @param value
+	 *            The value of the paramter.
 	 */
 	public void setParameter(String name, String value) {
 		parameters.put(name, value);
 	}
-
+	
 	/**
 	 * Start the MinecraftApplet.
 	 */
@@ -254,7 +262,7 @@ public class ContainerApplet extends Applet
 	public void start() {
 		minecraftApplet.start();
 	}
-
+	
 	/**
 	 * Stop the Applet and the contained MinecraftApplet (if any).
 	 */
@@ -263,26 +271,27 @@ public class ContainerApplet extends Applet
 		if (minecraftApplet != null) {
 			minecraftApplet.stop();
 		}
-
+		
 		super.stop();
 	}
-
+	
 	/**
 	 * Replace the current MinecraftApplet with the given applet.
-	 * @param applet 
+	 * 
+	 * @param applet
 	 */
 	private void setMinecraftApplet(Applet applet) {
 		// Let's make sure that we do not collide with something.
 		destroyMinecraftApplet();
-
+		
 		minecraftApplet = applet;
-
+		
 		// Set the size, otherwise LWJGL will fail to initialize the Display.
 		minecraftApplet.setSize(getWidth(), getHeight());
-
+		
 		// We're it's...stub...
 		minecraftApplet.setStub(this);
-
+		
 		// Add it...what else?
 		add(minecraftApplet, "Center");
 	}

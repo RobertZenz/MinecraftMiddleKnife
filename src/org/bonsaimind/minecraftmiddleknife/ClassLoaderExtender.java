@@ -38,34 +38,38 @@ import java.util.List;
 
 /**
  * A static helper that let's you extend the System- and Thread-Classloader.
- * This is mostly from here: http://stackoverflow.com/questions/252893/how-do-you-change-the-classpath-within-java
+ * This is mostly from here:
+ * http://stackoverflow.com/questions/252893/how-do-you
+ * -change-the-classpath-within-java
  */
 public final class ClassLoaderExtender {
-
+	
 	private ClassLoaderExtender() {
-		throw new AssertionError(); // You're not supposed to instanciate this class.
+		throw new AssertionError(); // You're not supposed to instanciate this
+									// class.
 	}
-
+	
 	/**
 	 * Adds the given URLs to the classloeaders.
+	 * 
 	 * @param urls
 	 * @throws ClassLoaderExtensionException
 	 */
 	public static void extend(URL... urls) throws ClassLoaderExtensionException {
 		// Extend the ClassLoader of the current thread.
 		URLClassLoader loader = new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
-
+		
 		// Extend the SystemClassLoader...this is needed for mods which will
 		// use the WhatEver.getClass().getClassLoader() method to retrieve
 		// a ClassLoader.
 		URLClassLoader systemLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
-
+		
 		// Get the method via reflection.
 		Method addURLMethod;
 		try {
-			addURLMethod = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
+			addURLMethod = URLClassLoader.class.getDeclaredMethod("addURL", new Class[] { URL.class });
 			addURLMethod.setAccessible(true);
-
+			
 			for (URL url : urls) {
 				addURLMethod.invoke(systemLoader, url);
 				addURLMethod.invoke(loader, url);
@@ -82,9 +86,10 @@ public final class ClassLoaderExtender {
 			throw new ClassLoaderExtensionException("Failed to extend the ClassLoader.", ex);
 		}
 	}
-
+	
 	/**
 	 * Walks recursively through the given paths and loads all jars.
+	 * 
 	 * @param paths
 	 * @exception ClassLoaderExtensionException
 	 */
@@ -96,20 +101,21 @@ public final class ClassLoaderExtender {
 			throw new ClassLoaderExtensionException("Seems like the gods are against you today.", ex);
 		}
 	}
-
+	
 	/**
 	 * Walks recursively through all given paths and returns the jars.
+	 * 
 	 * @param paths
 	 * @return
 	 * @throws MalformedURLException
 	 */
 	public static List<URL> findJars(String... paths) throws MalformedURLException {
 		List<URL> urls = new ArrayList<URL>();
-
+		
 		for (String path : paths) {
 			for (String child : new File(path).list()) {
 				File file = new File(path, child);
-
+				
 				if (file.isDirectory()) {
 					urls.addAll(findJars(path));
 				} else if (file.isFile()) {
@@ -117,7 +123,7 @@ public final class ClassLoaderExtender {
 				}
 			}
 		}
-
+		
 		return urls;
 	}
 }

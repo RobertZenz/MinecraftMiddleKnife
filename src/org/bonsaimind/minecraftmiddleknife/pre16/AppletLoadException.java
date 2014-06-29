@@ -31,11 +31,11 @@ package org.bonsaimind.minecraftmiddleknife.pre16;
  * Occurs when the Applet could not be loaded.
  */
 public class AppletLoadException extends Exception {
-
+	
 	public AppletLoadException(String message, Throwable cause) {
 		super(message, cause);
 	}
-
+	
 	public AppletLoadException(String message) {
 		super(message);
 	}

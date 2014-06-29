@@ -43,57 +43,74 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 /**
- * <pre>Allows blending of multiple jars.</pre>
- *
- * <pre>The last given jar is the "canonical" jar, meaning that files from
- * all the other jars are only appended and never overwritten.</pre>
- *
- * <pre>What that means? You first pass in the minecraft.jar and then the mod.jar.</pre>
- *
- * <pre>Simple usage:
+ * <pre>
+ * Allows blending of multiple jars.
+ * </pre>
+ * 
+ * <pre>
+ * The last given jar is the "canonical" jar, meaning that files from
+ * all the other jars are only appended and never overwritten.
+ * </pre>
+ * 
+ * <pre>
+ * What that means? You first pass in the minecraft.jar and then the mod.jar.
+ * </pre>
+ * 
+ * <pre>
+ * Simple usage:
  * {@code
  * Blender blender = new Blender();
  * blender.add("/path/to/minecraft.jar");
  * blender.add("/path/to/modded/main.jar");
  * blender.blend("/path/to/output.jar");
- * }</pre>
- *
- * <pre>And here's how overriding of files works:
+ * }
+ * </pre>
+ * 
+ * <pre>
+ * And here's how overriding of files works:
  * {@code
  * Blender blender = new Blender();
  * blender.add("1.jar");
  * blender.add("2.jar");
  * blender.add("3.jar");
  * blender.blend("4.jar");
- * }</pre>
- *
- * <pre>The contents of all three jars:
+ * }
+ * </pre>
+ * 
+ * <pre>
+ * The contents of all three jars:
  * {@code
  * 1.jar: A1 B1 D1
  * 2.jar: C2
  * 3.jar: A3 B3
- * }</pre>
- *
- * <pre>So the final jar will contain:
+ * }
+ * </pre>
+ * 
+ * <pre>
+ * So the final jar will contain:
  * {@code
  * 4.jar: A3 B3 C2 D1
- * }</pre>
+ * }
+ * </pre>
  */
 public final class Blender {
-
+	
 	private boolean keepManifest = false;
 	private List<String> stack = new ArrayList<String>();
-
+	
 	/**
 	 * Creates a new instance of the Blender.
 	 */
 	public Blender() {
 	}
-
+	
 	/**
 	 * Add one or more jars to the stack.
-	 * @param jar The jar to add.
-	 * @param jars More jars to add.
+	 * 
+	 * @param jar
+	 *            The jar to add.
+	 * @param jars
+	 *            More jars to add.
 	 */
 	public void add(String jar, String... jars) {
 		stack.add(jar);
@@ -101,52 +118,57 @@ public final class Blender {
 			stack.addAll(Arrays.asList(jars));
 		}
 	}
-
+	
 	/**
 	 * Blends the stack into one and saves it into the given outputJar.
-	 * @param outputJar The path to where to store the blended jar.
+	 * 
+	 * @param outputJar
+	 *            The path to where to store the blended jar.
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
 	public void blend(String outputJar) throws FileNotFoundException, IOException {
 		File outputFile = new File(outputJar).getAbsoluteFile();
-
+		
 		if (outputFile.exists()) {
 			outputFile.delete();
 		}
-
+		
 		ZipOutputStream blendedOutput = new ZipOutputStream(new FileOutputStream(outputFile));
-
+		
 		// We will walk backwards through the stack.
 		ListIterator<String> iterator = stack.listIterator();
 		while (iterator.hasPrevious()) {
 			File jar = new File(iterator.previous()).getAbsoluteFile();
 			copyToZip(blendedOutput, jar, keepManifest);
 		}
-
+		
 		blendedOutput.close();
 	}
-
+	
 	/**
 	 * If true keeps the manifest of the jar.
+	 * 
 	 * @return If the manifest should be kept.
 	 */
 	public boolean isKeepManifest() {
 		return keepManifest;
 	}
-
+	
 	/**
 	 * Set to true to keep the manifest.
+	 * 
 	 * @param keepManifest
 	 */
 	public void setKeepManifest(boolean keepManifest) {
 		this.keepManifest = keepManifest;
 	}
-
+	
 	/**
-	 * Copies the contents of "from" into "output".
-	 * Please be aware that this method is evil and swallows exceptions during
-	 * the creation of entries (because of duplicates).
+	 * Copies the contents of "from" into "output". Please be aware that this
+	 * method is evil and swallows exceptions during the creation of entries
+	 * (because of duplicates).
+	 * 
 	 * @param output
 	 * @param from
 	 * @throws IOException
@@ -157,14 +179,14 @@ public final class Blender {
 		while (entries.hasMoreElements()) {
 			try {
 				ZipEntry entry = entries.nextElement();
-
+				
 				if (!keepManifest && entry.getName().equals("META-INF/MANIFEST.MF")) {
 					// Continue with the next entry in case it is the manifest.
 					continue;
 				}
-
+				
 				output.putNextEntry(entry);
-
+				
 				InputStream inputStream = input.getInputStream(entry);
 				byte[] buffer = new byte[4096];
 				while (inputStream.available() > 0) {
@@ -173,7 +195,8 @@ public final class Blender {
 				inputStream.close();
 				output.closeEntry();
 			} catch (ZipException ex) {
-				// Assume that the error is the warning about a duplicate and ignore it.
+				// Assume that the error is the warning about a duplicate and
+				// ignore it.
 				// I know that this is evil...
 			}
 		}

@@ -31,17 +31,20 @@ package org.bonsaimind.minecraftmiddleknife.pre16;
  * Represents an authenticated session.
  */
 public final class AuthenticatedSession {
-
+	
 	private final long currentVersion;
 	private final String downloadTicket;
 	private final String username;
 	private final String sessionId;
 	private final String userId;
-
+	
 	/**
-	 *
-	 * @param currentVersion The timestamp of the current version of Minecraft.
-	 * @param downloadTicket The download ticket for downloading Minecraft. This is deprecated.
+	 * 
+	 * @param currentVersion
+	 *            The timestamp of the current version of Minecraft.
+	 * @param downloadTicket
+	 *            The download ticket for downloading Minecraft. This is
+	 *            deprecated.
 	 * @param username
 	 * @param sessionId
 	 * @param userId
@@ -53,76 +56,83 @@ public final class AuthenticatedSession {
 		this.sessionId = sessionId;
 		this.userId = userId;
 	}
-
+	
 	/**
 	 * Creates an AuthenticatedSession from the string representation.
-	 * @param value Needs to be in the format "currentVersion:downloadTicket:username:sessionId:userId".
+	 * 
+	 * @param value
+	 *            Needs to be in the format
+	 *            "currentVersion:downloadTicket:username:sessionId:userId".
 	 * @return The AuthenticatedSession for this string representation.
 	 */
 	public static AuthenticatedSession fromString(String value) {
 		if (value == null) {
 			throw new IllegalArgumentException("value is not allowed to be null.");
 		}
-
+		
 		String[] splittedValue = value.split(":");
-
+		
 		if (splittedValue.length != 5) {
-			throw new IllegalArgumentException("value is not in the expected format \"currentVersion:downloadTicket:username:sessionId:userId\" but was \"" + value + "\".");
+			throw new IllegalArgumentException("value is not in the expected format \"currentVersion:downloadTicket:username:sessionId:userId\" but was \""
+					+ value + "\".");
 		}
-
-		return new AuthenticatedSession(Long.parseLong(splittedValue[0]),
-				splittedValue[1],
-				splittedValue[2],
-				splittedValue[3],
-				splittedValue[4]);
+		
+		return new AuthenticatedSession(Long.parseLong(splittedValue[0]), splittedValue[1], splittedValue[2], splittedValue[3], splittedValue[4]);
 	}
-
+	
 	/**
 	 * Returns the UNIX-timestamp of the current version of Minecraft.
+	 * 
 	 * @return The current version as UNIX-timestamp.
 	 */
 	public long getCurrentVersion() {
 		return currentVersion;
 	}
-
+	
 	/**
 	 * The download ticket to download Minecraft from the servers.
-	 *
+	 * 
 	 * This is deprecated and should only contain the string "deprecated".
+	 * 
 	 * @return The string "deprecated".
 	 */
 	public String getDownloadTicket() {
 		return downloadTicket;
 	}
-
+	
 	/**
 	 * The (if returned from the server) case corrected username.
+	 * 
 	 * @return The username.
 	 */
 	public String getUsername() {
 		return username;
 	}
-
+	
 	/**
 	 * The ID of the current session.
+	 * 
 	 * @return The session id.
 	 */
 	public String getSessionId() {
 		return sessionId;
 	}
-
+	
 	/**
 	 * The (inique) user ID.
+	 * 
 	 * @return The user ID.
 	 */
 	public String getUserId() {
 		return userId;
 	}
-
+	
 	/**
 	 * Returns the string representation of this session.
-	 *
-	 * It's in the format as returned by the server: currentVersion:downloadTicket:username:sessionId:userId
+	 * 
+	 * It's in the format as returned by the server:
+	 * currentVersion:downloadTicket:username:sessionId:userId
+	 * 
 	 * @return The string representation.
 	 */
 	@Override

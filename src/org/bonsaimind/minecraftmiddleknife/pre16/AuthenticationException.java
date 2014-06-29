@@ -31,11 +31,11 @@ package org.bonsaimind.minecraftmiddleknife.pre16;
  * Occurs when the Applet could not be loaded.
  */
 public class AuthenticationException extends Exception {
-
+	
 	public AuthenticationException(String message, Throwable cause) {
 		super(message, cause);
 	}
-
+	
 	public AuthenticationException(String message) {
 		super(message);
 	}
