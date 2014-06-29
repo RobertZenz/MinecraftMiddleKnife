@@ -33,6 +33,7 @@ package org.bonsaimind.minecraftmiddleknife;
 public final class Option {
 	
 	public static final String KEY_VALUE_SEPARATOR = ":";
+	
 	private final String key;
 	private final String value;
 	

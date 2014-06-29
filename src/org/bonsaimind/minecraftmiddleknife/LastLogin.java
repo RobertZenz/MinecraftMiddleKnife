@@ -81,6 +81,7 @@ public final class LastLogin {
 	 * The default salt that is used for the cipher.
 	 */
 	public static final byte[] DEFAULT_CIPHER_SALT = { (byte) 0x0c, (byte) 0x9d, (byte) 0x4a, (byte) 0xe4, (byte) 0x1e, (byte) 0x83, (byte) 0x15, (byte) 0xfc };
+	
 	private String cipherPassword;
 	private byte[] cipherSalt;
 	
