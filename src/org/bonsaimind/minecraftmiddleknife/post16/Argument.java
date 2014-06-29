@@ -34,7 +34,6 @@ import java.util.List;
  * A simple argument which is used to launch Minecraft.
  */
 public final class Argument {
-	
 	private final String name;
 	private final String value;
 	

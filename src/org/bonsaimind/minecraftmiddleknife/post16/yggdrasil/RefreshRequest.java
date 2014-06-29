@@ -33,7 +33,6 @@ import org.json.simple.JSONObject;
  * Represents a request for refreshing the access token.
  */
 public class RefreshRequest extends Payload {
-	
 	private final String accessToken;
 	private final String clientToken;
 	

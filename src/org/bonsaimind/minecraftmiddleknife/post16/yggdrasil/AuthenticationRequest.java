@@ -33,7 +33,6 @@ import org.json.simple.JSONObject;
  * Represents the request for authentication.
  */
 public final class AuthenticationRequest extends Payload {
-	
 	private final Agent agent;
 	private final String username;
 	private final String password;

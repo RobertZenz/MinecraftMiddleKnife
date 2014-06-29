@@ -35,7 +35,6 @@ import org.json.simple.parser.ParseException;
  * Occurs when there is a problem when talking with the server.
  */
 public class YggdrasilError extends Exception {
-	
 	private String error;
 	private String message;
 	private String cause;

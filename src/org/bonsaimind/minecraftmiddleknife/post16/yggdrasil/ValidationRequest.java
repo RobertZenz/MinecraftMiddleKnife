@@ -33,7 +33,6 @@ import org.json.simple.JSONObject;
  * Represents a validation request of an access token.
  */
 public class ValidationRequest extends Payload {
-	
 	private final String accessToken;
 	
 	public ValidationRequest(String accessToken) {

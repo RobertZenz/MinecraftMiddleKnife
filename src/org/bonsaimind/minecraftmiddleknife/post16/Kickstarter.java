@@ -35,7 +35,6 @@ import java.net.URLClassLoader;
  * Allows you to start Minecraft.
  */
 public final class Kickstarter {
-	
 	public static final String ARGUMENT_ACCESS_TOKEN = "accessToken";
 	public static final String ARGUMENT_ASSETS_DIR = "assetsDir";
 	/**

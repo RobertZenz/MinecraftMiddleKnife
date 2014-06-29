@@ -30,10 +30,9 @@ package org.bonsaimind.minecraftmiddleknife.post16.yggdrasil;
 import org.json.simple.JSONObject;
 
 /**
- * Represents a reuqest for invalidation of the tokens.
+ * Represents a request for invalidation of the tokens.
  */
 public final class InvalidationRequest extends Payload {
-	
 	private final String accessToken;
 	private final String clientToken;
 	
