@@ -43,27 +43,18 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 /**
- * <pre>
- * Allows blending of multiple jars.
- * </pre>
- * 
- * <pre>
- * The last given jar is the "canonical" jar, meaning that files from
- * all the other jars are only appended and never overwritten.
- * </pre>
- * 
- * <pre>
- * What that means? You first pass in the minecraft.jar and then the mod.jar.
- * </pre>
- * 
- * <pre>
+ * Allows blending/merging of multiple jars. The last given jar is the
+ * "canonical" jar, meaning that files from all the other jars are only appended
+ * and never overwritten. What that means? You first pass in the
+ * {@code minecraft.jar} and then the {@code mod.jar}.
+ * <p/>
  * Simple usage:
- * {@code
+ * 
+ * <pre>
  * Blender blender = new Blender();
- * blender.add("/path/to/minecraft.jar");
- * blender.add("/path/to/modded/main.jar");
- * blender.blend("/path/to/output.jar");
- * }
+ * blender.add(&quot;/path/to/minecraft.jar&quot;);
+ * blender.add(&quot;/path/to/modded/main.jar&quot;);
+ * blender.blend(&quot;/path/to/output.jar&quot;);
  * </pre>
  * 
  * <pre>
@@ -76,21 +67,19 @@ import java.util.zip.ZipOutputStream;
  * blender.blend("4.jar");
  * }
  * </pre>
+ * <p/>
+ * The contents of all three jars:
  * 
  * <pre>
- * The contents of all three jars:
- * {@code
  * 1.jar: A1 B1 D1
  * 2.jar: C2
  * 3.jar: A3 B3
- * }
  * </pre>
+ * <p/>
+ * So the final jar will contain:
  * 
  * <pre>
- * So the final jar will contain:
- * {@code
  * 4.jar: A3 B3 C2 D1
- * }
  * </pre>
  */
 public final class Blender {
@@ -99,7 +88,7 @@ public final class Blender {
 	private List<String> stack = new ArrayList<String>();
 	
 	/**
-	 * Creates a new instance of the Blender.
+	 * Creates a new instance of {@code Blender}.
 	 */
 	public Blender() {
 	}
@@ -107,10 +96,8 @@ public final class Blender {
 	/**
 	 * Add one or more jars to the stack.
 	 * 
-	 * @param jar
-	 *            The jar to add.
-	 * @param jars
-	 *            More jars to add.
+	 * @param jar the jar to add.
+	 * @param jars more jars to add.
 	 */
 	public void add(String jar, String... jars) {
 		stack.add(jar);
@@ -122,8 +109,7 @@ public final class Blender {
 	/**
 	 * Blends the stack into one and saves it into the given outputJar.
 	 * 
-	 * @param outputJar
-	 *            The path to where to store the blended jar.
+	 * @param outputJar The path to where to store the blended jar.
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
@@ -147,16 +133,16 @@ public final class Blender {
 	}
 	
 	/**
-	 * If true keeps the manifest of the jar.
+	 * If {@code true} the manifest of the jar will also be copied.
 	 * 
-	 * @return If the manifest should be kept.
+	 * @return {@code true} if the manifest should be opied.
 	 */
 	public boolean isKeepManifest() {
 		return keepManifest;
 	}
 	
 	/**
-	 * Set to true to keep the manifest.
+	 * Set to {@code true} to keep the manifest.
 	 * 
 	 * @param keepManifest
 	 */
@@ -165,9 +151,9 @@ public final class Blender {
 	}
 	
 	/**
-	 * Copies the contents of "from" into "output". Please be aware that this
-	 * method is evil and swallows exceptions during the creation of entries
-	 * (because of duplicates).
+	 * Copies the contents of {@code from} into {@code output}. Please be aware
+	 * that this method is evil and swallows exceptions during the creation of
+	 * entries (because of duplicates).
 	 * 
 	 * @param output
 	 * @param from
