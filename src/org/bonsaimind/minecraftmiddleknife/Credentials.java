@@ -28,7 +28,7 @@
 package org.bonsaimind.minecraftmiddleknife;
 
 /**
- * The login credentials.
+ * Represents credentials consisting of a username and a password.
  */
 public class Credentials {
 	
