@@ -39,6 +39,7 @@ import java.awt.event.WindowListener;
  * only contain our ContainerApplet which itself contains the Minecraft applet).
  */
 public class ContainerFrame extends Frame {
+	private static final long serialVersionUID = 5317438537200198099L;
 	
 	private Applet containerApplet;
 	private boolean exitOnClose = true;

@@ -36,13 +36,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+
 import org.bonsaimind.minecraftmiddleknife.Credentials;
 
 /**
  * Static helper to create an AuthenticatedSession.
  */
 public final class Authenticator {
-	
 	/**
 	 * The default version which will be reported.
 	 */

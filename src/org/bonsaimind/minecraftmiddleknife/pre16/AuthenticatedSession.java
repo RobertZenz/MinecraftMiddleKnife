@@ -31,7 +31,6 @@ package org.bonsaimind.minecraftmiddleknife.pre16;
  * Represents an authenticated session.
  */
 public final class AuthenticatedSession {
-	
 	private final long currentVersion;
 	private final String downloadTicket;
 	private final String username;
@@ -39,8 +38,8 @@ public final class AuthenticatedSession {
 	private final String userId;
 	
 	/**
-	 * @param currentVersion The timestamp of the current version of Minecraft.
-	 * @param downloadTicket The download ticket for downloading Minecraft. This
+	 * @param currentVersion the timestamp of the current version of Minecraft.
+	 * @param downloadTicket the download ticket for downloading Minecraft. This
 	 *            is deprecated.
 	 * @param username
 	 * @param sessionId

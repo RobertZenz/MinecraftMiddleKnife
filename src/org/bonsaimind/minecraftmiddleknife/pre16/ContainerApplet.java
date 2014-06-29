@@ -45,6 +45,7 @@ import java.util.Map;
  * create it, set the username, load the natives, load the jars, init, start.
  */
 public class ContainerApplet extends Applet implements AppletStub {
+	private static final long serialVersionUID = 4723572827088239425L;
 	
 	public static final String PARAMETER_DEMO = "demo";
 	public static final String PARAMETER_FULLSCREEN = "fullscreen";
@@ -56,6 +57,7 @@ public class ContainerApplet extends Applet implements AppletStub {
 	public static final String PARAMETER_SESSION_ID = "sessionid";
 	public static final String PARAMETER_STAND_ALONE = "stand-alone";
 	public static final String PARAMETER_USERNAME = "username";
+	
 	private String appletToLoad;
 	private Applet minecraftApplet;
 	private Map<String, String> parameters = new HashMap<String, String>();
