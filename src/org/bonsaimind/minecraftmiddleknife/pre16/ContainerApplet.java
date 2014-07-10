@@ -31,10 +31,8 @@ import java.applet.Applet;
 import java.applet.AppletStub;
 import java.awt.BorderLayout;
 import java.awt.HeadlessException;
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,8 +44,6 @@ import java.util.Map;
  */
 public class ContainerApplet extends Applet implements AppletStub {
 	
-	private static final long serialVersionUID = 4723572827088239425L;
-	
 	public static final String PARAMETER_DEMO = "demo";
 	public static final String PARAMETER_FULLSCREEN = "fullscreen";
 	public static final String PARAMETER_LOADMAP_ID = "loadmap_id";
@@ -58,21 +54,28 @@ public class ContainerApplet extends Applet implements AppletStub {
 	public static final String PARAMETER_SESSION_ID = "sessionid";
 	public static final String PARAMETER_STAND_ALONE = "stand-alone";
 	public static final String PARAMETER_USERNAME = "username";
+	private static final long serialVersionUID = 4723572827088239425L;
 	
 	private String appletToLoad;
+	private ClassLoader classLoaderToUse;
 	private Applet minecraftApplet;
 	private Map<String, String> parameters = new HashMap<String, String>();
 	private List<String> requestedParameters = new ArrayList<String>();
 	
 	/**
-	 * Create an instance.
+	 * Creates a new instance of {@link ContainerApplet}.
 	 * 
-	 * @throws HeadlessException
+	 * @param appletToLoad the name of the class which is the applet.
+	 * @param classLoaderToUse the {@link ClassLoader} which should be used to
+	 *            load the applet.
+	 * @throws HeadlessException if GraphicsEnvironment.isHeadless() returns
+	 *             true.
 	 */
-	public ContainerApplet(String appletToLoad) throws HeadlessException {
+	public ContainerApplet(String appletToLoad, ClassLoader classLoaderToUse) throws HeadlessException {
 		super();
 		
 		this.appletToLoad = appletToLoad;
+		this.classLoaderToUse = classLoaderToUse;
 		
 		setLayout(new BorderLayout());
 		
@@ -147,9 +150,9 @@ public class ContainerApplet extends Applet implements AppletStub {
 		// which is now requesting further parameters as I knew about.
 		if (parameters.containsKey(name)) {
 			return parameters.get(name);
-		} else {
-			return "";
 		}
+		
+		return "";
 	}
 	
 	/**
@@ -161,6 +164,14 @@ public class ContainerApplet extends Applet implements AppletStub {
 	 */
 	public List<String> getRequestedParameters() {
 		return requestedParameters;
+	}
+	
+	/**
+	 * Init the MinecraftApplet.
+	 */
+	@Override
+	public void init() {
+		minecraftApplet.init();
 	}
 	
 	/**
@@ -176,58 +187,20 @@ public class ContainerApplet extends Applet implements AppletStub {
 	}
 	
 	/**
-	 * Init the MinecraftApplet.
-	 */
-	@Override
-	public void init() {
-		minecraftApplet.init();
-	}
-	
-	/**
-	 * Load the 4 jars and create an instance of the MinecraftApplet. Better
-	 * call loadNatives(String) first.
+	 * Loads the Minecraft Applet.
 	 * 
-	 * @param minecraftJar The directory of minecraft.jar, or the jar directly.
-	 * @param lwjglDir The directory of the lwjgl-jars.
-	 * @return
+	 * @throws AppletLoadException if loading the applet failed.
 	 */
-	public void loadJarsAndApplet(String minecraftJar, String lwjglDir) throws AppletLoadException {
-		if (new File(minecraftJar).isDirectory()) {
-			minecraftJar = new File(minecraftJar, "minecraft.jar").getAbsolutePath();
-		}
-		
+	public void loadMinecraftApplet() throws AppletLoadException {
 		try {
-			// Our 4 jars which we need.
-			URL[] urls = new URL[] { new File(minecraftJar).toURI().toURL(), new File(lwjglDir, "lwjgl.jar").toURI().toURL(),
-					new File(lwjglDir, "lwjgl_util.jar").toURI().toURL(), new File(lwjglDir, "jinput.jar").toURI().toURL() };
-			
-			// Load the jars.
-			URLClassLoader loader = new URLClassLoader(urls);
-			
-			// Create the MinecraftApplet
-			setMinecraftApplet((Applet) loader.loadClass(appletToLoad).newInstance());
-		} catch (ClassNotFoundException e) {
-			throw new AppletLoadException("Failed to load applet, sorry.", e);
+			setMinecraftApplet((Applet) classLoaderToUse.loadClass(appletToLoad).newInstance());
 		} catch (InstantiationException e) {
-			throw new AppletLoadException("Failed to load applet, sorry.", e);
+			throw new AppletLoadException("Failed to load the Minecraft Applet.", e);
 		} catch (IllegalAccessException e) {
-			throw new AppletLoadException("Failed to load applet, sorry.", e);
-		} catch (MalformedURLException e) {
-			throw new AppletLoadException("Failed to load applet, sorry.", e);
+			throw new AppletLoadException("Failed to load the Minecraft Applet.", e);
+		} catch (ClassNotFoundException e) {
+			throw new AppletLoadException("Failed to load the Minecraft Applet.", e);
 		}
-	}
-	
-	/**
-	 * Load the native libraries.
-	 * 
-	 * @param nativeDir The directory which contains the native LWJGL libraries.
-	 */
-	public void loadNatives(String nativeDir) {
-		// This fixes issues on a certain OS...
-		nativeDir = new File(nativeDir).getAbsolutePath();
-		
-		System.setProperty("org.lwjgl.librarypath", nativeDir);
-		System.setProperty("net.java.games.input.librarypath", nativeDir);
 	}
 	
 	/**
@@ -241,6 +214,27 @@ public class ContainerApplet extends Applet implements AppletStub {
 		
 		// Init the applet we just got.
 		minecraftApplet.init();
+	}
+	
+	/**
+	 * Replace the current MinecraftApplet with the given applet.
+	 * 
+	 * @param applet
+	 */
+	private void setMinecraftApplet(Applet applet) {
+		// Let's make sure that we do not collide with something.
+		destroyMinecraftApplet();
+		
+		minecraftApplet = applet;
+		
+		// Set the size, otherwise LWJGL will fail to initialize the Display.
+		minecraftApplet.setSize(getWidth(), getHeight());
+		
+		// We're it's...stub...
+		minecraftApplet.setStub(this);
+		
+		// Add it...what else?
+		add(minecraftApplet, "Center");
 	}
 	
 	/**
@@ -271,26 +265,5 @@ public class ContainerApplet extends Applet implements AppletStub {
 		}
 		
 		super.stop();
-	}
-	
-	/**
-	 * Replace the current MinecraftApplet with the given applet.
-	 * 
-	 * @param applet
-	 */
-	private void setMinecraftApplet(Applet applet) {
-		// Let's make sure that we do not collide with something.
-		destroyMinecraftApplet();
-		
-		minecraftApplet = applet;
-		
-		// Set the size, otherwise LWJGL will fail to initialize the Display.
-		minecraftApplet.setSize(getWidth(), getHeight());
-		
-		// We're it's...stub...
-		minecraftApplet.setStub(this);
-		
-		// Add it...what else?
-		add(minecraftApplet, "Center");
 	}
 }

@@ -52,6 +52,7 @@ public class ContainerFrame extends Frame {
 			
 			@Override
 			public void windowOpened(WindowEvent e) {
+				// Not needed...
 			}
 			
 			@Override
@@ -70,22 +71,27 @@ public class ContainerFrame extends Frame {
 			
 			@Override
 			public void windowClosed(WindowEvent e) {
+				// Not needed...
 			}
 			
 			@Override
 			public void windowIconified(WindowEvent e) {
+				// Not needed...
 			}
 			
 			@Override
 			public void windowDeiconified(WindowEvent e) {
+				// Not needed...
 			}
 			
 			@Override
 			public void windowActivated(WindowEvent e) {
+				// Not needed...
 			}
 			
 			@Override
 			public void windowDeactivated(WindowEvent e) {
+				// Not needed...
 			}
 		});
 		

@@ -29,7 +29,6 @@ package org.bonsaimind.minecraftmiddleknife.post16;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URLClassLoader;
 
 /**
  * Allows you to start Minecraft.
@@ -69,50 +68,56 @@ public final class Kickstarter {
 	/**
 	 * Calls the Minecraft main method.
 	 * 
+	 * @param classLoader the {@link CLassLoader} that will be used for loading
+	 *            the main class.
 	 * @param arguments
 	 * @throws RunException
 	 */
-	public static void run(Argument... arguments) throws RunException {
-		run(Argument.toStrings(arguments));
+	public static void run(ClassLoader classLoader, Argument... arguments) throws RunException {
+		run(classLoader, Argument.toStrings(arguments));
 	}
 	
 	/**
 	 * Calls the Minecraft main method.
 	 * 
+	 * @param classLoader the {@link CLassLoader} that will be used for loading
+	 *            the main class.
 	 * @param arguments
 	 * @throws RunException
 	 */
-	public static void run(String... arguments) throws RunException {
-		run(MAIN_CLASS, MAIN_METHOD, arguments);
+	public static void run(ClassLoader classLoader, String... arguments) throws RunException {
+		run(classLoader, MAIN_CLASS, MAIN_METHOD, arguments);
 	}
 	
 	/**
 	 * Calls the given method in the given class, but converts the arguments
 	 * first to Strings.
 	 * 
+	 * @param classLoader the {@link CLassLoader} that will be used for loading
+	 *            the main class.
 	 * @param mainClass
 	 * @param mainMethod
 	 * @param arguments
 	 * @throws RunException
 	 */
-	public static void run(String mainClass, String mainMethod, Argument... arguments) throws RunException {
-		run(mainClass, mainMethod, Argument.toStrings(arguments));
+	public static void run(ClassLoader classLoader, String mainClass, String mainMethod, Argument... arguments) throws RunException {
+		run(classLoader, mainClass, mainMethod, Argument.toStrings(arguments));
 	}
 	
 	/**
 	 * Calls the given method in the given class with the given arguments. Yeah,
 	 * I suck at JavaDoc.
 	 * 
+	 * @param classLoader the {@link CLassLoader} that will be used for loading
+	 *            the main class.
 	 * @param mainClass
 	 * @param mainMethod
 	 * @param arguments
 	 * @throws RunException
 	 */
-	public static void run(String mainClass, String mainMethod, String... arguments) throws RunException {
-		URLClassLoader loader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
-		
+	public static void run(ClassLoader classLoader, String mainClass, String mainMethod, String... arguments) throws RunException {
 		try {
-			Class minecraftMainClass = loader.loadClass(mainClass);
+			Class<?> minecraftMainClass = classLoader.loadClass(mainClass);
 			Method minecraftMainMethod = minecraftMainClass.getMethod(mainMethod, String[].class);
 			minecraftMainMethod.invoke(null, (Object) (arguments));
 		} catch (NoSuchMethodException e) {
