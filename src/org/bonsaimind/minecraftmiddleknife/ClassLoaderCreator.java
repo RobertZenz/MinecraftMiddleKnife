@@ -41,21 +41,51 @@ public final class ClassLoaderCreator {
 	
 	private List<URL> jars = new ArrayList<URL>();
 	
+	/**
+	 * Creates a new instance of {@link ClassLoaderCreator}.
+	 */
 	public ClassLoaderCreator() {
 	}
 	
+	/**
+	 * Adds the given {@link URL} to the list.
+	 * 
+	 * @param jar the {@link URL} to add.
+	 */
 	public void addJar(URL jar) {
 		jars.add(jar);
 	}
 	
+	/**
+	 * Adds the given {@link File} to the list after converting it into an
+	 * {@link URL}.
+	 * 
+	 * @param jar the {@link File} to add.
+	 * @throws MalformedURLException If a protocol handler for the URL could not
+	 *             be found, or if some other error occurred while constructing
+	 *             the URL
+	 */
 	public void addJar(File jar) throws MalformedURLException {
 		addJar(jar.toURI().toURL());
 	}
 	
+	/**
+	 * Adds the given path to the list after converting it into an {@link URL}.
+	 * 
+	 * @param jar the path to add.
+	 * @throws MalformedURLException If a protocol handler for the URL could not
+	 *             be found, or if some other error occurred while constructing
+	 *             the URL
+	 */
 	public void addJar(String jar) throws MalformedURLException {
 		addJar(new File(jar));
 	}
 	
+	/**
+	 * Creates a new {@link ClassLoader} from the list.
+	 * 
+	 * @return the {@link ClassLoadeR} you wanted all along.
+	 */
 	public URLClassLoader createClassLoader() {
 		URL[] urls = new URL[jars.size()];
 		return new URLClassLoader(jars.toArray(urls));
