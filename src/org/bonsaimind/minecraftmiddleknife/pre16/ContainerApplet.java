@@ -206,14 +206,14 @@ public class ContainerApplet extends Applet implements AppletStub {
 			
 			// Create the MinecraftApplet
 			setMinecraftApplet((Applet) loader.loadClass(appletToLoad).newInstance());
-		} catch (ClassNotFoundException ex) {
-			throw new AppletLoadException("Failed to load applet, sorry.", ex);
-		} catch (InstantiationException ex) {
-			throw new AppletLoadException("Failed to load applet, sorry.", ex);
-		} catch (IllegalAccessException ex) {
-			throw new AppletLoadException("Failed to load applet, sorry.", ex);
-		} catch (MalformedURLException ex) {
-			throw new AppletLoadException("Failed to load applet, sorry.", ex);
+		} catch (ClassNotFoundException e) {
+			throw new AppletLoadException("Failed to load applet, sorry.", e);
+		} catch (InstantiationException e) {
+			throw new AppletLoadException("Failed to load applet, sorry.", e);
+		} catch (IllegalAccessException e) {
+			throw new AppletLoadException("Failed to load applet, sorry.", e);
+		} catch (MalformedURLException e) {
+			throw new AppletLoadException("Failed to load applet, sorry.", e);
 		}
 	}
 	

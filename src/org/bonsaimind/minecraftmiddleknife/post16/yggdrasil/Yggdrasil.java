@@ -59,8 +59,8 @@ public final class Yggdrasil {
 			MOJANG_REFRESH_URL = new URL(mojangServer + "refresh");
 			MOJANG_SIGNOUT_URL = new URL(mojangServer + "signout");
 			MOJANG_VALIDATE_URL = new URL(mojangServer + "validate");
-		} catch (MalformedURLException ex) {
-			throw new AssertionError("Shouldn't happen...really.", ex);
+		} catch (MalformedURLException e) {
+			throw new AssertionError("Shouldn't happen...really.", e);
 		}
 	}
 	
@@ -73,8 +73,8 @@ public final class Yggdrasil {
 		
 		try {
 			return AuthenticationResponse.fromJSON(response);
-		} catch (ParseException ex) {
-			throw new YggdrasilError("Parsing the response failed.", ex);
+		} catch (ParseException e) {
+			throw new YggdrasilError("Parsing the response failed.", e);
 		}
 	}
 	
@@ -95,8 +95,8 @@ public final class Yggdrasil {
 		
 		try {
 			return RefreshResponse.fromJSON(response);
-		} catch (ParseException ex) {
-			throw new YggdrasilError("Parsing the response failed.", ex);
+		} catch (ParseException e) {
+			throw new YggdrasilError("Parsing the response failed.", e);
 		}
 	}
 	
@@ -151,12 +151,12 @@ public final class Yggdrasil {
 	private static String httpRequestExceptionWrapped(URL url, String content) throws YggdrasilError {
 		try {
 			return httpRequest(url, content);
-		} catch (UnsupportedEncodingException ex) {
-			throw new YggdrasilError("Action failed.", ex);
-		} catch (IOException ex) {
-			throw new YggdrasilError("Action failed.", ex);
-		} catch (ParseException ex) {
-			throw new YggdrasilError("Action failed.", ex);
+		} catch (UnsupportedEncodingException e) {
+			throw new YggdrasilError("Action failed.", e);
+		} catch (IOException e) {
+			throw new YggdrasilError("Action failed.", e);
+		} catch (ParseException e) {
+			throw new YggdrasilError("Action failed.", e);
 		}
 	}
 	

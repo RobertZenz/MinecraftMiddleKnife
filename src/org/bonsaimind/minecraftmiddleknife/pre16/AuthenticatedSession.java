@@ -109,7 +109,7 @@ public final class AuthenticatedSession {
 	 */
 	@Override
 	public String toString() {
-		return String.format("%s:%s:%s:%s:%s", currentVersion, downloadTicket, username, sessionId, userId);
+		return String.format("%s:%s:%s:%s:%s", Long.valueOf(currentVersion), downloadTicket, username, sessionId, userId);
 	}
 	
 	/**

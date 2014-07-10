@@ -205,16 +205,16 @@ public final class LastLogin {
 			Cipher cipher = Cipher.getInstance("PBEWithMD5AndDES");
 			cipher.init(cipherMode.getMode(), key, parameter);
 			return cipher;
-		} catch (NoSuchAlgorithmException ex) {
-			throw new LastLoginCipherException("Failed to find Algorithm!", ex);
-		} catch (InvalidKeySpecException ex) {
-			throw new LastLoginCipherException("Failed to create cipher!", ex);
-		} catch (NoSuchPaddingException ex) {
-			throw new LastLoginCipherException("Failed to create cipher!", ex);
-		} catch (InvalidKeyException ex) {
-			throw new LastLoginCipherException("Failed to create cipher!", ex);
-		} catch (InvalidAlgorithmParameterException ex) {
-			throw new LastLoginCipherException("Failed to create cipher!", ex);
+		} catch (NoSuchAlgorithmException e) {
+			throw new LastLoginCipherException("Failed to find Algorithm!", e);
+		} catch (InvalidKeySpecException e) {
+			throw new LastLoginCipherException("Failed to create cipher!", e);
+		} catch (NoSuchPaddingException e) {
+			throw new LastLoginCipherException("Failed to create cipher!", e);
+		} catch (InvalidKeyException e) {
+			throw new LastLoginCipherException("Failed to create cipher!", e);
+		} catch (InvalidAlgorithmParameterException e) {
+			throw new LastLoginCipherException("Failed to create cipher!", e);
 		}
 	}
 }

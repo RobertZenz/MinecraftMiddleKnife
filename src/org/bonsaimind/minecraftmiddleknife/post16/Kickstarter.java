@@ -35,6 +35,7 @@ import java.net.URLClassLoader;
  * Allows you to start Minecraft.
  */
 public final class Kickstarter {
+	
 	public static final String ARGUMENT_ACCESS_TOKEN = "accessToken";
 	public static final String ARGUMENT_ASSETS_DIR = "assetsDir";
 	/**
@@ -114,18 +115,18 @@ public final class Kickstarter {
 			Class minecraftMainClass = loader.loadClass(mainClass);
 			Method minecraftMainMethod = minecraftMainClass.getMethod(mainMethod, String[].class);
 			minecraftMainMethod.invoke(null, (Object) (arguments));
-		} catch (NoSuchMethodException ex) {
-			throw new RunException("Failed to start Minecraft.", ex);
-		} catch (SecurityException ex) {
-			throw new RunException("Failed to start Minecraft.", ex);
-		} catch (IllegalAccessException ex) {
-			throw new RunException("Failed to start Minecraft.", ex);
-		} catch (IllegalArgumentException ex) {
-			throw new RunException("Failed to start Minecraft.", ex);
-		} catch (InvocationTargetException ex) {
-			throw new RunException("Failed to start Minecraft.", ex);
-		} catch (ClassNotFoundException ex) {
-			throw new RunException("Failed to start Minecraft.", ex);
+		} catch (NoSuchMethodException e) {
+			throw new RunException("Failed to start Minecraft.", e);
+		} catch (SecurityException e) {
+			throw new RunException("Failed to start Minecraft.", e);
+		} catch (IllegalAccessException e) {
+			throw new RunException("Failed to start Minecraft.", e);
+		} catch (IllegalArgumentException e) {
+			throw new RunException("Failed to start Minecraft.", e);
+		} catch (InvocationTargetException e) {
+			throw new RunException("Failed to start Minecraft.", e);
+		} catch (ClassNotFoundException e) {
+			throw new RunException("Failed to start Minecraft.", e);
 		}
 	}
 }

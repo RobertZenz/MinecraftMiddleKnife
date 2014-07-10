@@ -74,16 +74,16 @@ public final class ClassLoaderExtender {
 				addURLMethod.invoke(systemLoader, url);
 				addURLMethod.invoke(loader, url);
 			}
-		} catch (IllegalAccessException ex) {
-			throw new ClassLoaderExtensionException("Failed to extend the ClassLoader.", ex);
-		} catch (IllegalArgumentException ex) {
-			throw new ClassLoaderExtensionException("Failed to extend the ClassLoader.", ex);
-		} catch (InvocationTargetException ex) {
-			throw new ClassLoaderExtensionException("Failed to extend the ClassLoader.", ex);
-		} catch (NoSuchMethodException ex) {
-			throw new ClassLoaderExtensionException("Failed to extend the ClassLoader.", ex);
-		} catch (SecurityException ex) {
-			throw new ClassLoaderExtensionException("Failed to extend the ClassLoader.", ex);
+		} catch (IllegalAccessException e) {
+			throw new ClassLoaderExtensionException("Failed to extend the ClassLoader.", e);
+		} catch (IllegalArgumentException e) {
+			throw new ClassLoaderExtensionException("Failed to extend the ClassLoader.", e);
+		} catch (InvocationTargetException e) {
+			throw new ClassLoaderExtensionException("Failed to extend the ClassLoader.", e);
+		} catch (NoSuchMethodException e) {
+			throw new ClassLoaderExtensionException("Failed to extend the ClassLoader.", e);
+		} catch (SecurityException e) {
+			throw new ClassLoaderExtensionException("Failed to extend the ClassLoader.", e);
 		}
 	}
 	
@@ -97,8 +97,8 @@ public final class ClassLoaderExtender {
 		try {
 			List<URL> jars = findJars(paths);
 			extend(jars.toArray(new URL[jars.size()]));
-		} catch (MalformedURLException ex) {
-			throw new ClassLoaderExtensionException("Seems like the gods are against you today.", ex);
+		} catch (MalformedURLException e) {
+			throw new ClassLoaderExtensionException("Seems like the gods are against you today.", e);
 		}
 	}
 	

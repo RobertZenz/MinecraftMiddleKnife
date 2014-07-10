@@ -92,12 +92,12 @@ public final class Authenticator {
 		String response;
 		try {
 			response = httpRequest(server, request);
-		} catch (UnsupportedEncodingException ex) {
-			throw new AuthenticationException("Authentication failed.", ex);
-		} catch (MalformedURLException ex) {
-			throw new AuthenticationException("Authentication failed.", ex);
-		} catch (IOException ex) {
-			throw new AuthenticationException("Authentication failed.", ex);
+		} catch (UnsupportedEncodingException e) {
+			throw new AuthenticationException("Authentication failed.", e);
+		} catch (MalformedURLException e) {
+			throw new AuthenticationException("Authentication failed.", e);
+		} catch (IOException e) {
+			throw new AuthenticationException("Authentication failed.", e);
 		}
 		
 		try {
@@ -116,8 +116,8 @@ public final class Authenticator {
 	public static void keepAlive(AuthenticatedSession authenticatedSession) throws AuthenticationException {
 		try {
 			keepAlive(new URL(MOJANG_SERVER), authenticatedSession);
-		} catch (MalformedURLException ex) {
-			throw new AuthenticationException("Failed to build URL for the Mojand server.", ex);
+		} catch (MalformedURLException e) {
+			throw new AuthenticationException("Failed to build URL for the Mojand server.", e);
 		}
 	}
 	
@@ -133,15 +133,15 @@ public final class Authenticator {
 		try {
 			request = String.format("?name={0}&session={1}", URLEncoder.encode(authenticatedSession.getUsername(), "UTF-8"),
 					URLEncoder.encode(authenticatedSession.getSessionId(), "UTF-8"));
-		} catch (UnsupportedEncodingException ex) {
-			throw new AuthenticationException("Building of the request string failed.", ex);
+		} catch (UnsupportedEncodingException e) {
+			throw new AuthenticationException("Building of the request string failed.", e);
 		}
 		try {
 			httpRequest(server, request);
-		} catch (UnsupportedEncodingException ex) {
-			throw new AuthenticationException("Failed to renew session.", ex);
-		} catch (IOException ex) {
-			throw new AuthenticationException("Failed to renew session.", ex);
+		} catch (UnsupportedEncodingException e) {
+			throw new AuthenticationException("Failed to renew session.", e);
+		} catch (IOException e) {
+			throw new AuthenticationException("Failed to renew session.", e);
 		}
 	}
 	

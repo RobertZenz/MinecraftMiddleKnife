@@ -194,7 +194,7 @@ public final class Blender {
 				}
 				inputStream.close();
 				output.closeEntry();
-			} catch (ZipException ex) {
+			} catch (ZipException e) {
 				// Assume that the error is the warning about a duplicate and
 				// ignore it.
 				// I know that this is evil...
