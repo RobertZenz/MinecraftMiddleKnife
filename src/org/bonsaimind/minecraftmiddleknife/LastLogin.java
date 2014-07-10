@@ -124,10 +124,16 @@ public final class LastLogin {
 		File file = makeFile(fileOrPath);
 		
 		Cipher cipher = getCipher(LastLoginCipherMode.DECRYPT, cipherPassword, cipherSalt);
-		DataInputStream stream = new DataInputStream(new CipherInputStream(new FileInputStream(file), cipher));
-		Credentials credentials = new Credentials(stream.readUTF(), stream.readUTF());
-		stream.close();
-		return credentials;
+		
+		DataInputStream inputStream = null;
+		try {
+			inputStream = new DataInputStream(new CipherInputStream(new FileInputStream(file), cipher));
+			return new Credentials(inputStream.readUTF(), inputStream.readUTF());
+		} finally {
+			if (inputStream != null) {
+				inputStream.close();
+			}
+		}
 	}
 	
 	/**
@@ -145,10 +151,17 @@ public final class LastLogin {
 		}
 		
 		Cipher cipher = getCipher(LastLoginCipherMode.ENCRYPT, cipherPassword, cipherSalt);
-		DataOutputStream stream = new DataOutputStream(new CipherOutputStream(new FileOutputStream(file), cipher));
-		stream.writeUTF(credentials.getUsername());
-		stream.writeUTF(credentials.getPassword());
-		stream.close();
+		
+		DataOutputStream outputStream = null;
+		try {
+			outputStream = new DataOutputStream(new CipherOutputStream(new FileOutputStream(file), cipher));
+			outputStream.writeUTF(credentials.getUsername());
+			outputStream.writeUTF(credentials.getPassword());
+		} finally {
+			if (outputStream != null) {
+				outputStream.close();
+			}
+		}
 	}
 	
 	/**
@@ -192,16 +205,10 @@ public final class LastLogin {
 	 * @see {@link LastLogin#DEFAULT_CIPHER_SALT}
 	 */
 	public static Cipher getCipher(LastLoginCipherMode cipherMode, String password, byte[] salt) throws LastLoginCipherException {
-		if (password == null) {
-			password = DEFAULT_CIPHER_PASSWORD;
-		}
-		if (salt == null) {
-			salt = DEFAULT_CIPHER_SALT;
-		}
-		
 		try {
-			PBEParameterSpec parameter = new PBEParameterSpec(salt, 5);
-			SecretKey key = SecretKeyFactory.getInstance("PBEWithMD5AndDES").generateSecret(new PBEKeySpec(password.toCharArray()));
+			PBEParameterSpec parameter = new PBEParameterSpec(salt != null ? salt : DEFAULT_CIPHER_SALT, 5);
+			PBEKeySpec keySpec = new PBEKeySpec((password != null ? password : DEFAULT_CIPHER_PASSWORD).toCharArray());
+			SecretKey key = SecretKeyFactory.getInstance("PBEWithMD5AndDES").generateSecret(keySpec);
 			Cipher cipher = Cipher.getInstance("PBEWithMD5AndDES");
 			cipher.init(cipherMode.getMode(), key, parameter);
 			return cipher;
