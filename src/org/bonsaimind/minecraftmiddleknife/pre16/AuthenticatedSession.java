@@ -29,12 +29,19 @@ package org.bonsaimind.minecraftmiddleknife.pre16;
 
 /**
  * Represents an authenticated session.
+ * <p/>
+ * The username overwrite allows you to set a different username that will be
+ * used in the {@link AuthenticatedSession#toString()} method instead of the
+ * username that this {@link AuthenticatedSession} was created with. This might
+ * be needed if you want to send a different username than the one this instance
+ * was created with.
  */
 public final class AuthenticatedSession {
 	
 	private final long currentVersion;
 	private final String downloadTicket;
 	private final String username;
+	private String usernameOverwrite;
 	private final String sessionId;
 	private final String userId;
 	
@@ -64,8 +71,8 @@ public final class AuthenticatedSession {
 	}
 	
 	/**
-	 * The download ticket to download Minecraft from the servers. This is
-	 * deprecated and should only contain the string "deprecated".
+	 * fromString The download ticket to download Minecraft from the servers.
+	 * This is deprecated and should only contain the string "deprecated".
 	 * 
 	 * @return the string "deprecated".
 	 */
@@ -80,6 +87,15 @@ public final class AuthenticatedSession {
 	 */
 	public String getUsername() {
 		return username;
+	}
+	
+	/**
+	 * Gets the value that is used instead of the username.
+	 * 
+	 * @return the overwrite for the username.
+	 */
+	public String getUsernameOverwrite() {
+		return usernameOverwrite;
 	}
 	
 	/**
@@ -101,15 +117,29 @@ public final class AuthenticatedSession {
 	}
 	
 	/**
+	 * Sets the overwrite for the username. The overwrite allows to set a
+	 * different username which is used in the
+	 * {@link AuthenticatedSession#toString()} method.
+	 * 
+	 * @param usernameOverwrite the overwrite for the username.
+	 */
+	public void setUsernameOverwrite(String usernameOverwrite) {
+		this.usernameOverwrite = usernameOverwrite;
+	}
+	
+	/**
 	 * Returns the string representation of this session. It's in the format as
 	 * returned by the server:
-	 * {@code currentVersion:downloadTicket:username:sessionId:userId}
+	 * {@code currentVersion:downloadTicket:username:sessionId:userId} or if the
+	 * overwrite is in place:
+	 * {@code currentVersion:downloadTicket:usernameOverwrite:sessionId:userId}
 	 * 
 	 * @return the string representation.
 	 */
 	@Override
 	public String toString() {
-		return String.format("%s:%s:%s:%s:%s", Long.valueOf(currentVersion), downloadTicket, username, sessionId, userId);
+		return String.format("%s:%s:%s:%s:%s", Long.valueOf(currentVersion), downloadTicket, usernameOverwrite == null ? username : usernameOverwrite,
+				sessionId, userId);
 	}
 	
 	/**

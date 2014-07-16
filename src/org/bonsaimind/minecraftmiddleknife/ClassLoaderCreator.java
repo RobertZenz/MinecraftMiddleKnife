@@ -36,6 +36,21 @@ import java.util.List;
 
 /**
  * Creates a new {@link URLClassLoader} with the jars which are set.
+ * <p/>
+ * This is a mere and simple wrapper around the constructor of the
+ * {@link URLClassLoader}.
+ * <p/>
+ * Usage example:
+ * 
+ * <pre>
+ * ClassLoaderCreator classLoaderCreator = new ClassLoaderCreator();
+ * 
+ * classLoaderCreator.add(someUrl);
+ * classLoaderCreator.add(anotherUrl);
+ * classLoaderCreator.add(&quot;/path/to/the.jar&quot;);
+ * 
+ * ClassLoader classLoader = creator.createClassLoader();
+ * </pre>
  */
 public final class ClassLoaderCreator {
 	
@@ -52,7 +67,7 @@ public final class ClassLoaderCreator {
 	 * 
 	 * @param jar the {@link URL} to add.
 	 */
-	public void addJar(URL jar) {
+	public void add(URL jar) {
 		jars.add(jar);
 	}
 	
@@ -65,8 +80,8 @@ public final class ClassLoaderCreator {
 	 *             be found, or if some other error occurred while constructing
 	 *             the URL
 	 */
-	public void addJar(File jar) throws MalformedURLException {
-		addJar(jar.toURI().toURL());
+	public void add(File jar) throws MalformedURLException {
+		add(jar.toURI().toURL());
 	}
 	
 	/**
@@ -77,8 +92,8 @@ public final class ClassLoaderCreator {
 	 *             be found, or if some other error occurred while constructing
 	 *             the URL
 	 */
-	public void addJar(String jar) throws MalformedURLException {
-		addJar(new File(jar));
+	public void add(String jar) throws MalformedURLException {
+		add(new File(jar));
 	}
 	
 	/**

@@ -36,6 +36,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.bonsaimind.minecraftmiddleknife.Credentials;
 
@@ -48,6 +52,7 @@ public final class Authenticator {
 	 * The default version which will be reported.
 	 */
 	public static final String DEFAULT_LAUNCHER_VERSION = "884";
+	private static final Logger LOGGER = Logger.getLogger(Authenticator.class.getName());
 	/**
 	 * The addressof the Mojang server.
 	 */
@@ -143,6 +148,33 @@ public final class Authenticator {
 		} catch (IOException e) {
 			throw new AuthenticationException("Failed to renew session.", e);
 		}
+	}
+	
+	/**
+	 * Schedules a keep-alive task.
+	 * 
+	 * @param authenticatedSession the {@link AuthenticatedSession} that will be
+	 *            used for the keep-alive.
+	 * @param delay delay in milliseconds before task is to be executed.
+	 * @param period time in milliseconds between successive task executions.
+	 * @return the {@link Timer} which has the scheduled task.
+	 */
+	public static Timer scheduleKeepAlive(final AuthenticatedSession authenticatedSession, long delay, long period) {
+		Timer timer = new Timer("MinecraftMiddleKnife Authentication Keep Alive Timer", true);
+		
+		timer.scheduleAtFixedRate(new TimerTask() {
+			
+			@Override
+			public void run() {
+				try {
+					keepAlive(authenticatedSession);
+				} catch (AuthenticationException e) {
+					LOGGER.log(Level.SEVERE, "Authentication Keep Alive failed.", e);
+				}
+			}
+		}, delay, period);
+		
+		return timer;
 	}
 	
 	private static String httpRequest(URL url, String content) throws UnsupportedEncodingException, IOException {
