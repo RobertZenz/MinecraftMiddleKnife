@@ -82,6 +82,38 @@ public final class ClassLoaderCreator {
 	}
 	
 	/**
+	 * Searches through the given path downwards and adss all jars that are
+	 * found.
+	 * 
+	 * @param dir the directory in which to start.
+	 * @throws MalformedURLException If a protocol handler for the URL could not
+	 *             be found, or if some other error occurred while constructing
+	 *             the URL
+	 */
+	public void addJarsRecursivly(File dir) throws MalformedURLException {
+		for (File file : dir.listFiles()) {
+			if (file.isFile() && file.getName().endsWith(".jar")) {
+				addJar(file);
+			} else if (file.isDirectory()) {
+				addJarsRecursivly(file);
+			}
+		}
+	}
+	
+	/**
+	 * Searches through the given path downwards and adss all jars that are
+	 * found.
+	 * 
+	 * @param dir the directory in which to start.
+	 * @throws MalformedURLException If a protocol handler for the URL could not
+	 *             be found, or if some other error occurred while constructing
+	 *             the URL
+	 */
+	public void addJarsRecursivly(String dir) throws MalformedURLException {
+		addJarsRecursivly(new File(dir));
+	}
+	
+	/**
 	 * Creates a new {@link ClassLoader} from the list.
 	 * 
 	 * @return the {@link ClassLoadeR} you wanted all along.
