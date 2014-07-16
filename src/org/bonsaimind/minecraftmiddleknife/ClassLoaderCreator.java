@@ -105,12 +105,12 @@ public final class ClassLoaderCreator {
 	 *             be found, or if some other error occurred while constructing
 	 *             the URL
 	 */
-	public void addJarsRecursivly(File dir) throws MalformedURLException {
+	public void addRecursively(File dir) throws MalformedURLException {
 		for (File file : dir.listFiles()) {
 			if (file.isFile() && file.getName().endsWith(".jar")) {
-				addJar(file);
+				add(file);
 			} else if (file.isDirectory()) {
-				addJarsRecursivly(file);
+				addRecursively(file);
 			}
 		}
 	}
@@ -124,8 +124,8 @@ public final class ClassLoaderCreator {
 	 *             be found, or if some other error occurred while constructing
 	 *             the URL
 	 */
-	public void addJarsRecursivly(String dir) throws MalformedURLException {
-		addJarsRecursivly(new File(dir));
+	public void addRecursivly(String dir) throws MalformedURLException {
+		addRecursively(new File(dir));
 	}
 	
 	/**
