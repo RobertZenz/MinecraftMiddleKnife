@@ -124,7 +124,7 @@ public final class ClassLoaderCreator {
 	 *             be found, or if some other error occurred while constructing
 	 *             the URL
 	 */
-	public void addRecursivly(String dir) throws MalformedURLException {
+	public void addRecursively(String dir) throws MalformedURLException {
 		addRecursively(new File(dir));
 	}
 	
